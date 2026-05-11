@@ -1,0 +1,87 @@
+:root {
+  --vp-c-brand-1: #047857;
+  --vp-c-brand-2: #0f766e;
+  --vp-c-brand-3: #14b8a6;
+  --vp-c-brand-soft: rgba(20, 184, 166, 0.14);
+  --vp-font-family-base: "Inter", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --vp-font-family-mono: "JetBrains Mono", "Fira Code", "SFMono-Regular", Consolas, monospace;
+}
+
+.VPDoc.has-aside .content-container,
+.VPDoc:not(.has-aside) .content-container {
+  max-width: 880px;
+}
+
+.vp-doc {
+  font-size: 16px;
+  line-height: 1.78;
+}
+
+.vp-doc h1,
+.vp-doc h2,
+.vp-doc h3 {
+  letter-spacing: 0;
+}
+
+.vp-doc h1 {
+  font-size: 34px;
+  line-height: 1.25;
+}
+
+.vp-doc h2 {
+  margin-top: 44px;
+  padding-top: 28px;
+  border-top: 1px solid var(--vp-c-divider);
+}
+
+.vp-doc p,
+.vp-doc li {
+  word-break: break-word;
+}
+
+.vp-doc table {
+  display: table;
+  width: 100%;
+  overflow-x: auto;
+  font-size: 14px;
+}
+
+.vp-doc div[class*='language-'] {
+  margin-top: 18px;
+  margin-bottom: 22px;
+}
+
+.vp-doc .mermaid {
+  margin: 24px 0;
+  padding: 16px;
+  overflow-x: auto;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
+  background: var(--vp-c-bg-soft);
+  text-align: center;
+}
+
+.vp-doc .mermaid svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.VPNavBarTitle .title {
+  font-weight: 700;
+}
+
+@media (max-width: 640px) {
+  .vp-doc {
+    font-size: 15px;
+    line-height: 1.72;
+  }
+
+  .vp-doc h1 {
+    font-size: 28px;
+  }
+
+  .vp-doc h2 {
+    margin-top: 34px;
+  }
+}
+

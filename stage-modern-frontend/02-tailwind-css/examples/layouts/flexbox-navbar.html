@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flexbox 导航栏 - Tailwind CSS 示例</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+  <!-- 
+    Flexbox 导航栏示例
+    演示: flex布局、items-center、justify-between、响应式设计
+  -->
+  
+  <nav class="
+    flex items-center justify-between
+    px-6 py-4
+    bg-white shadow
+  ">
+    <!-- Logo (左侧) -->
+    <div class="text-2xl font-bold text-blue-600">
+      MyApp
+    </div>
+
+    <!-- 导航链接 (中间) -->
+    <div class="hidden md:flex gap-6">
+      <a href="#" class="text-gray-700 hover:text-blue-600 transition">Home</a>
+      <a href="#" class="text-gray-700 hover:text-blue-600 transition">About</a>
+      <a href="#" class="text-gray-700 hover:text-blue-600 transition">Services</a>
+      <a href="#" class="text-gray-700 hover:text-blue-600 transition">Contact</a>
+    </div>
+
+    <!-- 用户按钮 (右侧) -->
+    <button class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+      Sign In
+    </button>
+  </nav>
+
+  <!-- 垂直居中卡片示例 -->
+  <div class="
+    flex items-center justify-center
+    min-h-screen
+    bg-gray-100
+  ">
+    <div class="p-8 bg-white rounded-lg shadow-xl max-w-md">
+      <h1 class="text-3xl font-bold mb-4">完美居中</h1>
+      <p class="text-gray-600">
+        这个卡片在视口中完美居中。使用 <code class="bg-gray-200 px-2 py-1 rounded">flex items-center justify-center</code> 即可实现。
+      </p>
+      <p class="text-sm text-gray-500 mt-4">
+        💡 在 2015 年前,CSS 垂直居中需要各种 hack。Flexbox 让一切变简单。
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // 日志输出
+    console.log('✅ Navbar 布局分析:');
+    console.log('  主轴: justify-between (Logo 左,按钮右)');
+    console.log('  交叉轴: items-center (垂直居中)');
+    console.log('  链接间距: gap-6 (24px)');
+    console.log('');
+    console.log('🎯 垂直居中解决方案:');
+    console.log('  flex items-center justify-center');
+    console.log('  min-h-screen (占满视口高度)');
+  </script>
+</body>
+</html>

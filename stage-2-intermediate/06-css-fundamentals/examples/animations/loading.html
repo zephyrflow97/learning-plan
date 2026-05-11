@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS 动画 - 加载动画集合</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: #f3f4f6;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+
+    .loader-container {
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 3rem;
+      color: #333;
+    }
+
+    .loaders {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 3rem;
+      max-width: 1000px;
+    }
+
+    .loader-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .loader-item h3 {
+      font-size: 0.875rem;
+      color: #666;
+      font-weight: 500;
+    }
+
+    /* 方案 1: 旋转圆环 */
+    .spinner {
+      width: 48px;
+      height: 48px;
+      border: 4px solid rgba(59, 130, 246, 0.1);
+      border-top-color: #3b82f6;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* 方案 2: 跳动的点 */
+    .dots {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      background: #3b82f6;
+      border-radius: 50%;
+      animation: bounce 1.4s infinite ease-in-out;
+    }
+
+    .dot:nth-child(1) {
+      animation-delay: -0.32s;
+    }
+
+    .dot:nth-child(2) {
+      animation-delay: -0.16s;
+    }
+
+    @keyframes bounce {
+      0%, 80%, 100% {
+        transform: scale(0);
+        opacity: 0.5;
+      }
+      40% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    /* 方案 3: 进度条 */
+    .progress-bar {
+      width: 200px;
+      height: 4px;
+      background: #e5e7eb;
+      border-radius: 9999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+      animation: progress 2s ease-in-out infinite;
+    }
+
+    @keyframes progress {
+      0% {
+        width: 0%;
+        margin-left: 0%;
+      }
+      50% {
+        width: 70%;
+        margin-left: 15%;
+      }
+      100% {
+        width: 0%;
+        margin-left: 100%;
+      }
+    }
+
+    /* 方案 4: 脉冲圆环 */
+    .pulse-ring {
+      position: relative;
+      width: 48px;
+      height: 48px;
+    }
+
+    .pulse-ring::before,
+    .pulse-ring::after {
+      content: '';
+      position: absolute;
+      border: 3px solid #3b82f6;
+      border-radius: 50%;
+      width: 100%;
+      height: 100%;
+      animation: pulse 2s ease-out infinite;
+    }
+
+    .pulse-ring::after {
+      animation-delay: 1s;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(0);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 0;
+      }
+    }
+
+    /* 方案 5: 双圆环 */
+    .dual-ring {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 4px solid #e5e7eb;
+      border-top-color: #3b82f6;
+      border-bottom-color: #8b5cf6;
+      animation: spin 1.2s linear infinite;
+    }
+
+    /* 方案 6: 方块翻转 */
+    .cube-flip {
+      width: 40px;
+      height: 40px;
+      background: #3b82f6;
+      animation: flip 2s infinite ease-in-out;
+    }
+
+    @keyframes flip {
+      0%, 100% {
+        transform: perspective(140px) rotateX(0deg) rotateY(0deg);
+      }
+      50% {
+        transform: perspective(140px) rotateX(-180deg) rotateY(0deg);
+      }
+    }
+
+    /* 无障碍: 减少动画 */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="loader-container">
+    <h1>CSS 加载动画集合</h1>
+
+    <div class="loaders">
+      <div class="loader-item">
+        <div class="spinner"></div>
+        <h3>旋转圆环</h3>
+      </div>
+
+      <div class="loader-item">
+        <div class="dots">
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+        <h3>跳动的点</h3>
+      </div>
+
+      <div class="loader-item">
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
+        </div>
+        <h3>进度条</h3>
+      </div>
+
+      <div class="loader-item">
+        <div class="pulse-ring"></div>
+        <h3>脉冲圆环</h3>
+      </div>
+
+      <div class="loader-item">
+        <div class="dual-ring"></div>
+        <h3>双色圆环</h3>
+      </div>
+
+      <div class="loader-item">
+        <div class="cube-flip"></div>
+        <h3>方块翻转</h3>
+      </div>
+    </div>
+
+    <p style="margin-top: 3rem; color: #666; font-size: 0.875rem;">
+      💡 所有动画都使用纯 CSS 实现，无需 JavaScript
+    </p>
+  </div>
+</body>
+</html>

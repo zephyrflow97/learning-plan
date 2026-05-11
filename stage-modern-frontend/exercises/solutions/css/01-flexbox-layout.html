@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flexbox 三列布局</title>
+  <style>
+    * {
+      box-sizing: border-box; /* 确保 padding 和 border 不会撑大盒子 */
+    }
+
+    body {
+      margin: 0;
+      font-family: sans-serif;
+    }
+
+    /* 容器使用 Flexbox */
+    .container {
+      display: flex;
+      min-height: 100vh; /* 至少占满视口高度 */
+    }
+
+    /* 左侧边栏 */
+    .sidebar-left {
+      width: 200px; /* 固定宽度 */
+      background-color: #e3f2fd;
+      padding: 20px;
+    }
+
+    /* 中间内容区域 */
+    .main-content {
+      flex: 1; /* 占据剩余空间 */
+      background-color: #fff;
+      padding: 20px;
+    }
+
+    /* 右侧边栏 */
+    .sidebar-right {
+      width: 200px; /* 固定宽度 */
+      background-color: #f3e5f5;
+      padding: 20px;
+    }
+
+    /* 响应式:小屏幕堆叠 */
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column; /* 改变主轴为垂直方向 */
+      }
+
+      .sidebar-left,
+      .sidebar-right,
+      .main-content {
+        width: 100%; /* 堆叠时每个都占满宽度 */
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar-left">
+      <h2>左侧边栏</h2>
+      <p>固定 200px 宽度</p>
+    </aside>
+
+    <main class="main-content">
+      <h1>主内容区域</h1>
+      <p>这个区域会自适应剩余空间。</p>
+      <p>尝试调整浏览器窗口宽度,看看布局如何变化。</p>
+    </main>
+
+    <aside class="sidebar-right">
+      <h2>右侧边栏</h2>
+      <p>固定 200px 宽度</p>
+    </aside>
+  </div>
+
+  <script>
+    // 日志:打印当前布局模式
+    function logLayoutMode() {
+      const mode = window.innerWidth <= 768 ? '单列堆叠' : '三列布局';
+      console.log(`[布局模式] 当前: ${mode} (窗口宽度: ${window.innerWidth}px)`);
+    }
+
+    logLayoutMode();
+    window.addEventListener('resize', logLayoutMode);
+  </script>
+</body>
+</html>

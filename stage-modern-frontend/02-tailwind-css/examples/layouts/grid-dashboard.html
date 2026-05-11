@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grid 仪表盘布局 - Tailwind CSS 示例</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+  <!-- 
+    Grid 仪表盘布局示例
+    演示: CSS Grid、固定宽度列、自适应行、响应式布局
+  -->
+  
+  <div class="grid grid-cols-[240px_1fr] grid-rows-[64px_1fr] h-screen">
+    <!-- 
+      列定义: 240px (侧边栏固定宽度) + 1fr (主内容区自适应)
+      行定义: 64px (顶栏固定高度) + 1fr (内容区自适应)
+    -->
+
+    <!-- 顶栏 (横跨两列) -->
+    <header class="col-span-2 flex items-center px-6 bg-white border-b">
+      <h1 class="text-xl font-bold">Dashboard</h1>
+      
+      <div class="ml-auto flex items-center gap-4">
+        <button class="p-2 rounded hover:bg-gray-100">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+          </svg>
+        </button>
+        <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm">
+          U
+        </div>
+      </div>
+    </header>
+
+    <!-- 侧边栏 -->
+    <aside class="bg-gray-900 text-white p-4">
+      <nav class="flex flex-col gap-2">
+        <a href="#" class="p-2 rounded bg-gray-800 hover:bg-gray-700 transition flex items-center gap-3">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+          </svg>
+          <span>Home</span>
+        </a>
+        <a href="#" class="p-2 rounded hover:bg-gray-800 transition flex items-center gap-3">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+          </svg>
+          <span>Analytics</span>
+        </a>
+        <a href="#" class="p-2 rounded hover:bg-gray-800 transition flex items-center gap-3">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+          </svg>
+          <span>Settings</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- 主内容区 -->
+    <main class="p-6 bg-gray-50 overflow-y-auto">
+      <h2 class="text-2xl font-bold mb-6">Dashboard Content</h2>
+      
+      <!-- 卡片网格 -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+        <div class="p-6 bg-white rounded-lg shadow">
+          <h3 class="text-sm text-gray-500 mb-2">Total Users</h3>
+          <p class="text-3xl font-bold text-gray-900">2,543</p>
+          <p class="text-sm text-green-600 mt-2">↑ 12% from last month</p>
+        </div>
+        
+        <div class="p-6 bg-white rounded-lg shadow">
+          <h3 class="text-sm text-gray-500 mb-2">Revenue</h3>
+          <p class="text-3xl font-bold text-gray-900">$45,231</p>
+          <p class="text-sm text-green-600 mt-2">↑ 8% from last month</p>
+        </div>
+        
+        <div class="p-6 bg-white rounded-lg shadow">
+          <h3 class="text-sm text-gray-500 mb-2">Active Projects</h3>
+          <p class="text-3xl font-bold text-gray-900">12</p>
+          <p class="text-sm text-red-600 mt-2">↓ 2 from last month</p>
+        </div>
+      </div>
+
+      <!-- 大卡片 -->
+      <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-lg font-bold mb-4">Recent Activity</h3>
+        <div class="space-y-4">
+          <div class="flex items-center gap-4">
+            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+              <span class="text-blue-600 font-medium">JD</span>
+            </div>
+            <div class="flex-1">
+              <p class="text-sm font-medium">John Doe created a new project</p>
+              <p class="text-xs text-gray-500">2 hours ago</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+              <span class="text-green-600 font-medium">SA</span>
+            </div>
+            <div class="flex-1">
+              <p class="text-sm font-medium">Sarah Adams completed a task</p>
+              <p class="text-xs text-gray-500">4 hours ago</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+              <span class="text-purple-600 font-medium">MB</span>
+            </div>
+            <div class="flex-1">
+              <p class="text-sm font-medium">Mike Brown left a comment</p>
+              <p class="text-xs text-gray-500">Yesterday</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    console.log('🎨 仪表盘布局结构:');
+    console.log('┌─────────┬─────────────┐');
+    console.log('│  Header (col-span-2)  │  ← 64px 高');
+    console.log('├─────────┼─────────────┤');
+    console.log('│ Sidebar │   Content   │');
+    console.log('│ 240px   │   自适应    │  ← 剩余高度');
+    console.log('└─────────┴─────────────┘');
+    console.log('');
+    console.log('📊 响应式统计卡片:');
+    console.log('  手机: 1 列');
+    console.log('  平板 (md): 2 列');
+    console.log('  笔记本 (lg): 3 列');
+  </script>
+</body>
+</html>

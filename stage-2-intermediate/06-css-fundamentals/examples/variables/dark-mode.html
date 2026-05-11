@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS 变量 - 暗黑模式切换</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #111827;
+      --card-bg: #f9fafb;
+      --border: #e5e7eb;
+      --shadow: rgba(0,0,0,0.1);
+      --primary: #3b82f6;
+    }
+
+    :root.dark {
+      --bg: #111827;
+      --text: #f9fafb;
+      --card-bg: #1f2937;
+      --border: #374151;
+      --shadow: rgba(0,0,0,0.5);
+      --primary: #60a5fa;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      transition: background 0.3s, color 0.3s, border-color 0.3s;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 2rem;
+      min-height: 100vh;
+    }
+
+    .theme-toggle {
+      position: fixed;
+      top: 2rem;
+      right: 2rem;
+      padding: 0.75rem 1.5rem;
+      background: var(--card-bg);
+      border: 2px solid var(--border);
+      border-radius: 0.5rem;
+      cursor: pointer;
+      font-size: 1rem;
+      color: var(--text);
+      box-shadow: 0 4px 6px var(--shadow);
+      transition: transform 0.2s;
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.05);
+    }
+
+    .content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .subtitle {
+      color: var(--text);
+      opacity: 0.7;
+      margin-bottom: 3rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 4px var(--shadow);
+    }
+
+    .card h2 {
+      margin-bottom: 1rem;
+      color: var(--primary);
+    }
+
+    .card p {
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .code-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      padding: 1rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.875rem;
+      overflow-x: auto;
+    }
+
+    .feature-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .feature-list li {
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .feature-list li:last-child {
+      border-bottom: none;
+    }
+
+    .feature-list li::before {
+      content: '✓ ';
+      color: var(--primary);
+      font-weight: bold;
+      margin-right: 0.5rem;
+    }
+
+    .demo-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-secondary {
+      background: var(--card-bg);
+      color: var(--text);
+      border: 2px solid var(--border);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" id="themeToggle">
+    🌙 切换主题
+  </button>
+  
+  <div class="content">
+    <h1>暗黑模式示例</h1>
+    <p class="subtitle">点击右上角按钮切换主题</p>
+
+    <div class="card">
+      <h2>功能特性</h2>
+      <ul class="feature-list">
+        <li>使用 CSS 变量实现主题切换</li>
+        <li>状态持久化到 localStorage</li>
+        <li>平滑的过渡动画</li>
+        <li>完整的颜色系统</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>技术实现</h2>
+      <p>核心思想：定义两套 CSS 变量，通过切换根元素的 class 来切换主题。</p>
+      
+      <div class="code-box">/* 亮色主题 */
+:root {
+  --bg: #ffffff;
+  --text: #111827;
+  --card-bg: #f9fafb;
+}
+
+/* 暗色主题 */
+:root.dark {
+  --bg: #111827;
+  --text: #f9fafb;
+  --card-bg: #1f2937;
+}
+
+/* 使用变量 */
+body {
+  background: var(--bg);
+  color: var(--text);
+}</div>
+    </div>
+
+    <div class="card">
+      <h2>交互演示</h2>
+      <p>这些按钮也会随主题变化：</p>
+      <div class="demo-buttons">
+        <button class="btn btn-primary">主要按钮</button>
+        <button class="btn btn-secondary">次要按钮</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>为什么使用 CSS 变量？</h2>
+      <p>相比 Sass 变量，CSS 变量的优势：</p>
+      <ul class="feature-list">
+        <li>可以在运行时动态修改（通过 JavaScript）</li>
+        <li>支持继承和作用域</li>
+        <li>在媒体查询中可以修改值</li>
+        <li>在浏览器 DevTools 中可见和调试</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+  const themeToggle = document.getElementById('themeToggle');
+  const root = document.documentElement;
+  
+  // 从 localStorage 加载主题
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  root.className = savedTheme === 'dark' ? 'dark' : '';
+  updateButton(savedTheme);
+  
+  themeToggle.addEventListener('click', () => {
+    const currentTheme = root.className === 'dark' ? 'dark' : 'light';
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    root.className = newTheme === 'dark' ? 'dark' : '';
+    localStorage.setItem('theme', newTheme);
+    updateButton(newTheme);
+  });
+  
+  function updateButton(theme) {
+    themeToggle.textContent = theme === 'dark' ? '☀️ 切换主题' : '🌙 切换主题';
+  }
+  </script>
+</body>
+</html>

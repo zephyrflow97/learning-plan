@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tailwind CSS - 导航栏示例</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+  <!-- 
+    导航栏组件示例
+    功能:
+    - 水平布局,垂直居中,两端对齐
+    - Logo 左侧,导航链接中间,按钮右侧
+    - 悬停效果
+  -->
+  <nav class="
+    flex items-center justify-between
+    px-6 py-4
+    bg-white shadow
+  ">
+    <!-- Logo -->
+    <div class="text-2xl font-bold text-blue-600">
+      MyApp
+    </div>
+
+    <!-- 导航链接 -->
+    <div class="flex gap-6">
+      <a href="#" class="text-gray-700 hover:text-blue-600 transition-colors">Home</a>
+      <a href="#" class="text-gray-700 hover:text-blue-600 transition-colors">About</a>
+      <a href="#" class="text-gray-700 hover:text-blue-600 transition-colors">Contact</a>
+    </div>
+
+    <!-- 用户按钮 -->
+    <button class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+      Sign In
+    </button>
+  </nav>
+
+  <!-- 页面内容示例 -->
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-4">导航栏布局示例</h1>
+    <p class="text-gray-600">
+      使用 Flexbox 构建的响应式导航栏:
+    </p>
+    <ul class="list-disc list-inside mt-4 space-y-2 text-gray-700">
+      <li><code class="bg-gray-100 px-2 py-1 rounded">flex items-center justify-between</code> - 水平布局 + 垂直居中 + 两端对齐</li>
+      <li><code class="bg-gray-100 px-2 py-1 rounded">gap-6</code> - 链接之间的间距 (24px)</li>
+      <li><code class="bg-gray-100 px-2 py-1 rounded">hover:text-blue-600</code> - 悬停时文字变蓝</li>
+    </ul>
+  </div>
+
+  <script>
+    // 日志输出
+    console.log('✅ Navbar 布局完成');
+    console.log('📐 布局分析:', {
+      主轴: 'justify-between (Logo 左,按钮右)',
+      交叉轴: 'items-center (垂直居中)',
+      链接间距: 'gap-6 (24px)'
+    });
+  </script>
+</body>
+</html>

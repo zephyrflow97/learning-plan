@@ -1,0 +1,199 @@
+// ==========================================
+// Prisma Schema 完整示例
+// ==========================================
+// 这是一个包含所有关系类型的完整 Blog 系统 Schema
+// 展示了：一对一、一对多、多对多（隐式和显式）、枚举、索引、默认值等
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==========================================
+// 枚举类型
+// ==========================================
+
+enum Role {
+  USER       // 普通用户
+  ADMIN      // 管理员
+  MODERATOR  // 版主
+}
+
+enum OrderStatus {
+  PENDING    // 待处理
+  PROCESSING // 处理中
+  SHIPPED    // 已发货
+  DELIVERED  // 已送达
+  CANCELLED  // 已取消
+}
+
+// ==========================================
+// 用户模型
+// ==========================================
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  name      String
+  role      Role     @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // 一对一关系: 一个用户有一个 Profile
+  profile   Profile?
+  
+  // 一对多关系: 一个用户有多篇 Post
+  posts     Post[]
+  
+  // 一对多关系: 一个用户有多条评论
+  comments  Comment[]
+  
+  // 索引优化
+  @@index([email])
+  @@index([role])
+  @@map("users")  // 自定义表名
+}
+
+// ==========================================
+// 用户资料（一对一关系示例）
+// ==========================================
+
+model Profile {
+  id        Int     @id @default(autoincrement())
+  bio       String?
+  avatar    String?
+  website   String?
+  
+  // 一对一关系的外键侧
+  userId    Int     @unique  // ⚠️ 必须是 unique
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("profiles")
+}
+
+// ==========================================
+// 帖子模型（一对多关系示例）
+// ==========================================
+
+model Post {
+  id          Int       @id @default(autoincrement())
+  title       String
+  content     String?   @db.Text
+  published   Boolean   @default(false)
+  viewCount   Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  // 一对多关系: 多个 Post 属于一个 User
+  authorId    Int
+  author      User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  
+  // 一对多关系: 一个 Post 有多条 Comment
+  comments    Comment[]
+  
+  // 多对多关系（隐式）: 一个 Post 有多个 Category
+  categories  Category[]
+  
+  // 多对多关系（显式）: 一个 Post 有多个 Tag
+  postTags    PostTag[]
+  
+  // 索引优化
+  @@index([authorId])
+  @@index([published])
+  @@index([createdAt])
+  @@index([authorId, published])  // 复合索引
+  @@map("posts")
+}
+
+// ==========================================
+// 评论模型（一对多关系示例）
+// ==========================================
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // 多条 Comment 属于一个 Post
+  postId    Int
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  
+  // 多条 Comment 属于一个 User
+  authorId  Int
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  
+  @@index([postId])
+  @@index([authorId])
+  @@map("comments")
+}
+
+// ==========================================
+// 分类模型（隐式多对多关系示例）
+// ==========================================
+
+model Category {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  slug  String @unique
+  
+  // 隐式多对多: Prisma 自动创建 _CategoryToPost 中间表
+  posts Post[]
+  
+  @@map("categories")
+}
+
+// ==========================================
+// 标签模型（显式多对多关系示例）
+// ==========================================
+
+model Tag {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  
+  // 显式多对多: 通过 PostTag 中间表
+  postTags PostTag[]
+  
+  @@map("tags")
+}
+
+// ==========================================
+// PostTag 中间表（显式多对多关系）
+// ==========================================
+// 为什么用显式多对多？因为我们需要记录"谁在什么时候给帖子打了这个标签"
+
+model PostTag {
+  postId     Int
+  tagId      Int
+  assignedAt DateTime @default(now())  // 额外字段！这是显式多对多的优势
+  
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  tag  Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  
+  // 复合主键
+  @@id([postId, tagId])
+  @@index([postId])
+  @@index([tagId])
+  @@map("post_tags")
+}
+
+// ==========================================
+// 订单模型（展示枚举的使用）
+// ==========================================
+
+model Order {
+  id        Int         @id @default(autoincrement())
+  orderNo   String      @unique
+  status    OrderStatus @default(PENDING)
+  total     Decimal     @db.Decimal(10, 2)  // 10 位数字，2 位小数
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  
+  @@index([status])
+  @@index([createdAt])
+  @@map("orders")
+}

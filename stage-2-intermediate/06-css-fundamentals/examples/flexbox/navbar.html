@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flexbox - 响应式导航栏</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #f3f4f6;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between; /* Logo 左,菜单右 */
+      align-items: center;            /* 垂直居中 */
+      padding: 1rem 2rem;
+      background: #333;
+      color: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #667eea;
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 2rem;                      /* 菜单项之间的间距 */
+      list-style: none;
+    }
+
+    .nav-menu a {
+      color: white;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      transition: background 0.2s;
+    }
+
+    .nav-menu a:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .nav-menu a.active {
+      background: #667eea;
+    }
+
+    /* 移动端: 垂直堆叠 */
+    @media (max-width: 768px) {
+      .navbar {
+        flex-direction: column;       /* 改为垂直方向 */
+        gap: 1rem;
+      }
+      
+      .nav-menu {
+        flex-direction: column;
+        width: 100%;
+        text-align: center;
+      }
+
+      .nav-menu a {
+        display: block;
+      }
+    }
+
+    /* 示例内容 */
+    .content {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+    }
+
+    .card {
+      background: white;
+      padding: 2rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .resize-hint {
+      background: #ffe4e1;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      border-left: 4px solid #ff6b6b;
+      margin-bottom: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">MyBrand</div>
+    <ul class="nav-menu">
+      <li><a href="#" class="active">首页</a></li>
+      <li><a href="#">产品</a></li>
+      <li><a href="#">关于</a></li>
+      <li><a href="#">联系</a></li>
+    </ul>
+  </nav>
+
+  <div class="content">
+    <div class="resize-hint">
+      📱 <strong>试试看:</strong> 调整浏览器窗口宽度，观察导航栏如何响应式变化！
+    </div>
+
+    <div class="card">
+      <h1>响应式导航栏示例</h1>
+      <p>这个导航栏使用 Flexbox 实现了响应式布局：</p>
+      <ul>
+        <li><strong>桌面端（>768px）:</strong> Logo 左对齐，菜单右对齐，水平排列</li>
+        <li><strong>移动端（≤768px）:</strong> 垂直堆叠，菜单项居中</li>
+      </ul>
+      <br>
+      <p><strong>关键代码:</strong></p>
+      <pre style="background: #f0f0f0; padding: 1rem; border-radius: 0.5rem; overflow-x: auto;">
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+  }
+}</pre>
+    </div>
+  </div>
+</body>
+</html>

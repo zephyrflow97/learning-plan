@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tailwind CSS - 交互式卡片</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen py-12">
+  <!-- 
+    交互式卡片示例 (练习 5)
+    
+    功能:
+    - 卡片悬停时,图片放大 1.1 倍
+    - 标题颜色变为品牌色
+    - 按钮从透明变为可见 (淡入 + 向上移动)
+    - 角标从右上角滑入
+    
+    技术点:
+    - group - 父元素悬停时,子元素响应
+    - group-hover:scale-110 - 图片放大
+    - group-hover:text-brand-600 - 标题变色
+    - group-hover:opacity-100 - 按钮淡入
+    - group-hover:right-4 - 角标滑入
+  -->
+  <div class="container mx-auto px-4">
+    <h1 class="text-3xl font-bold mb-8 text-gray-900">交互式产品卡片</h1>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- 卡片 1 -->
+      <div class="group relative overflow-hidden bg-white rounded-xl shadow-md hover:shadow-2xl transition-shadow duration-300 cursor-pointer">
+        <!-- 图片容器 -->
+        <div class="overflow-hidden h-48 bg-gradient-to-br from-blue-400 to-purple-500">
+          <div class="w-full h-full flex items-center justify-center text-white text-6xl transition-transform duration-300 group-hover:scale-110">
+            🎨
+          </div>
+        </div>
+
+        <!-- 内容 -->
+        <div class="p-6">
+          <h3 class="text-xl font-bold mb-2 transition-colors text-gray-900 group-hover:text-purple-600">
+            Creative Design
+          </h3>
+          <p class="text-gray-600 mb-4">
+            Beautiful and modern design templates for your next project.
+          </p>
+
+          <!-- 按钮 (默认隐藏,悬停显示) -->
+          <button class="
+            w-full px-4 py-2
+            bg-purple-600 text-white rounded
+            opacity-0 group-hover:opacity-100
+            transform translate-y-2 group-hover:translate-y-0
+            transition-all duration-300
+          ">
+            查看详情 →
+          </button>
+        </div>
+
+        <!-- 角标 (悬停时从右上角滑入) -->
+        <div class="
+          absolute top-4 -right-12 group-hover:right-4
+          px-3 py-1 bg-red-500 text-white text-sm rounded-full
+          transition-all duration-300
+        ">
+          NEW
+        </div>
+      </div>
+
+      <!-- 卡片 2 -->
+      <div class="group relative overflow-hidden bg-white rounded-xl shadow-md hover:shadow-2xl transition-shadow duration-300 cursor-pointer">
+        <div class="overflow-hidden h-48 bg-gradient-to-br from-green-400 to-blue-500">
+          <div class="w-full h-full flex items-center justify-center text-white text-6xl transition-transform duration-300 group-hover:scale-110">
+            📱
+          </div>
+        </div>
+
+        <div class="p-6">
+          <h3 class="text-xl font-bold mb-2 transition-colors text-gray-900 group-hover:text-blue-600">
+            Mobile First
+          </h3>
+          <p class="text-gray-600 mb-4">
+            Responsive designs that work perfectly on all devices.
+          </p>
+
+          <button class="
+            w-full px-4 py-2
+            bg-blue-600 text-white rounded
+            opacity-0 group-hover:opacity-100
+            transform translate-y-2 group-hover:translate-y-0
+            transition-all duration-300
+          ">
+            查看详情 →
+          </button>
+        </div>
+
+        <div class="
+          absolute top-4 -right-12 group-hover:right-4
+          px-3 py-1 bg-green-500 text-white text-sm rounded-full
+          transition-all duration-300
+        ">
+          HOT
+        </div>
+      </div>
+
+      <!-- 卡片 3 -->
+      <div class="group relative overflow-hidden bg-white rounded-xl shadow-md hover:shadow-2xl transition-shadow duration-300 cursor-pointer">
+        <div class="overflow-hidden h-48 bg-gradient-to-br from-pink-400 to-orange-500">
+          <div class="w-full h-full flex items-center justify-center text-white text-6xl transition-transform duration-300 group-hover:scale-110">
+            ⚡
+          </div>
+        </div>
+
+        <div class="p-6">
+          <h3 class="text-xl font-bold mb-2 transition-colors text-gray-900 group-hover:text-orange-600">
+            Lightning Fast
+          </h3>
+          <p class="text-gray-600 mb-4">
+            Optimized for speed and performance on every platform.
+          </p>
+
+          <button class="
+            w-full px-4 py-2
+            bg-orange-600 text-white rounded
+            opacity-0 group-hover:opacity-100
+            transform translate-y-2 group-hover:translate-y-0
+            transition-all duration-300
+          ">
+            查看详情 →
+          </button>
+        </div>
+
+        <div class="
+          absolute top-4 -right-12 group-hover:right-4
+          px-3 py-1 bg-yellow-500 text-white text-sm rounded-full
+          transition-all duration-300
+        ">
+          ⚡
+        </div>
+      </div>
+    </div>
+
+    <!-- 说明 -->
+    <div class="mt-8 p-6 bg-white rounded-lg shadow-lg">
+      <h3 class="font-bold text-gray-900 mb-4 text-xl">交互效果详解</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-700">
+        <div>
+          <h4 class="font-bold text-purple-600 mb-2">🖼️ 图片效果</h4>
+          <ul class="space-y-1">
+            <li><code class="bg-gray-100 px-2 py-1 rounded">overflow-hidden</code> - 裁剪溢出内容</li>
+            <li><code class="bg-gray-100 px-2 py-1 rounded">group-hover:scale-110</code> - 悬停时放大 110%</li>
+            <li><code class="bg-gray-100 px-2 py-1 rounded">transition-transform duration-300</code> - 300ms 平滑过渡</li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold text-blue-600 mb-2">📝 标题效果</h4>
+          <ul class="space-y-1">
+            <li><code class="bg-gray-100 px-2 py-1 rounded">group-hover:text-purple-600</code> - 悬停时文字变色</li>
+            <li><code class="bg-gray-100 px-2 py-1 rounded">transition-colors</code> - 颜色平滑过渡</li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold text-orange-600 mb-2">🔘 按钮效果</h4>
+          <ul class="space-y-1">
+            <li><code class="bg-gray-100 px-2 py-1 rounded">opacity-0 → group-hover:opacity-100</code> - 淡入</li>
+            <li><code class="bg-gray-100 px-2 py-1 rounded">translate-y-2 → group-hover:translate-y-0</code> - 向上移动</li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold text-red-600 mb-2">🏷️ 角标效果</h4>
+          <ul class="space-y-1">
+            <li><code class="bg-gray-100 px-2 py-1 rounded">-right-12 → group-hover:right-4</code> - 从右侧滑入</li>
+            <li><code class="bg-gray-100 px-2 py-1 rounded">absolute</code> - 绝对定位</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    console.log('✅ 交互卡片完成');
+    console.log('🎨 四种交互效果:');
+    console.log('  1. 图片放大 (scale-110)');
+    console.log('  2. 标题变色 (group-hover:text-brand-600)');
+    console.log('  3. 按钮淡入 (opacity 0→100 + translateY)');
+    console.log('  4. 角标滑入 (right -12→4)');
+    console.log('');
+    console.log('💡 group 的本质:');
+    console.log('  父元素: className="group"');
+    console.log('  子元素: className="group-hover:*"');
+    console.log('  → 父悬停时,所有 group-hover:* 的子元素都响应');
+  </script>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tailwind CSS - 暗黑模式切换</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // Tailwind 暗黑模式配置
+    tailwind.config = {
+      darkMode: 'class', // 使用 class 策略
+    }
+  </script>
+</head>
+<body class="bg-white dark:bg-gray-900 transition-colors duration-200 min-h-screen">
+  <!-- 
+    暗黑模式切换示例
+    
+    功能:
+    - 手动切换暗黑模式
+    - 初始化时从 localStorage 读取偏好
+    - 如果没有存储,跟随系统偏好
+    - 切换时保存到 localStorage
+    
+    实现:
+    - 添加/移除 <html> 的 dark 类
+    - CSS 中的 dark: 前缀自动生效
+  -->
+  <div class="container mx-auto px-4 py-8">
+    <!-- 标题区 -->
+    <div class="flex items-center justify-between mb-8">
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">暗黑模式切换</h1>
+      
+      <!-- 主题切换按钮 -->
+      <button 
+        id="theme-toggle"
+        class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+        aria-label="Toggle theme"
+      >
+        <!-- 太阳图标 (亮色模式时显示) -->
+        <svg id="sun-icon" class="w-6 h-6 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+        <!-- 月亮图标 (暗黑模式时显示) -->
+        <svg id="moon-icon" class="w-6 h-6 text-gray-300 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- 示例内容 -->
+    <div class="space-y-6">
+      <!-- 卡片示例 -->
+      <div class="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
+        <h2 class="text-xl font-bold mb-2 text-gray-900 dark:text-white">
+          主题感知组件
+        </h2>
+        <p class="text-gray-600 dark:text-gray-400 mb-4">
+          这个组件会自动适配暗黑模式。点击右上角的按钮切换主题。
+        </p>
+        <button class="px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white rounded hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors">
+          主题感知按钮
+        </button>
+      </div>
+
+      <!-- 颜色展示 -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="p-4 bg-gray-100 dark:bg-gray-800 rounded-lg text-center">
+          <div class="w-12 h-12 bg-blue-500 dark:bg-blue-400 rounded-full mx-auto mb-2"></div>
+          <p class="text-sm font-medium text-gray-900 dark:text-white">Primary</p>
+        </div>
+        <div class="p-4 bg-gray-100 dark:bg-gray-800 rounded-lg text-center">
+          <div class="w-12 h-12 bg-green-500 dark:bg-green-400 rounded-full mx-auto mb-2"></div>
+          <p class="text-sm font-medium text-gray-900 dark:text-white">Success</p>
+        </div>
+        <div class="p-4 bg-gray-100 dark:bg-gray-800 rounded-lg text-center">
+          <div class="w-12 h-12 bg-yellow-500 dark:bg-yellow-400 rounded-full mx-auto mb-2"></div>
+          <p class="text-sm font-medium text-gray-900 dark:text-white">Warning</p>
+        </div>
+        <div class="p-4 bg-gray-100 dark:bg-gray-800 rounded-lg text-center">
+          <div class="w-12 h-12 bg-red-500 dark:bg-red-400 rounded-full mx-auto mb-2"></div>
+          <p class="text-sm font-medium text-gray-900 dark:text-white">Danger</p>
+        </div>
+      </div>
+
+      <!-- 说明 -->
+      <div class="p-4 bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 rounded">
+        <h3 class="font-bold text-blue-900 dark:text-blue-300 mb-2">实现原理</h3>
+        <ul class="text-sm text-blue-800 dark:text-blue-200 space-y-1">
+          <li>1. 初始化时从 <code class="bg-blue-100 dark:bg-blue-800 px-1 rounded">localStorage.getItem('theme')</code> 读取主题偏好</li>
+          <li>2. 如果没有存储,检查 <code class="bg-blue-100 dark:bg-blue-800 px-1 rounded">window.matchMedia('(prefers-color-scheme: dark)')</code></li>
+          <li>3. 切换时添加/移除 <code class="bg-blue-100 dark:bg-blue-800 px-1 rounded">&lt;html&gt;</code> 的 <code class="bg-blue-100 dark:bg-blue-800 px-1 rounded">dark</code> 类</li>
+          <li>4. 保存到 <code class="bg-blue-100 dark:bg-blue-800 px-1 rounded">localStorage</code> 以持久化</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 获取元素
+    const themeToggle = document.getElementById('theme-toggle');
+    const sunIcon = document.getElementById('sun-icon');
+    const moonIcon = document.getElementById('moon-icon');
+    const html = document.documentElement;
+
+    // 初始化主题
+    function initTheme() {
+      // 从 localStorage 读取
+      const stored = localStorage.getItem('theme');
+      // 检查系统偏好
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      // 确定初始主题
+      const initialDark = stored === 'dark' || (!stored && prefersDark);
+      
+      if (initialDark) {
+        html.classList.add('dark');
+        updateIcons(true);
+        console.log('🌓 主题初始化: 暗黑模式');
+      } else {
+        html.classList.remove('dark');
+        updateIcons(false);
+        console.log('🌓 主题初始化: 亮色模式');
+      }
+    }
+
+    // 更新图标显示
+    function updateIcons(isDark) {
+      if (isDark) {
+        sunIcon.classList.add('hidden');
+        moonIcon.classList.remove('hidden');
+      } else {
+        sunIcon.classList.remove('hidden');
+        moonIcon.classList.add('hidden');
+      }
+    }
+
+    // 切换主题
+    function toggleTheme() {
+      const isDark = html.classList.contains('dark');
+      const newDark = !isDark;
+      
+      if (newDark) {
+        html.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+        console.log('🔄 主题切换至: 暗黑模式');
+      } else {
+        html.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+        console.log('🔄 主题切换至: 亮色模式');
+      }
+      
+      updateIcons(newDark);
+    }
+
+    // 监听按钮点击
+    themeToggle.addEventListener('click', toggleTheme);
+
+    // 监听系统主题变化
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      if (!localStorage.getItem('theme')) {
+        // 只有在用户没有手动设置时,才跟随系统
+        if (e.matches) {
+          html.classList.add('dark');
+          updateIcons(true);
+          console.log('🖥️ 系统切换至暗黑模式,自动跟随');
+        } else {
+          html.classList.remove('dark');
+          updateIcons(false);
+          console.log('🖥️ 系统切换至亮色模式,自动跟随');
+        }
+      }
+    });
+
+    // 页面加载时初始化
+    initTheme();
+
+    console.log('✅ 暗黑模式系统已就绪');
+    console.log('📦 持久化: localStorage');
+    console.log('🖥️ 系统感知: prefers-color-scheme');
+  </script>
+</body>
+</html>

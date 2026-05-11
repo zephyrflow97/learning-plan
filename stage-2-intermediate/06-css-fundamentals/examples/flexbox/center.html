@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flexbox - 垂直水平居中</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+
+    /* ✅ Flexbox 时代的解法 (一行代码) */
+    .center-everything {
+      display: flex;
+      justify-content: center; /* 水平居中 */
+      align-items: center;     /* 垂直居中 */
+      min-height: 100vh;       /* 占据全屏高度 */
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .content {
+      background: white;
+      padding: 3rem;
+      border-radius: 1rem;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      text-align: center;
+      max-width: 400px;
+    }
+
+    .content h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: #333;
+    }
+
+    .content p {
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .content button {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 0.75rem 2rem;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .content button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    }
+
+    /* ❌ 前 Flexbox 时代的噩梦 (2010 年之前) */
+    .old-school-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      /*
+       * 问题:
+       * - 需要 position: absolute (脱离文档流)
+       * - 需要知道父元素的 position 设置
+       * - 需要理解 transform 的坐标系
+       * - 代码量是 Flexbox 的 3 倍
+       */
+    }
+
+    /* 说明框 */
+    .note {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: white;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      max-width: 300px;
+      font-size: 0.875rem;
+    }
+
+    .note code {
+      background: #f0f0f0;
+      padding: 0.2rem 0.4rem;
+      border-radius: 0.25rem;
+      font-family: 'Courier New', monospace;
+    }
+  </style>
+</head>
+<body>
+  <div class="center-everything">
+    <div class="content">
+      <h1>完美居中</h1>
+      <p>使用 Flexbox 实现垂直水平居中，只需要三行 CSS！</p>
+      <button onclick="alert('这就是 Flexbox 的力量！')">点击我</button>
+    </div>
+  </div>
+
+  <div class="note">
+    <strong>💡 关键代码:</strong><br>
+    <code>display: flex;</code><br>
+    <code>justify-content: center;</code><br>
+    <code>align-items: center;</code>
+  </div>
+</body>
+</html>

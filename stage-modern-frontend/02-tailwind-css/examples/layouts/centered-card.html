@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tailwind CSS - 垂直居中卡片</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+  <!-- 
+    垂直居中卡片示例
+    
+    经典问题:CSS 垂直居中
+    - 2015 年前需要 7 种 hack
+    - Flexbox 后只需 3 个类
+    
+    解决方案:
+    - flex items-center justify-center
+    - min-h-screen (至少占满整个视口高度)
+  -->
+  <div class="
+    flex items-center justify-center
+    min-h-screen
+    bg-gray-100
+  ">
+    <div class="p-8 bg-white rounded-lg shadow-xl max-w-md">
+      <h1 class="text-3xl font-bold mb-4 text-gray-900">Centered Card</h1>
+      <p class="text-gray-600 mb-4">
+        This card is perfectly centered in the viewport using Flexbox.
+      </p>
+      <p class="text-sm text-gray-500">
+        在 Flexbox 之前,垂直居中是 CSS 最难的问题之一。现在只需要:
+      </p>
+      <ul class="list-disc list-inside mt-2 space-y-1 text-sm text-gray-600">
+        <li><code class="bg-gray-100 px-1 rounded">flex</code> - 启用 Flexbox</li>
+        <li><code class="bg-gray-100 px-1 rounded">items-center</code> - 交叉轴居中 (垂直)</li>
+        <li><code class="bg-gray-100 px-1 rounded">justify-center</code> - 主轴居中 (水平)</li>
+        <li><code class="bg-gray-100 px-1 rounded">min-h-screen</code> - 至少占满视口高度</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    console.log('🎯 CSS 史上最难问题之一:垂直居中');
+    console.log('📐 2015 年前需要 7 种 hack,现在只需 3 个类:');
+    console.log('  flex items-center justify-center');
+    console.log('✅ 完美居中:水平 + 垂直');
+  </script>
+</body>
+</html>

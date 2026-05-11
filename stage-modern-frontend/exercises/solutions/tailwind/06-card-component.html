@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tailwind 卡片组件</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-3xl font-bold mb-8">产品展示</h1>
+
+    <!-- 卡片网格 -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      
+      <!-- 单个卡片 -->
+      <div class="
+        bg-white rounded-lg overflow-hidden shadow-md
+        hover:shadow-xl transition-shadow duration-300
+        cursor-pointer
+      ">
+        <!-- 图片 -->
+        <div class="h-48 bg-gradient-to-br from-blue-400 to-purple-500"></div>
+
+        <!-- 内容 -->
+        <div class="p-6">
+          <h2 class="text-xl font-bold mb-2">产品名称</h2>
+          <p class="text-gray-600 text-sm mb-4">
+            这是产品描述,简要介绍产品的特点和优势。
+          </p>
+          <div class="flex items-center justify-between">
+            <span class="text-2xl font-bold text-blue-600">¥99</span>
+            <button class="
+              px-4 py-2 bg-blue-600 text-white rounded
+              hover:bg-blue-700 transition
+            ">
+              购买
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 更多卡片... -->
+      <div class="
+        bg-white rounded-lg overflow-hidden shadow-md
+        hover:shadow-xl transition-shadow duration-300
+        cursor-pointer
+      ">
+        <div class="h-48 bg-gradient-to-br from-green-400 to-blue-500"></div>
+        <div class="p-6">
+          <h2 class="text-xl font-bold mb-2">产品名称 2</h2>
+          <p class="text-gray-600 text-sm mb-4">
+            另一个精彩的产品描述。
+          </p>
+          <div class="flex items-center justify-between">
+            <span class="text-2xl font-bold text-blue-600">¥149</span>
+            <button class="
+              px-4 py-2 bg-blue-600 text-white rounded
+              hover:bg-blue-700 transition
+            ">
+              购买
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    console.log('[Tailwind] 卡片组件示例加载完成');
+  </script>
+</body>
+</html>

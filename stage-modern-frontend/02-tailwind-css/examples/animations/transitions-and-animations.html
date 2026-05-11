@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>动画和过渡效果 - Tailwind CSS 示例</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // 自定义动画配置
+    tailwind.config = {
+      theme: {
+        extend: {
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0', transform: 'translateY(10px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+            slideIn: {
+              '0%': { transform: 'translateX(-100%)' },
+              '100%': { transform: 'translateX(0)' },
+            },
+            wiggle: {
+              '0%, 100%': { transform: 'rotate(-3deg)' },
+              '50%': { transform: 'rotate(3deg)' },
+            },
+          },
+          animation: {
+            fadeIn: 'fadeIn 0.5s ease-out',
+            slideIn: 'slideIn 0.3s ease-out',
+            wiggle: 'wiggle 1s ease-in-out infinite',
+          },
+        },
+      },
+    }
+  </script>
+</head>
+<body class="bg-gray-100 p-8">
+  <div class="max-w-4xl mx-auto space-y-12">
+    <h1 class="text-3xl font-bold mb-8">动画与交互效果</h1>
+
+    <!-- 1. 基础过渡 -->
+    <section class="bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-bold mb-4">1. 基础过渡效果</h2>
+      <div class="flex flex-wrap gap-4">
+        <button class="
+          px-6 py-3 bg-blue-600 text-white rounded
+          transition duration-200
+          hover:bg-blue-700
+        ">
+          悬停变色
+        </button>
+
+        <button class="
+          px-6 py-3 bg-green-600 text-white rounded
+          transition-all duration-300
+          hover:scale-110 hover:shadow-lg
+        ">
+          悬停放大
+        </button>
+
+        <button class="
+          px-6 py-3 bg-purple-600 text-white rounded
+          transition duration-200
+          hover:-translate-y-1 hover:shadow-xl
+        ">
+          悬停上移
+        </button>
+
+        <button class="
+          px-6 py-3 bg-orange-600 text-white rounded
+          transition-all duration-500
+          hover:rotate-3 hover:scale-105
+        ">
+          悬停旋转
+        </button>
+      </div>
+      <p class="text-sm text-gray-500 mt-4">
+        💡 transition 控制过渡属性,duration-* 控制时长
+      </p>
+    </section>
+
+    <!-- 2. 内置动画 -->
+    <section class="bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-bold mb-4">2. Tailwind 内置动画</h2>
+      <div class="flex flex-wrap gap-8 items-center">
+        <!-- Spin -->
+        <div class="text-center">
+          <div class="animate-spin w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full mx-auto mb-2"></div>
+          <p class="text-sm text-gray-600">animate-spin</p>
+          <p class="text-xs text-gray-400">加载指示器</p>
+        </div>
+
+        <!-- Pulse -->
+        <div class="text-center">
+          <div class="animate-pulse bg-blue-500 h-12 w-32 rounded mx-auto mb-2"></div>
+          <p class="text-sm text-gray-600">animate-pulse</p>
+          <p class="text-xs text-gray-400">骨架屏</p>
+        </div>
+
+        <!-- Bounce -->
+        <div class="text-center">
+          <div class="animate-bounce bg-purple-600 w-12 h-12 rounded-full mx-auto mb-2"></div>
+          <p class="text-sm text-gray-600">animate-bounce</p>
+          <p class="text-xs text-gray-400">弹跳效果</p>
+        </div>
+
+        <!-- Ping -->
+        <div class="text-center relative">
+          <div class="relative inline-flex">
+            <div class="w-12 h-12 bg-red-600 rounded-full"></div>
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+          </div>
+          <p class="text-sm text-gray-600 mt-2">animate-ping</p>
+          <p class="text-xs text-gray-400">通知红点</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. 自定义动画 -->
+    <section class="bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-bold mb-4">3. 自定义动画</h2>
+      <div class="flex flex-wrap gap-4">
+        <button class="
+          px-6 py-3 bg-indigo-600 text-white rounded
+          animate-fadeIn
+        ">
+          淡入动画
+        </button>
+
+        <button class="
+          px-6 py-3 bg-pink-600 text-white rounded
+          animate-slideIn
+        ">
+          滑入动画
+        </button>
+
+        <button class="
+          px-6 py-3 bg-yellow-600 text-white rounded
+          animate-wiggle
+        ">
+          摇摆动画
+        </button>
+      </div>
+      <details class="mt-4">
+        <summary class="cursor-pointer text-blue-600 hover:text-blue-800">查看自定义动画配置</summary>
+        <pre class="bg-gray-900 text-gray-100 p-4 rounded mt-2 text-sm overflow-x-auto"><code>tailwind.config = {
+  theme: {
+    extend: {
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0', transform: 'translateY(10px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        slideIn: {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(0)' },
+        },
+        wiggle: {
+          '0%, 100%': { transform: 'rotate(-3deg)' },
+          '50%': { transform: 'rotate(3deg)' },
+        },
+      },
+      animation: {
+        fadeIn: 'fadeIn 0.5s ease-out',
+        slideIn: 'slideIn 0.3s ease-out',
+        wiggle: 'wiggle 1s ease-in-out infinite',
+      },
+    },
+  },
+}</code></pre>
+      </details>
+    </section>
+
+    <!-- 4. Group 交互 -->
+    <section class="bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-bold mb-4">4. Group 群组交互</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- 交互卡片 -->
+        <div class="group p-6 bg-gray-50 rounded-lg hover:bg-blue-50 cursor-pointer transition-colors duration-300">
+          <h3 class="
+            text-lg font-bold mb-2
+            group-hover:text-blue-600
+            transition-colors
+          ">
+            悬停卡片
+          </h3>
+          <p class="
+            text-gray-600 mb-4
+            group-hover:text-gray-900
+            transition-colors
+          ">
+            当你悬停在卡片上时,标题和按钮都会响应。
+          </p>
+          <button class="
+            px-4 py-2 bg-blue-600 text-white rounded
+            opacity-0 group-hover:opacity-100
+            transform translate-y-2 group-hover:translate-y-0
+            transition-all duration-300
+          ">
+            查看详情
+          </button>
+        </div>
+
+        <!-- 图片卡片 -->
+        <div class="group relative overflow-hidden rounded-lg cursor-pointer">
+          <div class="h-48 bg-gradient-to-br from-purple-400 to-pink-600"></div>
+          <div class="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-colors duration-300"></div>
+          <div class="
+            absolute inset-0 flex items-center justify-center
+            opacity-0 group-hover:opacity-100
+            transition-opacity duration-300
+          ">
+            <button class="px-6 py-3 bg-white text-gray-900 rounded-lg font-medium">
+              查看详情
+            </button>
+          </div>
+        </div>
+      </div>
+      <p class="text-sm text-gray-500 mt-4">
+        💡 group 类在父元素上,group-hover: 在子元素上响应父元素悬停
+      </p>
+    </section>
+
+    <!-- 5. Peer 兄弟元素交互 -->
+    <section class="bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-bold mb-4">5. Peer 兄弟元素交互</h2>
+      
+      <!-- 自定义复选框 -->
+      <div class="space-y-4">
+        <div>
+          <input
+            type="checkbox"
+            id="terms"
+            class="peer sr-only"
+          />
+          <label
+            for="terms"
+            class="
+              inline-block px-6 py-3 bg-gray-200 rounded cursor-pointer
+              peer-checked:bg-green-600
+              peer-checked:text-white
+              transition-all duration-300
+            "
+          >
+            我同意服务条款
+          </label>
+        </div>
+
+        <!-- 表单验证 -->
+        <div>
+          <input
+            type="email"
+            class="peer block w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="请输入邮箱"
+            required
+          />
+          <p class="
+            mt-2 text-sm text-red-600
+            opacity-0 peer-invalid:opacity-100
+            transition-opacity
+          ">
+            ⚠️ 请输入有效的邮箱地址
+          </p>
+        </div>
+      </div>
+      <p class="text-sm text-gray-500 mt-4">
+        💡 peer 在前一个兄弟元素上,peer-checked: / peer-invalid: 在后续元素上响应
+      </p>
+    </section>
+
+    <!-- 6. 加载按钮 -->
+    <section class="bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-bold mb-4">6. 实战:加载按钮</h2>
+      <button
+        id="loadingBtn"
+        class="
+          px-6 py-3 bg-blue-600 text-white rounded
+          hover:bg-blue-700
+          disabled:opacity-50 disabled:cursor-not-allowed
+          transition-all
+          flex items-center gap-2
+        "
+      >
+        <svg id="spinner" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span id="btnText">提交</span>
+      </button>
+
+      <script>
+        const btn = document.getElementById('loadingBtn');
+        const spinner = document.getElementById('spinner');
+        const btnText = document.getElementById('btnText');
+
+        btn.addEventListener('click', async () => {
+          // 开始加载
+          btn.disabled = true;
+          spinner.classList.remove('hidden');
+          btnText.textContent = '提交中...';
+          
+          console.log('🔄 开始异步操作...');
+          
+          // 模拟异步操作
+          await new Promise(resolve => setTimeout(resolve, 2000));
+          
+          // 完成
+          btn.disabled = false;
+          spinner.classList.add('hidden');
+          btnText.textContent = '提交成功!';
+          
+          console.log('✅ 操作完成');
+          
+          // 2秒后恢复
+          setTimeout(() => {
+            btnText.textContent = '提交';
+          }, 2000);
+        });
+      </script>
+    </section>
+
+  </div>
+
+  <script>
+    console.log('🎨 动画性能提示:');
+    console.log('  ✅ 高性能: opacity, transform (GPU 加速)');
+    console.log('  ⚠️ 中性能: colors, border, shadow');
+    console.log('  ❌ 低性能: width, height, padding (触发重排)');
+    console.log('');
+    console.log('⏱️ 过渡时长建议:');
+    console.log('  - 150ms: 快速反馈 (按钮悬停)');
+    console.log('  - 200-300ms: 标准过渡 (大多数情况)');
+    console.log('  - 500ms+: 强调效果 (重要状态变化)');
+  </script>
+</body>
+</html>

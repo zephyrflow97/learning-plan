@@ -1,0 +1,30 @@
+// 基础 Prisma Schema 示例
+// 展示了 Generator、Datasource 和简单的 Model 定义
+
+// 1. Generator: 指定生成什么
+generator client {
+  provider = "prisma-client-js"
+}
+
+// 2. Datasource: 指定数据库连接
+datasource db {
+  provider = "postgresql"  // 或 "mysql", "sqlite", "sqlserver", "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// 3. Model: 定义数据表
+model User {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  email     String   @unique
+  name      String?  // ? 表示可选 (nullable)
+  role      Role     @default(USER)
+}
+
+// 4. Enum: 枚举类型
+enum Role {
+  USER
+  ADMIN
+  MODERATOR
+}

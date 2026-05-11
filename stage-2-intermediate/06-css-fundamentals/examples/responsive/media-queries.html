@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>响应式设计 - 媒体查询</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      padding: 2rem;
+      background: #f3f4f6;
+    }
+
+    /* ========== 移动优先 (Mobile First) - 推荐 ========== */
+    /* 默认样式是为小屏设计的 */
+    .container {
+      width: 100%;
+      padding: 1rem;
+      background: white;
+      border-radius: 0.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr; /* 移动端: 单列 */
+      gap: 1rem;
+    }
+
+    .card {
+      background: #f9fafb;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      border: 2px solid #e5e7eb;
+    }
+
+    .info {
+      background: #dbeafe;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin-bottom: 2rem;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    /* 平板及以上 (≥ 640px) */
+    @media (min-width: 640px) {
+      .container {
+        padding: 2rem;
+      }
+
+      .grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 列 */
+      }
+
+      .info::before {
+        content: '📱 平板视图 (≥640px) | ';
+      }
+    }
+
+    /* 桌面及以上 (≥ 1024px) */
+    @media (min-width: 1024px) {
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 3rem;
+      }
+
+      .grid {
+        grid-template-columns: repeat(3, 1fr); /* 3 列 */
+      }
+
+      .info::before {
+        content: '💻 桌面视图 (≥1024px) | ';
+      }
+    }
+
+    /* 大屏幕 (≥ 1280px) */
+    @media (min-width: 1280px) {
+      .grid {
+        grid-template-columns: repeat(4, 1fr); /* 4 列 */
+      }
+
+      .info::before {
+        content: '🖥️ 大屏视图 (≥1280px) | ';
+      }
+    }
+
+    /* ========== 其他媒体查询示例 ========== */
+
+    /* 横屏 */
+    @media (orientation: landscape) {
+      .landscape-hint {
+        display: block;
+      }
+    }
+
+    .landscape-hint {
+      display: none;
+      background: #fef3c7;
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    /* 打印样式 */
+    @media print {
+      body {
+        background: white;
+      }
+
+      .no-print {
+        display: none;
+      }
+
+      .container {
+        box-shadow: none;
+      }
+    }
+
+    h1, h2, h3 {
+      margin-bottom: 1rem;
+      color: #333;
+    }
+
+    p {
+      line-height: 1.6;
+      color: #666;
+      margin-bottom: 0.5rem;
+    }
+
+    code {
+      background: #f3f4f6;
+      padding: 0.2rem 0.4rem;
+      border-radius: 0.25rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.875rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>响应式设计 - 媒体查询示例</h1>
+
+  <div class="info no-print">
+    调整浏览器窗口宽度，观察布局变化！
+  </div>
+
+  <div class="landscape-hint">
+    📐 您正在使用横屏模式
+  </div>
+
+  <div class="container">
+    <h2>移动优先 (Mobile First)</h2>
+    <p>
+      默认样式为移动端设计，然后使用 <code>min-width</code> 逐步增强到大屏幕。
+    </p>
+
+    <div class="grid">
+      <div class="card">
+        <h3>卡片 1</h3>
+        <p>这是一个响应式卡片</p>
+        <ul style="margin-top: 1rem; line-height: 2; color: #666;">
+          <li>移动端: 1 列</li>
+          <li>平板: 2 列</li>
+          <li>桌面: 3 列</li>
+          <li>大屏: 4 列</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>卡片 2</h3>
+        <p>试试调整窗口宽度</p>
+      </div>
+
+      <div class="card">
+        <h3>卡片 3</h3>
+        <p>观察列数变化</p>
+      </div>
+
+      <div class="card">
+        <h3>卡片 4</h3>
+        <p>纯 CSS 实现</p>
+      </div>
+
+      <div class="card">
+        <h3>卡片 5</h3>
+        <p>无需 JavaScript</p>
+      </div>
+
+      <div class="card">
+        <h3>卡片 6</h3>
+        <p>自适应布局</p>
+      </div>
+    </div>
+
+    <div style="margin-top: 2rem; padding: 1rem; background: #f9fafb; border-radius: 0.5rem;">
+      <h3>断点说明</h3>
+      <ul style="line-height: 2; color: #666;">
+        <li><strong>&lt; 640px:</strong> 移动端（1 列）</li>
+        <li><strong>640px - 1023px:</strong> 平板（2 列）</li>
+        <li><strong>1024px - 1279px:</strong> 桌面（3 列）</li>
+        <li><strong>≥ 1280px:</strong> 大屏（4 列）</li>
+      </ul>
+    </div>
+
+    <div class="no-print" style="margin-top: 2rem; padding: 1rem; background: #fef3c7; border-radius: 0.5rem;">
+      💡 <strong>提示:</strong> 按 Ctrl+P (Cmd+P) 查看打印样式（会隐藏此框）
+    </div>
+  </div>
+</body>
+</html>

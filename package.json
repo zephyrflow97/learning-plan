@@ -1,0 +1,17 @@
+{
+  "name": "learning-plan-site",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "docs:dev": "vitepress dev . --host 0.0.0.0",
+    "docs:build": "vitepress build . && node scripts/create-readme-redirects.mjs",
+    "docs:preview": "vitepress preview . --host 0.0.0.0",
+    "docs:audit": "node scripts/audit-docs.mjs",
+    "docs:check": "npm run docs:audit && npm run docs:build"
+  },
+  "devDependencies": {
+    "mermaid": "^11.14.0",
+    "vitepress": "^1.6.4"
+  }
+}

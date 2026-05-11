@@ -1,0 +1,53 @@
+{
+  "name": "ecommerce-platform",
+  "version": "1.0.0",
+  "description": "Full-stack e-commerce platform with microservices architecture",
+  "private": true,
+  "workspaces": [
+    "backend/user-service",
+    "backend/product-service",
+    "backend/order-service",
+    "backend/payment-service",
+    "backend/api-gateway",
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev:user\" \"npm run dev:product\" \"npm run dev:order\" \"npm run dev:payment\" \"npm run dev:gateway\" \"npm run dev:frontend\"",
+    "dev:user": "cd backend/user-service && npm run dev",
+    "dev:product": "cd backend/product-service && npm run dev",
+    "dev:order": "cd backend/order-service && npm run dev",
+    "dev:payment": "cd backend/payment-service && npm run dev",
+    "dev:gateway": "cd backend/api-gateway && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "install:all": "npm install && npm run install:backend && npm run install:frontend",
+    "install:backend": "cd backend/user-service && npm install && cd ../product-service && npm install && cd ../order-service && npm install && cd ../payment-service && npm install && cd ../api-gateway && npm install",
+    "install:frontend": "cd frontend && npm install",
+    "build": "npm run build:backend && npm run build:frontend",
+    "build:backend": "cd backend/user-service && npm run build && cd ../product-service && npm run build && cd ../order-service && npm run build && cd ../payment-service && npm run build && cd ../api-gateway && npm run build",
+    "build:frontend": "cd frontend && npm run build",
+    "test": "npm run test:backend && npm run test:frontend",
+    "test:backend": "cd backend/user-service && npm test && cd ../product-service && npm test && cd ../order-service && npm test && cd ../payment-service && npm test",
+    "test:frontend": "cd frontend && npm test",
+    "docker:up": "docker-compose -f infra/docker/docker-compose.yml up -d",
+    "docker:down": "docker-compose -f infra/docker/docker-compose.yml down",
+    "docker:build": "docker-compose -f infra/docker/docker-compose.yml build",
+    "k8s:apply": "kubectl apply -f infra/k8s/",
+    "k8s:delete": "kubectl delete -f infra/k8s/"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "keywords": [
+    "ecommerce",
+    "microservices",
+    "nodejs",
+    "typescript",
+    "nextjs",
+    "postgresql",
+    "mongodb",
+    "redis",
+    "kubernetes"
+  ],
+  "author": "",
+  "license": "MIT"
+}

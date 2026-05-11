@@ -1,0 +1,75 @@
+{
+  "name": "@learn/ts-toolkit",
+  "version": "1.0.0",
+  "description": "一个轻量级的 TypeScript 实用工具库 — 综合运用 JS/TS 核心深化学习的所有知识点",
+  "keywords": [
+    "typescript",
+    "utilities",
+    "functional-programming",
+    "error-handling",
+    "proxy",
+    "validation",
+    "learning"
+  ],
+  "author": "Learning Plan",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    },
+    "./result": {
+      "import": {
+        "types": "./dist/result/result.d.ts",
+        "default": "./dist/result/result.js"
+      }
+    },
+    "./validate": {
+      "import": {
+        "types": "./dist/validate/validator.d.ts",
+        "default": "./dist/validate/validator.js"
+      }
+    },
+    "./fp": {
+      "import": {
+        "types": "./dist/fp/compose.d.ts",
+        "default": "./dist/fp/compose.js"
+      }
+    },
+    "./event-emitter": {
+      "import": {
+        "types": "./dist/event-emitter/emitter.d.ts",
+        "default": "./dist/event-emitter/emitter.js"
+      }
+    },
+    "./task-runner": {
+      "import": {
+        "types": "./dist/task-runner/task-queue.d.ts",
+        "default": "./dist/task-runner/task-queue.js"
+      }
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "test": "npx tsx --test src/**/*.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0",
+    "tsx": "^4.7.0",
+    "@types/node": "^22.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

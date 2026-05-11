@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tailwind CSS - 响应式导航栏</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+  <!-- 
+    响应式导航栏示例 (练习 1)
+    
+    功能:
+    - 移动端 (< 768px): 汉堡菜单,垂直布局
+    - 桌面端 (≥ 768px): 水平导航栏
+    - 暗黑模式支持
+    
+    技术点:
+    - hidden md:flex - 小屏隐藏,中屏及以上显示
+    - flex-col md:flex-row - 小屏垂直,中屏及以上水平
+    - bg-white dark:bg-gray-900 - 暗黑模式切换
+  -->
+  <nav class="bg-white dark:bg-gray-900 shadow">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16">
+        <!-- Logo -->
+        <div class="flex items-center">
+          <span class="text-2xl font-bold text-blue-600 dark:text-blue-400">
+            MyApp
+          </span>
+        </div>
+
+        <!-- Desktop Navigation -->
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+            Home
+          </a>
+          <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+            About
+          </a>
+          <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+            Services
+          </a>
+          <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+            Contact
+          </a>
+        </div>
+
+        <!-- Desktop Button -->
+        <div class="hidden md:flex items-center">
+          <button class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+            Sign In
+          </button>
+        </div>
+
+        <!-- Mobile menu button -->
+        <div class="md:hidden flex items-center">
+          <button 
+            id="mobile-menu-button"
+            class="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 focus:outline-none"
+            aria-label="Toggle menu"
+          >
+            <svg id="menu-open-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <svg id="menu-close-icon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="md:hidden hidden">
+      <div class="px-2 pt-2 pb-3 space-y-1 bg-white dark:bg-gray-900">
+        <a href="#" class="block px-3 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded transition-colors">
+          Home
+        </a>
+        <a href="#" class="block px-3 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded transition-colors">
+          About
+        </a>
+        <a href="#" class="block px-3 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded transition-colors">
+          Services
+        </a>
+        <a href="#" class="block px-3 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded transition-colors">
+          Contact
+        </a>
+        <button class="w-full text-left px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+          Sign In
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 页面内容 -->
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-4 text-gray-900 dark:text-white">响应式导航栏</h1>
+    <div class="bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 p-4 rounded">
+      <h3 class="font-bold text-blue-900 dark:text-blue-300 mb-2">响应式断点</h3>
+      <ul class="text-sm text-blue-800 dark:text-blue-200 space-y-1">
+        <li><strong>移动端 (&lt; 768px):</strong> 汉堡菜单,点击展开垂直菜单</li>
+        <li><strong>平板/桌面端 (≥ 768px):</strong> 水平导航栏,所有链接可见</li>
+        <li><strong>暗黑模式:</strong> 使用 <code class="bg-blue-100 dark:bg-blue-800 px-1 rounded">dark:</code> 前缀适配</li>
+      </ul>
+    </div>
+    
+    <div class="mt-4 p-4 bg-gray-100 dark:bg-gray-800 rounded">
+      <p class="text-sm text-gray-700 dark:text-gray-300">
+        调整浏览器窗口大小查看响应式效果。在小屏幕上,导航链接会折叠到汉堡菜单中。
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // Mobile menu toggle
+    const menuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuOpenIcon = document.getElementById('menu-open-icon');
+    const menuCloseIcon = document.getElementById('menu-close-icon');
+
+    let isMenuOpen = false;
+
+    menuButton.addEventListener('click', () => {
+      isMenuOpen = !isMenuOpen;
+      
+      if (isMenuOpen) {
+        mobileMenu.classList.remove('hidden');
+        menuOpenIcon.classList.add('hidden');
+        menuCloseIcon.classList.remove('hidden');
+        console.log('📱 移动菜单已打开');
+      } else {
+        mobileMenu.classList.add('hidden');
+        menuOpenIcon.classList.remove('hidden');
+        menuCloseIcon.classList.add('hidden');
+        console.log('📱 移动菜单已关闭');
+      }
+    });
+
+    console.log('✅ 响应式导航栏完成');
+    console.log('📱 < 768px: 垂直菜单 (汉堡按钮)');
+    console.log('💻 ≥ 768px: 水平导航');
+    console.log('🌓 暗黑模式: dark: 前缀支持');
+  </script>
+</body>
+</html>

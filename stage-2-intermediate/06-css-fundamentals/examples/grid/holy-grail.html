@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grid - 圣杯布局</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+
+    /* ✅ Grid 时代的解法 (9 行 CSS) */
+    .holy-grail {
+      display: grid;
+      grid-template-columns: 200px 1fr 200px;
+      grid-template-rows: auto 1fr auto;
+      grid-template-areas:
+        "header header header"
+        "nav    main   aside"
+        "footer footer footer";
+      min-height: 100vh;
+      gap: 1rem;
+    }
+
+    .header { 
+      grid-area: header;
+      background: #667eea;
+      color: white;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .nav { 
+      grid-area: nav;
+      background: #f3f4f6;
+      padding: 1.5rem;
+    }
+
+    .main { 
+      grid-area: main;
+      background: white;
+      padding: 2rem;
+    }
+
+    .aside { 
+      grid-area: aside;
+      background: #f3f4f6;
+      padding: 1.5rem;
+    }
+
+    .footer { 
+      grid-area: footer;
+      background: #333;
+      color: white;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    /* 响应式: 移动端改为单列 */
+    @media (max-width: 768px) {
+      .holy-grail {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "header"
+          "main"
+          "nav"
+          "aside"
+          "footer";
+      }
+    }
+
+    /* 美化样式 */
+    h1, h2, h3 {
+      margin-bottom: 1rem;
+    }
+
+    p {
+      line-height: 1.6;
+      color: #666;
+      margin-bottom: 1rem;
+    }
+
+    .nav ul {
+      list-style: none;
+    }
+
+    .nav li {
+      padding: 0.5rem 0;
+    }
+
+    .nav a {
+      color: #667eea;
+      text-decoration: none;
+    }
+
+    .nav a:hover {
+      text-decoration: underline;
+    }
+
+    .widget {
+      background: white;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .widget h3 {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .code-box {
+      background: #f8f9fa;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      border-left: 4px solid #667eea;
+      margin-top: 1rem;
+      overflow-x: auto;
+    }
+
+    code {
+      font-family: 'Courier New', monospace;
+      font-size: 0.875rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="holy-grail">
+    <header class="header">
+      <h1>圣杯布局 (Holy Grail Layout)</h1>
+      <p>使用 CSS Grid 轻松实现经典布局</p>
+    </header>
+
+    <nav class="nav">
+      <h2>导航</h2>
+      <ul>
+        <li><a href="#">首页</a></li>
+        <li><a href="#">关于</a></li>
+        <li><a href="#">服务</a></li>
+        <li><a href="#">产品</a></li>
+        <li><a href="#">联系</a></li>
+      </ul>
+
+      <div class="code-box">
+        <strong>💡 关键代码:</strong><br>
+        <code>grid-template-areas</code> 让布局一目了然！
+      </div>
+    </nav>
+
+    <main class="main">
+      <h2>主内容区</h2>
+      <p>这是圣杯布局的主内容区。它占据了页面的大部分空间。</p>
+      
+      <p>圣杯布局的特点：</p>
+      <ul style="line-height: 2; color: #666;">
+        <li>头部和底部占据整行</li>
+        <li>左侧导航固定宽度（200px）</li>
+        <li>右侧边栏固定宽度（200px）</li>
+        <li>中间主内容自适应剩余空间</li>
+        <li>响应式友好（移动端变为单列）</li>
+      </ul>
+
+      <div class="code-box">
+        <strong>Grid 实现:</strong><br>
+        <pre><code>display: grid;
+grid-template-columns: 200px 1fr 200px;
+grid-template-rows: auto 1fr auto;
+grid-template-areas:
+  "header header header"
+  "nav    main   aside"
+  "footer footer footer";</code></pre>
+      </div>
+
+      <p style="margin-top: 2rem;">
+        <strong>对比传统方案:</strong><br>
+        在 Float 时代（2005-2012），实现圣杯布局需要负 margin、clearfix hack、精确的宽度计算等技巧，代码量超过 50 行，Bug 无数。Grid 让这一切变得简单。
+      </p>
+    </main>
+
+    <aside class="aside">
+      <h2>侧边栏</h2>
+      
+      <div class="widget">
+        <h3>📊 统计</h3>
+        <p style="margin: 0; font-size: 0.875rem;">访问量: 12,345</p>
+      </div>
+
+      <div class="widget">
+        <h3>📅 日历</h3>
+        <p style="margin: 0; font-size: 0.875rem;">2024 年 1 月</p>
+      </div>
+
+      <div class="widget">
+        <h3>🔗 链接</h3>
+        <ul style="list-style: none; font-size: 0.875rem; line-height: 1.8;">
+          <li><a href="#" style="color: #667eea; text-decoration: none;">友情链接 1</a></li>
+          <li><a href="#" style="color: #667eea; text-decoration: none;">友情链接 2</a></li>
+        </ul>
+      </div>
+    </aside>
+
+    <footer class="footer">
+      <p>&copy; 2024 Grid Layout Demo. All rights reserved.</p>
+      <p style="margin: 0; font-size: 0.875rem; opacity: 0.8;">
+        调整浏览器窗口宽度试试！
+      </p>
+    </footer>
+  </div>
+</body>
+</html>

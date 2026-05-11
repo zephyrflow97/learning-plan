@@ -1,0 +1,138 @@
+# .github/workflows/ci.yml - 持续集成工作流
+name: CI
+
+# 触发条件
+on:
+  # 每次推送到任何分支时触发
+  push:
+    branches: ['**']
+  # 每次创建或更新 Pull Request 时触发
+  pull_request:
+    branches: ['main']
+
+# 并发控制(同一个 PR 的新推送会取消旧的运行)
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# 任务定义
+jobs:
+  # 任务 1: Lint 和 Type Check
+  quality:
+    name: Code Quality
+    runs-on: ubuntu-latest
+    
+    steps:
+      # 1. 检出代码
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      # 2. 设置 Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      # 3. 安装依赖
+      - name: Install dependencies
+        run: npm ci
+      
+      # 4. 运行 Lint
+      - name: Run ESLint
+        run: npm run lint
+      
+      # 5. 运行 Type Check
+      - name: Run TypeScript Check
+        run: npx tsc --noEmit
+  
+  # 任务 2: 单元测试
+  test:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      # 运行测试(假设你用 Vitest 或 Jest)
+      - name: Run tests
+        run: npm test
+      
+      # 上传测试覆盖率报告
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        if: always()
+        with:
+          files: ./coverage/coverage-final.json
+  
+  # 任务 3: 构建测试
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      # 设置环境变量(用于构建)
+      - name: Create .env file
+        run: |
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+          echo "NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}" >> .env
+          echo "NEXT_PUBLIC_APP_NAME=MyApp" >> .env
+      
+      # 运行构建
+      - name: Build application
+        run: npm run build
+      
+      # 检查构建产物大小
+      - name: Analyze bundle size
+        run: |
+          echo "Build output:"
+          ls -lh .next/static/chunks/ | head -n 20
+
+  # 任务 4: 安全检查
+  security:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      # 检查依赖漏洞
+      - name: Run npm audit
+        run: npm audit --audit-level=moderate
+        continue-on-error: true
+      
+      # 检查过期依赖
+      - name: Check for outdated dependencies
+        run: npm outdated || true

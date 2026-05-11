@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flexbox - 等高卡片网格</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #f3f4f6;
+      padding: 2rem;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      margin-bottom: 2rem;
+      color: #333;
+    }
+
+    .card-container {
+      display: flex;
+      flex-wrap: wrap;                /* 允许换行 */
+      gap: 1.5rem;
+    }
+
+    .card {
+      flex: 1 1 300px;                /* 最小宽度 300px,会伸缩 */
+      /*
+       * 解释:
+       * - flex-grow: 1  (如果一行有多余空间,平分)
+       * - flex-shrink: 1 (如果空间不足,等比收缩)
+       * - flex-basis: 300px (基准宽度 300px)
+       * 
+       * 效果: 每行尽可能多地排列卡片,每张卡片宽度自动调整
+       */
+      
+      display: flex;
+      flex-direction: column;
+      
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+    }
+
+    .card-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .card-content {
+      flex: 1;                        /* 占据剩余空间 */
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: #333;
+    }
+
+    .card-description {
+      color: #6b7280;
+      line-height: 1.6;
+      margin-bottom: auto;            /* 推送底部按钮到底 */
+    }
+
+    .card-footer {
+      padding: 1rem 1.5rem;
+      border-top: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      /* 不设置 flex,保持原始高度 */
+    }
+
+    .card-tag {
+      background: #ede9fe;
+      color: #7c3aed;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+    }
+
+    .card-date {
+      color: #9ca3af;
+      font-size: 0.875rem;
+    }
+
+    .note {
+      background: #fff3cd;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      border-left: 4px solid #ffc107;
+      margin-bottom: 2rem;
+    }
+
+    /* 不同长度的内容演示 */
+    .short { }
+    .medium { }
+    .long { }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>等高卡片网格</h1>
+
+    <div class="note">
+      💡 <strong>注意观察:</strong> 所有卡片高度相等（以最高的卡片为准），内容长短不一也能保持整齐！
+    </div>
+
+    <div class="card-container">
+      <!-- 短内容卡片 -->
+      <div class="card">
+        <div class="card-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
+        <div class="card-content">
+          <h3 class="card-title">短内容卡片</h3>
+          <p class="card-description short">
+            这张卡片的内容很短。
+          </p>
+        </div>
+        <div class="card-footer">
+          <span class="card-tag">教程</span>
+          <span class="card-date">2 天前</span>
+        </div>
+      </div>
+
+      <!-- 中等内容卡片 -->
+      <div class="card">
+        <div class="card-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);"></div>
+        <div class="card-content">
+          <h3 class="card-title">中等内容卡片</h3>
+          <p class="card-description medium">
+            这张卡片的内容比较适中。Flexbox 会自动计算高度，确保所有卡片等高。即使内容长度不同，底部也会对齐。
+          </p>
+        </div>
+        <div class="card-footer">
+          <span class="card-tag">文章</span>
+          <span class="card-date">5 天前</span>
+        </div>
+      </div>
+
+      <!-- 长内容卡片 -->
+      <div class="card">
+        <div class="card-image" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);"></div>
+        <div class="card-content">
+          <h3 class="card-title">长内容卡片</h3>
+          <p class="card-description long">
+            这张卡片的内容很长。它包含了更多的文字描述，用来演示 Flexbox 的等高特性。注意观察：无论内容多少，所有卡片的高度都会保持一致，这是因为外层容器的 <code>align-items</code> 默认是 <code>stretch</code>，会拉伸子元素到相同高度。内层的 <code>flex-direction: column</code> 让内容和底部按钮正确排列。
+          </p>
+        </div>
+        <div class="card-footer">
+          <span class="card-tag">指南</span>
+          <span class="card-date">1 周前</span>
+        </div>
+      </div>
+
+      <!-- 更多卡片... -->
+      <div class="card">
+        <div class="card-image" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);"></div>
+        <div class="card-content">
+          <h3 class="card-title">第四张卡片</h3>
+          <p class="card-description">
+            试试调整浏览器窗口宽度，观察卡片如何自动调整列数！
+          </p>
+        </div>
+        <div class="card-footer">
+          <span class="card-tag">演示</span>
+          <span class="card-date">今天</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

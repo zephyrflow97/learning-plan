@@ -1,0 +1,58 @@
+# .dockerignore - 排除不需要复制到 Docker 镜像的文件
+
+# 依赖
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Next.js 构建产物
+.next
+out
+
+# 环境变量文件(敏感信息!)
+.env*.local
+.env
+
+# 测试
+coverage
+.nyc_output
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*.swn
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# 文档
+README.md
+CHANGELOG.md
+LICENSE
+
+# CI/CD
+.github
+.gitlab-ci.yml
+
+# 开发工具
+.editorconfig
+.prettierrc
+.eslintrc.json

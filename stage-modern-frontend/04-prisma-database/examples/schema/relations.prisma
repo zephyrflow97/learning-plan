@@ -1,0 +1,78 @@
+// Prisma 关系类型示例
+// 展示了一对一、一对多、多对多关系的定义
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================
+// 1. 一对一关系 (One-to-One)
+// ============================================================
+model User {
+  id      Int      @id @default(autoincrement())
+  email   String   @unique
+  name    String
+  posts   Post[]   // 一对多关系
+  profile Profile? // 一对一关系（可选）
+}
+
+model Profile {
+  id     Int    @id @default(autoincrement())
+  bio    String
+  userId Int    @unique  // ⚠️ 必须是 unique（保证一对一）
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+// ============================================================
+// 2. 一对多关系 (One-to-Many)
+// ============================================================
+model Post {
+  id         Int        @id @default(autoincrement())
+  title      String
+  content    String?
+  published  Boolean    @default(false)
+  authorId   Int
+  author     User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  categories Category[] // 多对多关系
+  
+  // 为常查询的字段添加索引
+  @@index([authorId])
+  @@index([published])
+}
+
+// ============================================================
+// 3. 多对多关系 - 隐式（Prisma 自动创建关联表）
+// ============================================================
+model Category {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  posts Post[] // Prisma 会自动生成 _CategoryToPost 中间表
+}
+
+// ============================================================
+// 4. 多对多关系 - 显式（手动控制关联表）
+// ============================================================
+model Tag {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  postTags PostTag[] // 显式中间表
+}
+
+// 显式的关联表，可以添加额外字段
+model PostTag {
+  postId     Int
+  tagId      Int
+  assignedAt DateTime @default(now())  // 额外字段！记录打标签的时间
+  assignedBy String?                   // 谁打的标签
+  
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  tag  Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  
+  @@id([postId, tagId])  // 复合主键
+  @@index([tagId])       // 为外键添加索引
+}

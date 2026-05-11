@@ -1,0 +1,176 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_PREFIX: ${{ github.repository }}
+
+jobs:
+  # 代码检查和测试
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        service: [user-service, product-service, order-service, payment-service, api-gateway]
+    
+    steps:
+      - name: Checkout代码
+        uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: backend/${{ matrix.service }}/package-lock.json
+      
+      - name: 安装依赖
+        working-directory: backend/${{ matrix.service }}
+        run: npm ci
+      
+      - name: 代码检查
+        working-directory: backend/${{ matrix.service }}
+        run: npm run lint
+      
+      - name: 运行测试
+        working-directory: backend/${{ matrix.service }}
+        run: npm run test:coverage
+      
+      - name: 上传测试覆盖率
+        uses: codecov/codecov-action@v3
+        with:
+          files: backend/${{ matrix.service }}/coverage/lcov.info
+          flags: ${{ matrix.service }}
+
+  # 构建 Docker 镜像
+  build:
+    name: Build Docker Images
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    strategy:
+      matrix:
+        service: [user-service, product-service, order-service, payment-service, api-gateway]
+    
+    steps:
+      - name: Checkout 代码
+        uses: actions/checkout@v3
+      
+      - name: 设置 Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      
+      - name: 登录 GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: 提取元数据
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/${{ matrix.service }}
+          tags: |
+            type=ref,event=branch
+            type=sha,prefix={{branch}}-
+            type=semver,pattern={{version}}
+            type=raw,value=latest,enable={{is_default_branch}}
+      
+      - name: 构建并推送镜像
+        uses: docker/build-push-action@v4
+        with:
+          context: backend/${{ matrix.service }}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # 部署到测试环境
+  deploy-staging:
+    name: Deploy to Staging
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop'
+    environment:
+      name: staging
+      url: https://staging.ecommerce.example.com
+    
+    steps:
+      - name: Checkout 代码
+        uses: actions/checkout@v3
+      
+      - name: 配置 kubectl
+        uses: azure/k8s-set-context@v3
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBE_CONFIG_STAGING }}
+      
+      - name: 部署到 Kubernetes
+        run: |
+          kubectl apply -f infra/k8s/namespace.yaml
+          kubectl apply -f infra/k8s/configmap.yaml
+          kubectl apply -f infra/k8s/secrets.yaml
+          kubectl apply -f infra/k8s/
+          kubectl rollout status deployment/user-service -n ecommerce
+          kubectl rollout status deployment/product-service -n ecommerce
+          kubectl rollout status deployment/order-service -n ecommerce
+      
+      - name: 运行烟雾测试
+        run: |
+          chmod +x scripts/smoke-test.sh
+          ./scripts/smoke-test.sh https://staging.ecommerce.example.com
+
+  # 部署到生产环境
+  deploy-production:
+    name: Deploy to Production
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    environment:
+      name: production
+      url: https://ecommerce.example.com
+    
+    steps:
+      - name: Checkout 代码
+        uses: actions/checkout@v3
+      
+      - name: 配置 kubectl
+        uses: azure/k8s-set-context@v3
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBE_CONFIG_PRODUCTION }}
+      
+      - name: 部署到 Kubernetes
+        run: |
+          kubectl apply -f infra/k8s/namespace.yaml
+          kubectl apply -f infra/k8s/configmap.yaml
+          kubectl apply -f infra/k8s/secrets.yaml
+          kubectl apply -f infra/k8s/
+          
+          # 等待滚动更新完成
+          kubectl rollout status deployment/user-service -n ecommerce --timeout=5m
+          kubectl rollout status deployment/product-service -n ecommerce --timeout=5m
+          kubectl rollout status deployment/order-service -n ecommerce --timeout=5m
+      
+      - name: 验证部署
+        run: |
+          chmod +x scripts/health-check.sh
+          ./scripts/health-check.sh https://ecommerce.example.com
+      
+      - name: 发送通知
+        if: always()
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          text: '生产环境部署完成'
+          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
