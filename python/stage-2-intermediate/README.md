@@ -8,11 +8,11 @@
 > 🌌 **The Big Picture：Python 的两张面孔**
 >
 > Stage 1 让你看到了 Python 的第一张面孔：简洁、灵活、动态、快速原型。这是 Python 吸引你的原因。
-> Stage 2 将չ示第二张面孔：严谨、工程化、可维护。这是 Python 留住你的原因。
+> Stage 2 将展示第二张面孔：严谨、工程化、可维护。这是 Python 留住你的原因。
 >
-> 很多人以为 Python "不适合大项目"。错了。Instagram（数ʮ亿用户）、Spotify、Dropbox 都用 Python 构建了核心系统。
+> 很多人以为 Python "不适合大项目"。错了。Instagram（数十亿用户）、Spotify、Dropbox 都用 Python 构建了核心系统。
 > 关键不是语言能不能，而是你会不会用对工具：**类型标注、测试、模块化设计**。
-> û有这些，任何语言写的大项目都会腐烂；有了这些，Python 同样可以构建坚如磐ʯ的系统。
+> 没有这些，任何语言写的大项目都会腐烂；有了这些，Python 同样可以构建坚如磐石的系统。
 
 ## 🎯 学习目标
 
@@ -22,7 +22,7 @@
 - ✅ 理解魔术方法（`__repr__`、`__eq__`、`__hash__` 等）的设计意图
 - ✅ 掌握迭代器协议与生成器的惰性求值
 - ✅ 能写出和理解装饰器（包括带参数的装饰器）
-- ✅ 用 `with` 语句和上下文管理器管理资Դ
+- ✅ 用 `with` 语句和上下文管理器管理资源
 - ✅ 用 `typing` + `mypy` 为动态语言添加类型安全
 - ✅ 用 `pytest` 编写单元测试和参数化测试
 - ✅ 理解 Python 模块系统和包管理的现代实践
@@ -52,11 +52,11 @@
 
 > 🎭 **The Drama：Python 的 OOP 不是 Java 的 OOP**
 >
-> Java ˵："一切都必须是类。想写个 `main()`？先创建 `class App`。想定义常量？`public static final int`。"
-> Python ˵："如果一个函数就够了，别写类。如果一个模块就够了，别搞包。"
+> Java 说："一切都必须是类。想写个 `main()`？先创建 `class App`。想定义常量？`public static final int`。"
+> Python 说："如果一个函数就够了，别写类。如果一个模块就够了，别搞包。"
 >
 > ```python
-> # Java ˼维 — 过度工程化
+> # Java 思维 — 过度工程化
 > class MathUtils:
 >     @staticmethod
 >     def add(a, b):
@@ -122,7 +122,7 @@
 > 🧠 **CS Master's Bridge：生成器 = 协程的前身**
 >
 > 生成器的 `yield` 本质上是一种**协作式调度**：函数在 `yield` 处暂停执行，把控制权交还给调用者。
-> 下次调用 `next()` 时，从暂停的地方恢复。这和操作系统的协程（coroutine）是同一˼想。
+> 下次调用 `next()` 时，从暂停的地方恢复。这和操作系统的协程（coroutine）是同一思想。
 >
 > 事实上，Python 的 `asyncio` 最初就是基于生成器实现的（PEP 342/380），后来才引入了 `async/await` 语法。
 > 所以理解生成器，就是为 Stage 3 的异步编程打下最坚实的基础。
@@ -137,20 +137,20 @@
 - 闭包回顾：装饰器的基础
 - 函数装饰器：`@decorator` 语法
 - `functools.wraps`：保留原函数元信息
-- 带参数的装饰器（三层Ƕ套）
+- 带参数的装饰器（三层嵌套）
 - 类装饰器
 - 实用装饰器：计时、重试、缓存、日志、权限检查
 - `functools.lru_cache` / `functools.cache`
-- 装饰器叠加˳序
+- 装饰器叠加顺序
 
 **学习成果：**
 - 理解装饰器是"高阶函数 + 闭包"的语法糖
 - 能独立编写实用装饰器
-- 能读懂框架Դ码中的装饰器用法
+- 能读懂框架源码中的装饰器用法
 
 > 🎭 **The Drama：装饰器 — 最"可怕"也最优雅的 Python 特性**
 >
-> 新手看到装饰器：三层Ƕ套函数 + `*args` + `**kwargs` + `functools.wraps`，头Ƥ发麻。
+> 新手看到装饰器：三层嵌套函数 + `*args` + `**kwargs` + `functools.wraps`，头皮发麻。
 > 老手看到装饰器：AOP（面向切面编程）的优雅实现，一行 `@retry(max_attempts=3)` 解决横切关注点。
 >
 > 装饰器的本质极其简单：
@@ -160,7 +160,7 @@
 > # 等价于
 > func = decorator(func)
 > ```
-> 就这么简单。一旦你理解了这个等价关系，三层Ƕ套就不再神秘。
+> 就这么简单。一旦你理解了这个等价关系，三层嵌套就不再神秘。
 
 ---
 
@@ -177,7 +177,7 @@
 - 异步上下文管理器：`async with`
 
 **学习成果：**
-- 理解 `with` 语句是资Դ管理的最佳实践
+- 理解 `with` 语句是资源管理的最佳实践
 - 能实现自定义上下文管理器
 - 掌握 `contextlib` 工具箱
 
@@ -195,7 +195,7 @@
 - `Protocol`（结构化子类型）：鸭子类型的类型标注
 - `TypedDict`：字典的精确类型
 - `mypy` 配置与使用
-- 渐进式类型化：从无类型到全类型的Ǩ移策略
+- 渐进式类型化：从无类型到全类型的迁移策略
 - `Annotated` 与运行时验证（Pydantic 预览）
 
 **学习成果：**
@@ -222,7 +222,7 @@
 
 **核心内容：**
 - 模块 (module) vs 包 (package) vs 库 (library)
-- `import` 的搜索·径与机制
+- `import` 的搜索路径与机制
 - `__init__.py` 的作用与最佳实践
 - 相对导入 vs 绝对导入
 - 虚拟环境：`venv`、`conda`、`uv`
@@ -259,7 +259,7 @@
 > 🧘 **Zen of Code：测试不是负担，是设计反馈**
 >
 > 如果你发现一个函数很难写测试，问题不在测试——问题在函数。
-> 难以测试的代码通常意味着：耦合̫重、副作用̫多、职责不清。
+> 难以测试的代码通常意味着：耦合太重、副作用太多、职责不清。
 > **测试是代码质量最诚实的镜子。**
 
 ---
@@ -272,29 +272,29 @@
 - `re` 模块基础：`match`、`search`、`findall`、`sub`
 - 正则语法：字符类、量词、锚点、分组
 - 捕获组与非捕获组
-- 前հ (Lookahead) 与后顾 (Lookbehind)
-- ̰婪 vs 非̰婪ƥ配
+- 前护 (Lookahead) 与后顾 (Lookbehind)
+- 贪婪 vs 非贪婪匹配
 - 命名组与 `re.VERBOSE`（可读正则）
 - 常用正则模式：邮箱、URL、电话、日期
 - 性能陷阱：回溯灾难 (ReDoS)
 
 **学习成果：**
 - 能编写中等复杂度的正则表达式
-- 理解̰婪ƥ配与非̰婪ƥ配
+- 理解贪婪匹配与非贪婪匹配
 - 知道 ReDoS 风险并能避免
 
 ---
 
-### [实ս项目：数据处理管道](./projects/data-pipeline/)
+### [实战项目：数据处理管道](./projects/data-pipeline/)
 
 **项目时长：** 4-6 天
 
 **项目目标：**
 创建一个 ETL 风格的数据处理管道工具：
 - 📥 多格式数据输入（CSV、JSON、TOML）
-- 🔄 管道式数据处理（过滤、映射、聚合、ȥ重）
+- 🔄 管道式数据处理（过滤、映射、聚合、去重）
 - 📤 多格式数据输出（CSV、JSON、Markdown 表格）
-- 🔌 插件式处理器架构（可扩չ）
+- 🔌 插件式处理器架构（可扩展）
 - 📊 处理统计与日志
 - 🧪 完整的 `pytest` 测试套件
 
@@ -352,7 +352,7 @@
 >
 > 如果你在第 3-4 章感到困惑，这是正常的。建议：
 > 1. 先理解概念，不要急着记语法
-> 2. 手动չ开装饰器的等价形式，直到你能在脑中"编译"它
+> 2. 手动展开装饰器的等价形式，直到你能在脑中"编译"它
 > 3. 用 `print` 在生成器的 `yield` 前后加日志，观察暂停/恢复的时机
 > 4. 多写小例子，少看长文章
 
@@ -375,11 +375,11 @@
 
 ---
 
-## 📖 参考资Դ
+## 📖 参考资源
 
 - [Python 官方文档 - 类](https://docs.python.org/3/tutorial/classes.html)
 - [Python 官方文档 - typing](https://docs.python.org/3/library/typing.html)
-- [Fluent Python, Ch.9-17](https://www.oreilly.com/library/view/fluent-python-2nd/9781492056348/) — OOP 和数据模型的ʥ经
+- [Fluent Python, Ch.9-17](https://www.oreilly.com/library/view/fluent-python-2nd/9781492056348/) — OOP 和数据模型的圣经
 - [pytest 官方文档](https://docs.pytest.org/)
 - [mypy 官方文档](https://mypy.readthedocs.io/)
 - [Real Python - OOP](https://realpython.com/python3-object-oriented-programming/)

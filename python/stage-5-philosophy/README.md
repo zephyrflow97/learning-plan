@@ -9,17 +9,17 @@
 >
 > **实用主义的优雅。(Pragmatic Elegance.)**
 >
-> 本阶段将带你走进 Python 的内核——不是代码意义上的，而是**˼想意义上的**。
+> 本阶段将带你走进 Python 的内核——不是代码意义上的，而是**思想意义上的**。
 
 ## 🎯 学习目标
 
-这个阶段û有"完成标准"——它是终身学习的内容。但学完后，你将：
+这个阶段没有"完成标准"——它是终身学习的内容。但学完后，你将：
 
 - 🧠 能逐条解读 `import this` 的 19 条箴言，并在代码中实践
 - 🔬 理解 CPython 如何将 `.py` 文件变成可执行的字节码
 - 🗑️ 理解引用计数 + 分代 GC 的内存管理机制
 - 🔒 能解释 GIL 的本质、它保护了什么、为什么难以移除
-- 📜 了解 Python 2→3 大Ǩ移的历史教训
+- 📜 了解 Python 2→3 大迁移的历史教训
 - 🏛️ 理解 PEP 流程与社区治理模式
 - ⚖️ 能在 Python 与其他语言之间做出理性的权衡判断
 - 🎨 从 Python 的设计中提炼出通用的编程语言设计智慧
@@ -37,24 +37,24 @@ Beautiful is better than ugly.                    # 美优于丑
 Explicit is better than implicit.                 # 显优于隐
 Simple is better than complex.                    # 简优于繁
 Complex is better than complicated.               # 繁优于乱
-Flat is better than nested.                       # 平优于Ƕ
+Flat is better than nested.                       # 平优于嵌
 Sparse is better than dense.                      # 疏优于密
 Readability counts.                               # 可读性很重要
 Special cases aren't special enough to break the rules.
-Although practicality beats purity.               # 但实用ʤ于纯粹
+Although practicality beats purity.               # 但实用胜于纯粹
 Errors should never pass silently.                # 错误不应被默默忽略
 Unless explicitly silenced.                       # 除非你明确选择忽略
 In the face of ambiguity, refuse the temptation to guess.
 There should be one-- and preferably only one --obvious way to do it.
 Although that way may not be obvious at first unless you're Dutch.
 Now is better than never.                         # 做总比不做好
-Although never is often better than *right* now.  # 但不做总比³ç地做好
+Although never is often better than *right* now.  # 但不做总比仓促地做好
 If the implementation is hard to explain, it's a bad idea.
 If the implementation is easy to explain, it may be a good idea.
 Namespaces are one honking great idea -- let's do more of those!
 ```
 
-本章将逐条չ开，用真实代码案例解释每条箴言的设计意图，以及它们之间的**张力**（比如"简优于繁" vs "繁优于乱"——什么时候该简？什么时候复杂是必要的？）。
+本章将逐条展开，用真实代码案例解释每条箴言的设计意图，以及它们之间的**张力**（比如"简优于繁" vs "繁优于乱"——什么时候该简？什么时候复杂是必要的？）。
 
 > 🧘 **Zen of Code：第 9 行 — "Practicality beats purity"**
 >
@@ -80,7 +80,7 @@ Namespaces are one honking great idea -- let's do more of those!
   # BINARY_ADD
   # RETURN_VALUE
   ```
-- **CPython 虚拟机**：基于ջ的字节码解释器
+- **CPython 虚拟机**：基于栈的字节码解释器
 - **对象模型**：`PyObject` 结构体（引用计数 + 类型指针）
 - **`dict` 的实现演化**
   - 3.5 之前：经典哈希表（开放散址法）
@@ -89,7 +89,7 @@ Namespaces are one honking great idea -- let's do more of those!
 - **小整数缓存池 (Integer Interning)**：`-5` 到 `256` 被预缓存
 - **字符串驻留 (String Interning)**：为什么 `"hello" is "hello"` 有时候是 `True`
 
-> ⚛️ **The Science：为什么 Python 用基于ջ的虚拟机？**
+> ⚛️ **The Science：为什么 Python 用基于栈的虚拟机？**
 >
 > 编译型语言（C/Rust）编译成机器码，直接在 CPU 上执行。
 > Python 编译成**字节码**，在 CPython 虚拟机上执行。虚拟机是一个巨大的 C `switch` 循环：
@@ -105,7 +105,7 @@ Namespaces are one honking great idea -- let's do more of those!
 > }
 > ```
 >
-> 基于ջ的 VM 实现简单（不需要寄存器分配算法），代价是性能。
+> 基于栈的 VM 实现简单（不需要寄存器分配算法），代价是性能。
 > 这就是为什么 Python 比 C 慢 10-100 倍——你在跑的不是原生代码，而是一个 C 写的模拟器。
 > 但这也是为什么 Python 能轻松支持动态类型、反射、eval——因为虚拟机可以做运行时决策。
 
@@ -117,9 +117,9 @@ Namespaces are one honking great idea -- let's do more of those!
 - **引用计数 (Reference Counting)**
   - 每个对象都有 `ob_refcnt` 字段
   - 引用增加（赋值、传参）→ 计数 +1
-  - 引用消ʧ（del、超出作用域）→ 计数 -1
+  - 引用消失（del、超出作用域）→ 计数 -1
   - 计数归零 → 立即释放（不需要等 GC）
-- **引用计数的阿喀琉˹之踵：循环引用**
+- **引用计数的阿喀琉斯之踵：循环引用**
   ```python
   a = []
   b = []
@@ -138,7 +138,7 @@ Namespaces are one honking great idea -- let's do more of those!
 
 **学习成果：**
 - 理解 Python 为什么"大部分时候"不需要担心内存
-- 知道什么场景下会发生内存泄©
+- 知道什么场景下会发生内存泄漏
 - 能用 `gc` 模块调试内存问题
 
 ---
@@ -150,15 +150,15 @@ Namespaces are one honking great idea -- let's do more of those!
 - **GIL 保护了什么**：不是你的代码——是解释器的内部状态
 - **为什么需要 GIL**
   - CPython 的对象引用计数不是原子操作
-  - û有 GIL → 每次 `ob_refcnt++` 都需要原子操作或锁 → 单线程性能下降 30%+
+  - 没有 GIL → 每次 `ob_refcnt++` 都需要原子操作或锁 → 单线程性能下降 30%+
   - Guido 的选择：单线程快 vs 多线程真并行 → 选了单线程快
 - **为什么移除 GIL 这么难**
-  - CPython 的 C 扩չ生态（NumPy、Pillow 等）都假设 GIL 存在
-  - 移除 GIL = 破坏几乎所有 C 扩չ
+  - CPython 的 C 扩展生态（NumPy、Pillow 等）都假设 GIL 存在
+  - 移除 GIL = 破坏几乎所有 C 扩展
 - **后 GIL 时代**
   - PEP 703：Free-threaded Python（3.13+ 实验性支持）
   - 子解释器 (Sub-interpreters)：每个解释器有自己的 GIL
-  - `nogil` 项目的̽索
+  - `nogil` 项目的探索
 - **GIL 的实际影响决策树**
 
 ```
@@ -166,11 +166,11 @@ Namespaces are one honking great idea -- let's do more of those!
 ├── I/O 密集型（网络、文件、数据库）
 │   ├── 用 asyncio（首选）
 │   └── 用 threading（也行）
-│   └── GIL 影响：几乎û有（I/O 操作会释放 GIL）
+│   └── GIL 影响：几乎没有（I/O 操作会释放 GIL）
 │
 ├── CPU 密集型（计算、加密、压缩）
 │   ├── 用 multiprocessing（真并行）
-│   ├── 用 C 扩չ（NumPy 会释放 GIL）
+│   ├── 用 C 扩展（NumPy 会释放 GIL）
 │   └── 用其他语言（Rust/C）+ Python 绑定
 │   └── GIL 影响：threading 无法加速
 │
@@ -183,9 +183,9 @@ Namespaces are one honking great idea -- let's do more of those!
 ### [第 5 章：Python 演化史](./05-python-evolution/)
 
 **核心内容：**
-- **Python 2 → 3 大Ǩ移**
+- **Python 2 → 3 大迁移**
   - 为什么要打破向后兼容性？（`print` 语句 → 函数、Unicode 默认编码、整数除法）
-  - Ǩ移工具：`2to3`、`six`、`__future__`
+  - 迁移工具：`2to3`、`six`、`__future__`
   - 教训：破坏性变更的社区代价
 - **关键 PEP 时间线**
 
@@ -194,7 +194,7 @@ Namespaces are one honking great idea -- let's do more of those!
 | 484 | 3.5 | 类型标注 | 开启渐进式类型化时代 |
 | 498 | 3.6 | f-string | 字符串格式化的终极方案 |
 | 557 | 3.7 | dataclasses | 告别 `__init__` 样板 |
-| 572 | 3.10 | `match-case` | 模式ƥ配终于来了 |
+| 572 | 3.10 | `match-case` | 模式匹配终于来了 |
 | 695 | 3.12 | 新泛型语法 | `def f[T](x: T)` |
 | 703 | 3.13 | Free-threaded | 后 GIL 时代的开端 |
 
@@ -211,10 +211,10 @@ Namespaces are one honking great idea -- let's do more of those!
   - 2018 年 Guido 退位的 PEP 572 事件（海象运算符引发的争议）
 - **"Batteries Included" 哲学**
   - 优点：标准库丰富，减少第三方依赖
-  - ȱ点：标准库更新慢，有些模块已经过时
+  - 缺点：标准库更新慢，有些模块已经过时
   - 争议：`asyncio` 放进标准库是好事还是坏事？
 - **PyCon 与本地社区**
-- **开Դ贡献指南**：如何给 CPython 提 PR
+- **开源贡献指南**：如何给 CPython 提 PR
 
 ---
 
@@ -227,7 +227,7 @@ Namespaces are one honking great idea -- let's do more of those!
   - 异步模型对比：JS 的事件循环（单线程原生）vs Python 的 asyncio（后加的）
   
 - **Python vs Go**
-  - 共同点：跟求简单、有 GC、ǿ调可读性
+  - 共同点：跟求简单、有 GC、强调可读性
   - 差异：动态 vs 静态类型、慢 vs 快、丰富库 vs 少即是多
   - Go 的 goroutine vs Python 的 asyncio
 
@@ -249,7 +249,7 @@ Namespaces are one honking great idea -- let's do more of those!
 
 **核心内容：**
 - **类型系统的光谱**
-  - 动态 (Python/JS) → 渐进 (TypeScript/Python+mypy) → 静态 (Go/Java) → ǿ静态 (Rust/Haskell)
+  - 动态 (Python/JS) → 渐进 (TypeScript/Python+mypy) → 静态 (Go/Java) → 强静态 (Rust/Haskell)
   - 鸭子类型 (Duck) vs 结构化类型 (Structural) vs 名义类型 (Nominal)
   - Python 的 `Protocol` 是鸭子类型和结构化类型的桥梁
 
@@ -260,7 +260,7 @@ Namespaces are one honking great idea -- let's do more of those!
 
 - **"One obvious way" 的理想与现实**
   - 字符串格式化有四种方式：`%`、`.format()`、`f""`、`Template`
-  - Web 框架有ʮ几个：Django、Flask、FastAPI、Starlette、Tornado...
+  - Web 框架有十几个：Django、Flask、FastAPI、Starlette、Tornado...
   - 理想很美好，但生态的多样性是不可避免的
 
 - **Python 的设计遗憾**
@@ -276,8 +276,8 @@ Namespaces are one honking great idea -- let's do more of those!
 > - **JavaScript** 选择了无处不在和向后兼容，代价是语言一致性
 > - **Go** 选择了简单和并发，代价是表达力
 >
-> û有"最好的语言"，只有**最适合当前约束的语言**。
-> 理解了每门语言背后的权衡，你就不会再参与"语言ʥս"——你会像工匠选择工具一样，冷静地选择语言。
+> 没有"最好的语言"，只有**最适合当前约束的语言**。
+> 理解了每门语言背后的权衡，你就不会再参与"语言圣战"——你会像工匠选择工具一样，冷静地选择语言。
 
 ---
 
@@ -294,7 +294,7 @@ Namespaces are one honking great idea -- let's do more of those!
 建议的学习方式：
 1. **读一章，消化一周**：每章读完后，在日常编码中刻意应用
 2. **写技术博客**：把你的理解写出来是最好的内化方式
-3. **读 CPython Դ码**：从简单的内置函数开始（如 `len` 的实现）
+3. **读 CPython 源码**：从简单的内置函数开始（如 `len` 的实现）
 4. **参与社区**：关注 Python Discourse、PyCon 演讲、核心开发者的博客
 
 ## 🚀 开始学习
@@ -303,11 +303,11 @@ Namespaces are one honking great idea -- let's do more of those!
 
 ---
 
-## 📖 参考资Դ
+## 📖 参考资源
 
 - [CPython Internals (Anthony Shaw)](https://realpython.com/products/cpython-internals-book/) — CPython 实现详解
 - [Python Developer's Guide](https://devguide.python.org/) — CPython 开发者指南
 - [PEP Index](https://peps.python.org/) — 所有 PEP 的索引
 - [The History of Python (Guido's Blog)](https://python-history.blogspot.com/) — Guido 亲述 Python 设计史
-- [Talk Python To Me (Podcast)](https://talkpython.fm/) — Python 核心开发者访̸
+- [Talk Python To Me (Podcast)](https://talkpython.fm/) — Python 核心开发者访谈
 - [Inside The Python Virtual Machine](https://leanpub.com/insidethepythonvirtualmachine) — 虚拟机深度解析

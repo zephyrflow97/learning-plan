@@ -1,9 +1,9 @@
-# 第 1 章：Python 环境与生态系统 — ĥ刀不误砍柴工
+# 第 1 章：Python 环境与生态系统 — 磨刀不误砍柴工
 
 > *"A craftsman is only as good as his tools."*
 > — Unknown
 >
-> 在你写下第一行 `print("Hello, World!")` 之前，让我们先把工具打ĥ好。
+> 在你写下第一行 `print("Hello, World!")` 之前，让我们先把工具打磨好。
 > 一个专业的 Python 开发者，不会在全局环境里 `pip install` 一切——就像一个专业的厨师，不会把所有顺材都倒进同一口锅。
 
 ## 📖 本章内容
@@ -13,21 +13,21 @@
 - [3. 虚拟环境：项目隔离的必要性](#3-虚拟环境项目隔离的必要性)
 - [4. 现代工具链：uv 与 ruff](#4-现代工具链uv-与-ruff)
 - [5. 交互式环境：REPL、IPython、Jupyter](#5-交互式环境replipythonjupyter)
-- [6. VS Code + Python 扩չ配置](#6-vs-code--python-扩չ配置)
+- [6. VS Code + Python 扩展配置](#6-vs-code--python-扩展配置)
 - [代码示例](#代码示例)
 - [最佳实践](#最佳实践)
 - [常见陷阱](#常见陷阱)
 - [练习题](#练习题)
-- [参考资Դ](#参考资Դ)
+- [参考资源](#参考资源)
 - [下一步](#下一步)
 
 ---
 
 ## 1. Python 安装与版本管理
 
-> 🌌 **The Big Picture: Python 的版本ս争**
+> 🌌 **The Big Picture: Python 的版本战争**
 >
-> Python 历史上最痛苦的事件是 **Python 2 → 3 的大Ǩ移**（2008-2020）。
+> Python 历史上最痛苦的事件是 **Python 2 → 3 的大迁移**（2008-2020）。
 > Python 2.7 在 2020 年 1 月 1 日正式"寿终正寝"。如果你今天还看到 `print "hello"` 这种写法，请立即关闭那个教程。
 >
 > 今天（2026 年），Python 3.12+ 是标准。3.10 引入了 `match-case`，3.11 带来了巨大的性能提升（平均快 25%），3.12 改进了错误信息和类型系统。
@@ -262,7 +262,7 @@ deactivate
 
 ### 3.3 .gitignore 配置
 
-**永Զ不要把虚拟环境提交到 Git！**
+**永远不要把虚拟环境提交到 Git！**
 
 ```gitignore
 # .gitignore — Python 项目必备
@@ -283,7 +283,7 @@ build/
 | 工具 | 命令 | 速度 | 场景 |
 |------|------|------|------|
 | `venv`（标准库） | `python -m venv .venv` | 一般 | 标准方式，适合大多数场景 |
-| `virtualenv` | `virtualenv .venv` | 比 venv 快 | venv 的增ǿ版，更多功能 |
+| `virtualenv` | `virtualenv .venv` | 比 venv 快 | venv 的增强版，更多功能 |
 | `conda` | `conda create -n myenv` | 慢 | 数据科学，需要非 Python 依赖 |
 | `uv`（推荐） | `uv venv` | 极快 | 现代工具链，替代 pip + venv |
 
@@ -378,7 +378,7 @@ select = [
 ]
 
 [tool.ruff.format]
-quote-style = "double"     # 字符串用˫引号
+quote-style = "double"     # 字符串用双引号
 ```
 
 ### 4.3 uv vs pip 对比
@@ -400,7 +400,7 @@ quote-style = "double"     # 字符串用˫引号
 >
 > - **REPL（标准交互式）**：朴素可靠的老教授，够用但不花哨
 > - **IPython**：装备齐全的研究员，语法高亮、Tab 补全、魔术命令
-> - **Jupyter Notebook**：可视化实验室，代码和结果混排，适合̽索性分析
+> - **Jupyter Notebook**：可视化实验室，代码和结果混排，适合探索性分析
 >
 > 对于学习 Python 语法，IPython 是最佳选择。对于数据分析，Jupyter 无可替代。
 
@@ -440,8 +440,8 @@ ipython
 # 2. ? 查看文档
 # In [2]: len?           → 显示 len 函数的文档
 
-# 3. ?? 查看Դ码
-# In [3]: len??          → 显示Դ码（如果可用）
+# 3. ?? 查看源码
+# In [3]: len??          → 显示源码（如果可用）
 
 # 4. ! 执行 shell 命令
 # In [4]: !ls            → 列出文件
@@ -467,30 +467,30 @@ jupyter notebook          # 经典界面
 jupyter lab               # 现代界面（推荐）
 ```
 
-| 环境 | 安装 | 适用场景 | 特ɫ功能 |
+| 环境 | 安装 | 适用场景 | 特色功能 |
 |------|------|---------|---------|
 | Python REPL | 内置 | 快速测试一行代码 | 零依赖 |
 | IPython | `pip install ipython` | 学习和调试 | Tab 补全、魔术命令、语法高亮 |
 | Jupyter Notebook | `pip install jupyter` | 数据分析、教学 | 代码+结果+Markdown 混排 |
-| VS Code Python | VS Code 扩չ | 日常开发 | 断点调试、IntelliSense |
+| VS Code Python | VS Code 扩展 | 日常开发 | 断点调试、IntelliSense |
 
 ---
 
-## 6. VS Code + Python 扩չ配置
+## 6. VS Code + Python 扩展配置
 
 > 🧰 **Toolbox: VS Code 是 Python 开发的最佳 IDE（之一）**
 >
-> PyCharm 是 Python 专用的ǿ大 IDE，但它体积庞大且部分功能需要付费。
-> VS Code 轻量、免费、插件生态丰富，配合 Python 扩չ后可以媲美 PyCharm 90% 的功能。
+> PyCharm 是 Python 专用的强大 IDE，但它体积庞大且部分功能需要付费。
+> VS Code 轻量、免费、插件生态丰富，配合 Python 扩展后可以媲美 PyCharm 90% 的功能。
 > 本教程使用 VS Code 作为开发环境。
 
-### 6.1 必装扩չ
+### 6.1 必装扩展
 
-| 扩չ | 功能 | 重要性 |
+| 扩展 | 功能 | 重要性 |
 |------|------|--------|
 | **Python** (Microsoft) | 核心支持：IntelliSense、调试、虚拟环境 | 必装 |
 | **Pylance** (Microsoft) | 类型检查、自动补全、import 管理 | 必装 |
-| **Ruff** (Astral) | Lint + Format（替代 Flake8/Black 扩չ） | 必装 |
+| **Ruff** (Astral) | Lint + Format（替代 Flake8/Black 扩展） | 必装 |
 | **Python Debugger** (Microsoft) | 断点调试 | 必装 |
 | **Jupyter** (Microsoft) | Jupyter Notebook 支持 | 推荐 |
 | **Even Better TOML** | TOML 文件支持（pyproject.toml） | 推荐 |
@@ -663,7 +663,7 @@ if __name__ == "__main__":
 # pip install requests  ← 直接在系统 Python 中安装
 
 # ❌ 2. 把 .venv/ 目录提交到 Git
-# git add .venv/  ← 永Զ不要这么做！
+# git add .venv/  ← 永远不要这么做！
 
 # ❌ 3. 使用过旧的 Python 版本
 # python2 script.py  ← Python 2 已于 2020 年停止维护
@@ -706,7 +706,7 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ### 陷阱 3：pip install 权限问题
 
 ```bash
-# ❌ 不要用 sudo pip install（会污Ⱦ系统 Python）
+# ❌ 不要用 sudo pip install（会污染系统 Python）
 sudo pip install requests    # 危险！
 
 # ✅ 使用虚拟环境
@@ -723,10 +723,10 @@ pip install requests         # 以为装到了虚拟环境里
 python -c "import requests"  # ModuleNotFoundError!
 
 # 原因：忘记激活虚拟环境，pip 装到了全局
-# 检查当前 Python ·径：
+# 检查当前 Python 路径：
 which python                 # macOS/Linux
 where python                 # Windows
-# 如果·径不包含 .venv，˵明û激活
+# 如果路径不包含 .venv，说明没激活
 ```
 
 ---
@@ -817,13 +817,13 @@ uv run python -c "print('Hello!')"
 
 ---
 
-## 参考资Դ
+## 参考资源
 
 - [Python 官方文档 - venv](https://docs.python.org/3/library/venv.html)
 - [pyenv GitHub](https://github.com/pyenv/pyenv)
 - [uv 官方文档](https://docs.astral.sh/uv/)
 - [ruff 官方文档](https://docs.astral.sh/ruff/)
-- [VS Code Python 扩չ文档](https://code.visualstudio.com/docs/languages/python)
+- [VS Code Python 扩展文档](https://code.visualstudio.com/docs/languages/python)
 - [Real Python - Python Virtual Environments](https://realpython.com/python-virtual-environments-a-primer/)
 
 ---

@@ -16,24 +16,24 @@
 - [4. 可哈希协议：\_\_hash\_\_ 与 \_\_eq\_\_ 契约](#4-可哈希协议hash-与-eq-契约)
 - [5. 属性访问三剑客：\_\_getattr\_\_、\_\_getattribute\_\_、\_\_setattr\_\_](#5-属性访问三剑客getattrgetattributesetattr)
 - [6. \_\_new\_\_ vs \_\_init\_\_](#6-new-vs-init)
-- [最佳实践 / 常见陷阱](#最佳实践--常见陷阱)
+- [最佳实践 / 常见陷阱](#最佳实践践--常见陷阱)
 - [练习题](#练习题)
-- [参考资Դ / 下一步](#参考资Դ--下一步)
+- [参考资源 / 下一步](#参考资源--下一步)
 
 ---
 
 ## 1. 数据模型全景图：语法 → 魔术方法映射
 
-> 🎭 **The Drama: Python 的Ļ后剧院**
+> 🎭 **The Drama: Python 的幕后剧院**
 >
 > 想象 Python 是一座大剧院。你写的每一行代码都是前台的表演——`+`、`[]`、`len()`。
-> 但在Ļ后，真正工作的是一Ⱥ叫"魔术方法"（dunder methods）的演员。
-> 当你写 `a + b`，Ļ后的导演（解释器）喊道："`__add__`，你上场！"
+> 但在幕后，真正工作的是一群叫"魔术方法"（dunder methods）的演员。
+> 当你写 `a + b`，幕后的导演（解释器）喊道："`__add__`，你上场！"
 > 这就是 **数据模型** —— Python 前台语法与后台机制的映射关系。
 
 ### 1.1 什么是数据模型
 
-Python 数据模型是一套 **协议（Protocol）**：解释器遇到特定语法时，会查找并调用对象上对应的特殊方法。这些特殊方法以˫下划线开头和结尾，因此被称为 **dunder methods**（double underscore methods）。
+Python 数据模型是一套 **协议（Protocol）**：解释器遇到特定语法时，会查找并调用对象上对应的特殊方法。这些特殊方法以双下划线开头和结尾，因此被称为 **dunder methods**（double underscore methods）。
 
 ```python
 # ✅ 前台语法 → 后台调用
@@ -74,7 +74,7 @@ with obj as ctx:  # → obj.__enter__(), obj.__exit__()
 > 🧠 **CS Master's Bridge: 运算符重载的设计哲学**
 >
 > C++ 允许重载几乎所有运算符，Java 完全不允许（除了字符串的 `+`）。
-> Python 选择了中间·线：通过 **协议** 提供运算符重载，但保持一致的 `__dunder__` 命名约定。
+> Python 选择了中间路线：通过 **协议** 提供运算符重载，但保持一致的 `__dunder__` 命名约定。
 > 这样既获得了灵活性，又不会出现 C++ 那种运算符被滥用的混乱。
 
 ```python
@@ -84,14 +84,14 @@ my_list.size()        # 还是这个？
 my_list.count()       # 哪个才对？
 
 # ✅ Python 的统一协议
-len(my_list)          # 永Զ是 len()，背后调用 __len__
+len(my_list)          # 永远是 len()，背后调用 __len__
 len(my_dict)          # 同样的接口
 len(my_string)        # 一致性！
 ```
 
 **关键优势：**
 1. **一致性** — 所有对象用 `len()` 而非各自的 `.length()` / `.size()`
-2. **性能** — CPython 中 `len()` 对内置类型直接读ȡ C 结构体字段，O(1)
+2. **性能** — CPython 中 `len()` 对内置类型直接读取 C 结构体字段，O(1)
 3. **鸭子类型** — 实现 `__len__` 的对象都是"有长度的"，不需要继承
 
 ### 1.4 实现你的第一个数据模型
@@ -104,7 +104,7 @@ logger = logging.getLogger(__name__)
 
 
 class Card:
-    """一张扑克牌 — չ示基础数据模型方法"""
+    """一张扑克牌 — 展示基础数据模型方法"""
     
     SUITS = '♠ ♥ ♦ ♣'.split()
     RANKS = [str(n) for n in range(2, 11)] + list('JQKA')
@@ -140,7 +140,7 @@ class Card:
 
 
 class Deck:
-    """一副扑克牌 — չ示容器协议"""
+    """一副扑克牌 — 展示容器协议"""
     
     def __init__(self) -> None:
         self._cards = [
@@ -182,7 +182,7 @@ top_five = deck[:5]             # 切片也能用！
 >
 > 实现魔术方法时，行为应该符合用户直觉。`len()` 应该返回长度，
 > `__contains__` 应该检查成员关系。不要让这些方法做意外的事情。
-> 就像 Python 之禅˵的："In the face of ambiguity, refuse the temptation to guess."
+> 就像 Python 之禅说的："In the face of ambiguity, refuse the temptation to guess."
 
 ---
 
@@ -371,9 +371,9 @@ class Vector2D:
 
 > ⚛️ **The Science: 可变与不可变的增量赋值**
 >
-> `a += b` 的行为ȡ决于 `a` 是否可变：
+> `a += b` 的行为取决于 `a` 是否可变：
 > - **可变对象**（如 `list`）：`__iadd__` 就地修改 `self`，返回 `self`
-> - **不可变对象**（如 `tuple`）：û有 `__iadd__`，退化为 `a = a.__add__(b)`，创建新对象
+> - **不可变对象**（如 `tuple`）：没有 `__iadd__`，退化为 `a = a.__add__(b)`，创建新对象
 >
 > 这就是为什么 `t = (1, 2); t += (3,)` 不会报错——它创建了新的 tuple。
 
@@ -501,7 +501,7 @@ class TypedList(Generic[T]):
         self._data[index] = value
     
     def __delitem__(self, index: int) -> None:
-        logger.debug("[TypedList] ɾ除 [%d]", index)
+        logger.debug("[TypedList] 删除 [%d]", index)
         del self._data[index]
     
     def __contains__(self, item: T) -> bool:
@@ -522,7 +522,7 @@ class TypedList(Generic[T]):
 
 ```python
 class DefaultDict:
-    """简化版 defaultdict — չ示 __missing__"""
+    """简化版 defaultdict — 展示 __missing__"""
     
     def __init__(self, factory):
         self._data = {}
@@ -554,8 +554,8 @@ class DefaultDict:
 >
 > Python 在尝试迭代一个对象时，遵循以下优先级：
 > 1. 首先查找 `__iter__` 方法
-> 2. 如果û有 `__iter__`，回退到 `__getitem__`（从索引 0 开始，直到 `IndexError`）
-> 3. 都û有 → 抛出 `TypeError: object is not iterable`
+> 2. 如果没有 `__iter__`，回退到 `__getitem__`（从索引 0 开始，直到 `IndexError`）
+> 3. 都没有 → 抛出 `TypeError: object is not iterable`
 >
 > 这就是为什么只实现 `__getitem__` 的对象也能用在 `for` 循环中。
 > 但最佳实践是：**如果你的类需要可迭代，请显式实现 `__iter__`。**
@@ -571,7 +571,7 @@ class DefaultDict:
 
 ## 4. 可哈希协议：\_\_hash\_\_ 与 \_\_eq\_\_ 契约
 
-> 🧠 **CS Master's Bridge: 哈希表的基ʯ**
+> 🧠 **CS Master's Bridge: 哈希表的基石**
 >
 > 哈希表是计算机科学中最重要的数据结构之一。Python 的 `dict` 和 `set`
 > 都基于哈希表实现。一个对象要作为 `dict` 的 key 或 `set` 的成员，
@@ -642,7 +642,7 @@ print(hash(NoEq()))    # ✅ 有默认 hash
 >
 > 如果一个对象在放入 `set` 后被修改，它的 hash 值可能改变。
 > 这意味着在哈希表中找不到它了——它存在 bucket A 中，但按新的 hash
-> 计算应该ȥ bucket B 查找。这会导致数据"消ʧ"在哈希表中。
+> 计算应该去 bucket B 查找。这会导致数据"消失"在哈希表中。
 >
 > 所以 Python 的规则是：**定义了 `__eq__` 的类，如果不显式定义 `__hash__`，
 > 就默认不可哈希**。这是一种安全机制。
@@ -697,7 +697,7 @@ class FrozenPoint:
 
 ### 4.4 hash 实现的最佳实践
 
-| 方法 | 优点 | ȱ点 |
+| 方法 | 优点 | 缺点 |
 |:---|:---|:---|
 | `hash(tuple(fields))` | 简单可靠 | 创建临时 tuple |
 | `hash(field1) ^ hash(field2)` | 不创建临时对象 | XOR 容易冲突 |
@@ -722,7 +722,7 @@ def __hash__(self):
 > 当你写下 `obj.name` 时，Python 不是简单地查字典——它要穿过三重门：
 > 1. **第一重门 `__getattribute__`** — 每次属性访问都必经此门，无一例外
 > 2. **第二重门（数据描述器）** — 类层面的拦截器（下一章详述）
-> 3. **第三重门 `__getattr__`** — 只有前面所有·径都找不到时，才会来到这里
+> 3. **第三重门 `__getattr__`** — 只有前面所有路径都找不到时，才会来到这里
 >
 > 搞混这三重门是最常见的 Python 进阶错误之一。
 
@@ -751,7 +751,7 @@ print(obj.version)  # 日志: [LoggedAccess] 访问属性: version
 # ❌ 经典错误：在 __getattribute__ 中使用 self.xxx 导致无限递归
 class InfiniteLoop:
     def __getattribute__(self, name: str):
-        # self.log 会再次触发 __getattribute__，Ȼ后又调用 self.log...
+        # self.log 会再次触发 __getattribute__，然后又调用 self.log...
         self.log(f"Accessing {name}")  # ❌ 无限递归！
         return super().__getattribute__(name)
     
@@ -775,7 +775,7 @@ class SafeLogged:
 ```python
 class DynamicAttributes:
     """
-    __getattr__ 只在常规查找ʧ败时调用。
+    __getattr__ 只在常规查找失败时调用。
     这使得它非常适合：代理模式、懒加载、默认值。
     """
     
@@ -787,11 +787,11 @@ class DynamicAttributes:
         logger.debug("[DynamicAttributes] __getattr__ 被调用: %s", name)
         if name.startswith('computed_'):
             return f"动态计算: {name}"
-        raise AttributeError(f"'{type(self).__name__}' û有属性 '{name}'")
+        raise AttributeError(f"'{type(self).__name__}' 没有属性 '{name}'")
 
 
 obj = DynamicAttributes()
-print(obj.real_attr)        # 直接从 __dict__ 获ȡ，不触发 __getattr__
+print(obj.real_attr)        # 直接从 __dict__ 获取，不触发 __getattr__
 print(obj.computed_value)   # __getattr__ 被调用 → "动态计算: computed_value"
 # obj.nonexistent            # __getattr__ 被调用 → AttributeError
 ```
@@ -815,7 +815,7 @@ class ValidatedAttributes:
         
         validator = self._validators.get(name)
         if validator and not validator(value):
-            raise ValueError(f"属性 '{name}' 的值 {value!r} 验证ʧ败")
+            raise ValueError(f"属性 '{name}' 的值 {value!r} 验证失败")
         
         logger.debug("[ValidatedAttributes] 设置 %s = %r", name, value)
         super().__setattr__(name, value)
@@ -831,7 +831,7 @@ obj.age = 25          # ✅
 ### 5.4 属性查找完整流程
 
 ```
-obj.attr 的查找˳序：
+obj.attr 的查找顺序：
 │
 ├── 1. type(obj).__getattribute__(obj, 'attr')  [总是首先调用]
 │   │
@@ -844,7 +844,7 @@ obj.attr 的查找˳序：
 │   ├── 4. 检查 type(obj) 及其 MRO 中的非数据描述器/类变量
 │   │   └── 找到 → 返回（非数据描述器调用 __get__）
 │   │
-│   └── 5. 所有·径未找到 → 调用 __getattr__(attr)
+│   └── 5. 所有路径未找到 → 调用 __getattr__(attr)
 │       └── 未定义 __getattr__ → AttributeError
 ```
 
@@ -855,7 +855,7 @@ obj.attr 的查找˳序：
 > | 拦截不存在的属性（代理、懒加载） | `__getattr__` |
 > | 拦截所有属性访问（日志、审计） | `__getattribute__` |
 > | 验证/拦截属性写入 | `__setattr__` |
-> | 拦截属性ɾ除 | `__delattr__` |
+> | 拦截属性删除 | `__delattr__` |
 >
 > **黄金法则：** 90% 的情况下你只需要 `__getattr__`。
 > `__getattribute__` 是核武器——威力巨大，但容易伤到自己。
@@ -1017,8 +1017,8 @@ print(a is b)  # True
 
 ### ✅ 最佳实践
 
-1. **始终实现 `__repr__`** — 这是调试的基ʯ，应提供"重建对象"的信息
-2. **`__str__` 是可选的** — û有 `__str__` 时，Python 会使用 `__repr__`
+1. **始终实现 `__repr__`** — 这是调试的基石，应提供"重建对象"的信息
+2. **`__str__` 是可选的** — 没有 `__str__` 时，Python 会使用 `__repr__`
 3. **返回 `NotImplemented` 而不是 `None`** — 让 Python 有机会尝试反向方法
 4. **`__eq__` 和 `__hash__` 要同步** — 定义了一个就考虑另一个
 5. **用 `__slots__` 优化内存** — 当你有大量实例时
@@ -1052,7 +1052,7 @@ class Bad4:
     def __new__(cls):
         return "not an instance"  # __init__ 不会被调用
     def __init__(self):
-        self.value = 42  # 永Զ不会执行！
+        self.value = 42  # 永远不会执行！
 
 # 陷阱 5：可变对象实现 __hash__
 class Bad5:
@@ -1161,9 +1161,9 @@ class User(Record):
 
 ---
 
-## 参考资Դ / 下一步
+## 参考资源 / 下一步
 
-**参考资Դ：**
+**参考资源：**
 - [Python 官方文档 — Data Model](https://docs.python.org/3/reference/datamodel.html)
 - [Fluent Python, 2nd Edition — Chapter 1: The Python Data Model](https://www.oreilly.com/library/view/fluent-python-2nd/9781492056348/)
 - [Python Cookbook — Chapter 8: Classes and Objects](https://www.oreilly.com/library/view/python-cookbook-3rd/9781449357337/)

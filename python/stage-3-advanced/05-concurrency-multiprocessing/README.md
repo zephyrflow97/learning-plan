@@ -17,7 +17,7 @@
 - [4. ProcessPoolExecutor](#4-processpoolexecutor)
 - [5. multiprocessing vs threading 对比](#5-multiprocessing-vs-threading-对比)
 - [6. 进程池的陷阱与最佳实践](#6-进程池的陷阱与最佳实践)
-- [最佳实践 / 常见陷阱](#最佳实践--常见陷阱)
+- [最佳实践 / 常见陷阱](#最佳实践践--常见陷阱)
 - [练习题](#练习题)
 - [参考资源 / 下一步](#参考资源--下一步)
 

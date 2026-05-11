@@ -1,186 +1,145 @@
-# 绗?3 绔狅細瀹夊叏涓庤璇?鈥?瀹堝崼浣犵殑 API
+# 第 3 章：安全与认证 — 守卫你的 API
 
 > *"Security is not a product, but a process."*
-> 鈥?Bruce Schneier
+> Bruce Schneier
 >
-> 瀹夊叏涓嶆槸鍔熻兘鍒楄〃涓婄殑涓€涓嬀閫夋鈥斺€斿畠鏄疮绌挎暣涓郴缁熺敓鍛藉懆鏈熺殑鎬濈淮鏂瑰紡銆?> 涓€涓病鏈夎璇佺殑 API锛屽氨鍍忎竴鏍嬫病鏈夐棬閿佺殑閾惰銆?
----
+> 安全不是功能清单上的一个勾选框，而是贯穿整个系统生命周期的工程纪律。认证、授权、输入验证、日志审计和最小权限都必须一起考虑。
 
-## 馃摉 鏈珷鍐呭
+## 📖 本章内容
 
-- [1. 瀵嗙爜瀹夊叏](#1-瀵嗙爜瀹夊叏)
-- [2. JWT 璁よ瘉](#2-jwt-璁よ瘉)
-- [3. OAuth2 娴佺▼](#3-oauth2-娴佺▼)
-- [4. FastAPI 瀹夊叏渚濊禆](#4-fastapi-瀹夊叏渚濊禆)
-- [5. 瀹夊叏闃叉姢](#5-瀹夊叏闃叉姢)
+- [1. 密码安全](#1-密码安全)
+- [2. JWT 认证](#2-jwt-认证)
+- [3. OAuth2 流程](#3-oauth2-流程)
+- [4. FastAPI 安全依赖](#4-fastapi-安全依赖)
+- [5. 安全防护](#5-安全防护)
 - [6. Rate Limiting](#6-rate-limiting)
-- [鏈€浣冲疄璺礭(#鏈€浣冲疄璺?
-- [甯歌闄烽槺](#甯歌闄烽槺)
-- [缁冧範棰榏(#缁冧範棰?
-- [鍙傝€冭祫婧怾(#鍙傝€冭祫婧?
+- [最佳实践](#最佳实践)
+- [常见陷阱](#常见陷阱)
+- [练习题](#练习题)
+- [参考资源](#参考资源)
 
 ---
 
-## 1. 瀵嗙爜瀹夊叏
+## 1. 密码安全
 
-> 馃幁 **The Drama: 瀵嗙爜瀛樺偍鐨勮繘鍖栧彶**
->
-> - **鐭冲櫒鏃朵唬**锛氭槑鏂囧瓨鍌ㄥ瘑鐮?鈫?鏁版嵁搴撴硠闇?= 鍏ㄩ儴瀵嗙爜娉勯湶
-> - **闈掗摐鏃朵唬**锛歁D5/SHA1 鍝堝笇 鈫?褰╄櫣琛ㄦ敾鍑讳竴绉掔牬瑙?> - **鐧介摱鏃朵唬**锛氬姞鐩愬搱甯?鈫?杩樻槸澶揩锛孏PU 鏆村姏鐮磋В
-> - **榛勯噾鏃朵唬**锛歜crypt/argon2 鈫?鍒绘剰鎱㈢殑鍝堝笇绠楁硶锛屾瘡娆￠獙璇?~100ms
->
-> **鍏抽敭娲炲療**锛氬瘑鐮佸搱甯屽簲璇ユ槸**鏁呮剰鎱㈢殑**銆?> 鍚堟硶鐢ㄦ埛鐧诲綍涓€娆＄瓑 100ms 鏃犳墍璋擄紝浣嗘敾鍑昏€呮瘡绉掑彧鑳藉皾璇?10 娆¤€岄潪 10 浜挎銆?
-### bcrypt vs argon2
+密码不能明文存储，也不应该只做普通哈希。现代系统应使用 bcrypt 或 argon2 这类“故意慢”的密码哈希算法。
 
-| 绠楁硶 | 鐗圭偣 | 鎺ㄨ崘鍦烘櫙 |
+| 算法 | 特点 | 推荐场景 |
 |------|------|---------|
-| **bcrypt** | 缁忓吀銆佸箍娉涙敮鎸併€丆PU 瀵嗛泦 | 澶у鏁伴」鐩?|
-| **argon2** | 鏇存柊銆佸唴瀛樺瘑闆嗭紙鎶?GPU锛夈€丱WASP 鎺ㄨ崘 | 鏂伴」鐩閫?|
+| bcrypt | 经典、广泛支持、CPU 密集 | 大多数项目 |
+| argon2 | 更新、内存密集、抗 GPU | 新项目优先考虑 |
 
 ```python
-# 鉁?浣跨敤 passlib 杩涜瀵嗙爜鍝堝笇
 from passlib.context import CryptContext
 
-# 閰嶇疆瀵嗙爜鍝堝笇涓婁笅鏂?pwd_context = CryptContext(
-    schemes=["bcrypt"],      # 浣跨敤 bcrypt 绠楁硶
-    deprecated="auto",       # 鑷姩鍗囩骇鏃у搱甯?)
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
 
 def hash_password(password: str) -> str:
-    """鍝堝笇瀵嗙爜"""
     return pwd_context.hash(password)
 
+
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    """楠岃瘉瀵嗙爜"""
     return pwd_context.verify(plain_password, hashed_password)
 
-# 浣跨敤绀轰緥
-hashed = hash_password("MySecretPassword123!")
-print(f"鍝堝笇缁撴灉: {hashed}")
-# $2b$12$LJ3m4ys3Lk.xTVOqFH9.YeCfB5jBi4dNHNxLmUEm6eE2z5HFy2oO6
 
-assert verify_password("MySecretPassword123!", hashed)  # 鉁?assert not verify_password("WrongPassword", hashed)     # 鉁?```
+hashed = hash_password("MySecretPassword123!")
+assert verify_password("MySecretPassword123!", hashed)
+assert not verify_password("WrongPassword", hashed)
+```
 
 ---
 
-## 2. JWT 璁よ瘉
+## 2. JWT 认证
 
-> 馃 **CS Master's Bridge: Token vs Session 璁よ瘉**
->
-> | 鐗规€?| Session锛堟湇鍔＄鐘舵€侊級 | JWT锛堝鎴风鐘舵€侊級 |
-> |------|---------------------|-----------------|
-> | **鐘舵€佸瓨鍌?* | 鏈嶅姟鍣ㄥ唴瀛?Redis | 瀹㈡埛绔紙Token 鑷寘鍚級 |
-> | **鎵╁睍鎬?* | 闇€瑕佸叡浜?session 瀛樺偍 | 澶╃劧鏃犵姸鎬侊紝鏄撴í鍚戞墿灞?|
-> | **鎾ら攢** | 鍒犻櫎 session 鍗冲彲 | 闇€瑕侀澶栭粦鍚嶅崟鏈哄埗 |
-> | **澶у皬** | Session ID (~32 bytes) | JWT (~500+ bytes) |
-> | **閫傜敤** | 浼犵粺 Web 搴旂敤 | API銆佸井鏈嶅姟銆佺些鍔ㄧ |
-
-### JWT 缁撴瀯
-
-```
-JWT = Header.Payload.Signature
-
-Header:  {"alg": "HS256", "typ": "JWT"}     鈫?Base64
-Payload: {"sub": "user_id", "exp": 123456}  鈫?Base64
-Signature: HMAC-SHA256(Header.Payload, SECRET_KEY)
-```
-
-### 瀹炵幇
+JWT 适合无状态 API 和微服务。它不是加密格式，Payload 只是 Base64URL 编码，任何拿到 Token 的人都能读到里面的内容，所以不要放密码、身份证号等敏感信息。
 
 ```python
-import logging
 from datetime import datetime, timedelta, timezone
+
 from jose import JWTError, jwt
 from pydantic import BaseModel
 
-logger = logging.getLogger(__name__)
-
-# 閰嶇疆
-SECRET_KEY = "your-secret-key-change-in-production"  # 鐢熶骇鐜鐢ㄧ幆澧冨彉閲?ALGORITHM = "HS256"
+SECRET_KEY = "change-me-in-production"
+ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 REFRESH_TOKEN_EXPIRE_DAYS = 7
 
-class TokenPayload(BaseModel):
-    sub: str          # Subject锛堥€氬父鏄?user_id锛?    exp: datetime     # Expiration
-    type: str         # "access" 鎴?"refresh"
 
-def create_access_token(user_id: str, expires_delta: timedelta | None = None) -> str:
-    """鍒涘缓璁块棶浠ょ墝"""
-    expire = datetime.now(timezone.utc) + (expires_delta or timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
+class TokenPayload(BaseModel):
+    sub: str
+    exp: datetime
+    type: str
+
+
+def create_access_token(user_id: str) -> str:
+    expire = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     payload = {"sub": user_id, "exp": expire, "type": "access"}
-    token = jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
-    logger.info(f"[JWT] 鍒涘缓 access token: user={user_id}")
-    return token
+    return jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
+
 
 def create_refresh_token(user_id: str) -> str:
-    """鍒涘缓鍒锋柊浠ょ墝"""
     expire = datetime.now(timezone.utc) + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
     payload = {"sub": user_id, "exp": expire, "type": "refresh"}
     return jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
 
+
 def verify_token(token: str, expected_type: str = "access") -> TokenPayload:
-    """楠岃瘉骞惰В鐮佷护鐗孿"""
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         if payload.get("type") != expected_type:
-            raise JWTError(f"鏈熸湜 {expected_type} token")
+            raise JWTError("token 类型不匹配")
         return TokenPayload(**payload)
-    except JWTError as e:
-        logger.warning(f"[JWT] Token 楠岃瘉澶辫触: {e}")
-        raise
+    except JWTError as exc:
+        raise ValueError("无效的 Token") from exc
 ```
 
 ---
 
-## 3. OAuth2 娴佺▼
+## 3. OAuth2 流程
 
-> 馃寣 **The Big Picture: OAuth2 鐨勫洓绉嶆巿鏉冩ā寮?*
->
-> OAuth2 涓嶆槸涓€涓璇佸崗璁€斺€斿畠鏄竴涓?*鎺堟潈妗嗘灦**銆?> 瀹冭В鍐崇殑闂鏄細濡備綍璁╃涓夋柟搴旂敤鍦ㄤ笉鑾峰彇鐢ㄦ埛瀵嗙爜鐨勬儏鍐典笅璁块棶鐢ㄦ埛璧勬簮銆?>
-> | 妯″紡 | 閫傜敤鍦烘櫙 | 瀹夊叏绾у埆 |
-> |------|---------|---------|
-> | **Authorization Code** | Web 搴旂敤锛堟湁鍚庣锛?| 鏈€楂?|
-> | **Authorization Code + PKCE** | SPA / 绉诲姩绔?| 楂?|
-> | **Client Credentials** | 鏈嶅姟闂撮€氫俊锛圡2M锛?| 楂?|
-> | **Password** | 鑷湁瀹㈡埛绔紙涓嶆帹鑽愶級 | 浣?|
+OAuth2 是授权框架，不是单纯的登录协议。常见模式：
 
-```
-Authorization Code 娴佺▼锛?鈹屸攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?   1. 閲嶅畾鍚戝埌鎺堟潈椤?    鈹屸攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?鈹? 鐢ㄦ埛    鈹?鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈫?鈹? 鎺堟潈鏈嶅姟鍣? 鈹?鈹? 娴忚鍣? 鈹?鈫愨攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ 鈹? (Google)   鈹?鈹斺攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?   2. 杩斿洖鎺堟潈鐮?code     鈹斺攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?     鈹?                                     鈹?     鈹?3. code 鍙戠粰浣犵殑鍚庣                   鈹?     鈻?                                     鈹?鈹屸攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?   4. code + secret 鈫?token    鈹?鈹? 浣犵殑    鈹?鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈫掆攤
-鈹? 鍚庣    鈹?鈫愨攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?鈹斺攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?   5. 杩斿洖 access_token
+| 模式 | 适用场景 | 说明 |
+|------|---------|------|
+| Authorization Code | 有后端的 Web 应用 | 最常用 |
+| Authorization Code + PKCE | SPA / 移动端 | 无法安全保存 client secret |
+| Client Credentials | 服务间调用 | 没有用户参与 |
+| Password | 自有可信客户端 | 新项目尽量避免 |
+
+```text
+用户 -> 你的应用 -> 授权服务
+用户 <- 登录授权 <- 授权服务
+你的后端 -> 用 code 换 token -> 授权服务
+你的后端 <- access_token / refresh_token
 ```
 
 ---
 
-## 4. FastAPI 瀹夊叏渚濊禆
+## 4. FastAPI 安全依赖
 
 ```python
-from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
 app = FastAPI()
-
-# 鉁?OAuth2 瀵嗙爜妯″紡 Bearer Token
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
+
 async def get_current_user(token: str = Depends(oauth2_scheme)) -> dict:
-    """浠?Token 鑾峰彇褰撳墠鐢ㄦ埛"""
     try:
         payload = verify_token(token)
-        user_id = payload.sub
-    except JWTError:
+    except ValueError:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="鏃犳晥鐨勮璇佸嚟璇?,
+            detail="无效的认证凭证",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    # 浠庢暟鎹簱鏌ヨ鐢ㄦ埛
-    user = {"id": user_id, "username": "alice"}  # 瀹為檯浠?DB 鏌ヨ
-    return user
+    return {"id": payload.sub, "username": "alice"}
+
 
 @app.post("/auth/login")
 async def login(form: OAuth2PasswordRequestForm = Depends()) -> dict:
-    """鐧诲綍 鈥?杩斿洖 JWT Token"""
-    # 1. 楠岃瘉鐢ㄦ埛鍚嶅拰瀵嗙爜
-    # 2. 鐢熸垚 Token
     access_token = create_access_token(user_id=form.username)
     refresh_token = create_refresh_token(user_id=form.username)
     return {
@@ -189,34 +148,32 @@ async def login(form: OAuth2PasswordRequestForm = Depends()) -> dict:
         "token_type": "bearer",
     }
 
+
 @app.get("/users/me")
 async def read_users_me(current_user: dict = Depends(get_current_user)) -> dict:
-    """鑾峰彇褰撳墠鐢ㄦ埛淇℃伅 鈥?闇€瑕佽璇乗"""
     return current_user
 ```
 
 ---
 
-## 5. 瀹夊叏闃叉姢
+## 5. 安全防护
 
-> 馃О **Toolbox: OWASP Top 10 Python 闃叉姢**
->
-> | 濞佽儊 | 闃叉姢鎺柦 |
-> |------|---------|
-> | SQL 娉ㄥ叆 | ORM / 鍙傛暟鍖栨煡璇紙涓嶈鎷兼帴 SQL锛?|
-> | XSS | 妯℃澘鑷姩杞箟銆丆SP 澶?|
-> | CSRF | SameSite Cookie銆丆SRF Token |
-> | 瀵嗙爜娉勯湶 | bcrypt/argon2 鍝堝笇 |
-> | 鏆村姏鐮磋В | Rate Limiting |
-> | 鏁忔劅鏁版嵁娉勯湶 | HTTPS銆佸搷搴旇繃婊ゆ晱鎰熷瓧娈?|
+| 威胁 | 防护措施 |
+|------|---------|
+| SQL 注入 | ORM / 参数化查询 |
+| XSS | 模板自动转义、CSP |
+| CSRF | SameSite Cookie、CSRF Token |
+| 密码泄露 | bcrypt / argon2 |
+| 暴力破解 | Rate Limiting |
+| 敏感数据泄露 | HTTPS、响应过滤、日志脱敏 |
 
 ```python
-# 鉁?SQL 娉ㄥ叆闃叉姢 鈥?浣跨敤鍙傛暟鍖栨煡璇?# 鉂?鍗遍櫓
-stmt = f"SELECT * FROM users WHERE name = '{user_input}'"  # SQL 娉ㄥ叆锛?
-# 鉁?瀹夊叏 鈥?ORM
-users = session.exec(select(User).where(User.name == user_input)).all()
+# 危险：拼接用户输入
+stmt = f"SELECT * FROM users WHERE name = '{user_input}'"
 
-# 鉁?瀹夊叏 鈥?鍙傛暟鍖?from sqlalchemy import text
+# 安全：参数化查询
+from sqlalchemy import text
+
 stmt = text("SELECT * FROM users WHERE name = :name")
 result = session.execute(stmt, {"name": user_input})
 ```
@@ -231,68 +188,52 @@ from slowapi.util import get_remote_address
 
 limiter = Limiter(key_func=get_remote_address)
 
+
 @app.get("/api/data")
-@limiter.limit("10/minute")  # 姣忓垎閽熸渶澶?10 娆?async def get_data(request: Request) -> dict:
+@limiter.limit("10/minute")
+async def get_data(request):
     return {"data": "limited"}
 
+
 @app.post("/auth/login")
-@limiter.limit("5/minute")  # 鐧诲綍鎺ュ彛鏇翠弗鏍?async def login(request: Request) -> dict:
-    ...
+@limiter.limit("5/minute")
+async def login_limited(request):
+    return {"status": "ok"}
 ```
 
 ---
 
-## 鏈€浣冲疄璺?
-1. **姘歌繙涓嶈鏄庢枃瀛樺偍瀵嗙爜** 鈥?浣跨敤 bcrypt 鎴?argon2
-2. **JWT Secret Key 鐢ㄧ幆澧冨彉閲?* 鈥?涓嶈纭紪鐮佸湪浠ｇ爜涓?3. **Access Token 鐭湡鏈夋晥** 鈥?寤鸿 15-30 鍒嗛挓
-4. **Refresh Token 瀹夊叏瀛樺偍** 鈥?HttpOnly Cookie
-5. **浣跨敤 HTTPS** 鈥?闃叉 Token 琚腑闂翠汉鎴幏
-6. **鏈€灏忔潈闄愬師鍒?* 鈥?Token 涓彧鍖呭惈蹇呰淇℃伅
-7. **杈撳叆楠岃瘉** 鈥?浣跨敤 Pydantic 楠岃瘉鎵€鏈夎緭鍏?
----
+## 最佳实践
 
-## 甯歌闄烽槺
+- 永远不要明文存储密码。
+- JWT Secret Key 使用环境变量管理，不能提交到仓库。
+- Access Token 设置短有效期，Refresh Token 单独保护。
+- 只在 Token 中放必要的非敏感信息。
+- 所有外部输入都要验证。
+- 日志不要记录密码、Token、身份证号等敏感信息。
+- 生产环境必须使用 HTTPS。
 
-### 闄烽槺 1锛欽WT 涓瓨鍌ㄦ晱鎰熶俊鎭?
-```python
-# 鉂?JWT Payload 鏄?Base64 缂栫爜锛屼笉鏄姞瀵嗭紒浠讳綍浜洪兘鑳借В鐮?payload = {"sub": "user_id", "password": "secret123"}  # 瀵嗙爜娉勯湶锛?
-# 鉁?鍙瓨鍌ㄩ潪鏁忔劅鐨勬爣璇嗕俊鎭?payload = {"sub": "user_id", "role": "admin", "exp": expire}
-```
-
-### 闄烽槺 2锛氫笉楠岃瘉 Token 绫诲瀷
+## 常见陷阱
 
 ```python
-# 鉂?Refresh Token 琚敤浣?Access Token
-token = request.headers["Authorization"]
-payload = jwt.decode(token, SECRET_KEY)  # 娌℃鏌?type锛?
-# 鉁?楠岃瘉 Token 绫诲瀷
-payload = verify_token(token, expected_type="access")
+# 不要把敏感信息放进 JWT Payload
+payload = {"sub": "user_id", "password": "secret123"}
+
+# 只放标识和必要声明
+payload = {"sub": "user_id", "role": "admin", "exp": expire}
 ```
 
----
+## 练习题
 
-## 缁冧範棰?
-<details>
-<summary><b>缁冧範 1锛氬疄鐜板畬鏁存敞鍐岀櫥褰曠郴缁?/b></summary>
-
-瀹炵幇鐢ㄦ埛娉ㄥ唽銆佺櫥褰曘€乀oken 鍒锋柊銆佽幏鍙栦釜浜轰俊鎭殑瀹屾暣 API銆?
-</details>
-
-<details>
-<summary><b>缁冧範 2锛氬疄鐜?RBAC 鏉冮檺绯荤粺</b></summary>
-
-瀹炵幇鍩轰簬瑙掕壊鐨勮闂帶鍒讹紙Role-Based Access Control锛夛細admin銆乪ditor銆乿iewer 涓夌瑙掕壊銆?
-</details>
+1. 实现用户注册、登录、刷新 Token 和获取当前用户信息。
+2. 给登录接口加 Rate Limiting。
+3. 给日志增加敏感字段脱敏。
 
 ---
 
-## 鍙傝€冭祫婧?
-- [OWASP Top 10](https://owasp.org/www-project-top-ten/) 鈥?Web 瀹夊叏鍗佸ぇ濞佽儊
-- [JWT.io](https://jwt.io/) 鈥?JWT 璋冭瘯宸ュ叿
-- [FastAPI Security 鏂囨。](https://fastapi.tiangolo.com/tutorial/security/) 鈥?瀹樻柟瀹夊叏鏁欑▼
-- [passlib 鏂囨。](https://passlib.readthedocs.io/) 鈥?瀵嗙爜鍝堝笇搴?
----
+## 参考资源
 
-**[馃憠 绗?4 绔狅細鏁版嵁绉戝 鈥?NumPy + Pandas](../04-numpy-pandas/)**
-
-[猬咃笍 杩斿洖 Stage 4 鐩綍](../README.md)
+- [OWASP Top 10](https://owasp.org/www-project-top-ten/)
+- [FastAPI Security](https://fastapi.tiangolo.com/tutorial/security/)
+- [Passlib 文档](https://passlib.readthedocs.io/)
+- [python-jose](https://python-jose.readthedocs.io/)

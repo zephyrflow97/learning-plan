@@ -12,18 +12,18 @@
 
 - [1. 为什么是 FastAPI](#1-为什么是-fastapi)
 - [2. FastAPI vs Flask vs Django](#2-fastapi-vs-flask-vs-django)
-- [3. ·由与参数](#3-·由与参数)
+- [3. 路由与参数](#3-路由与参数)
 - [4. Pydantic 模型验证](#4-pydantic-模型验证)
 - [5. 依赖注入系统](#5-依赖注入系统)
 - [6. 中间件与 CORS](#6-中间件与-cors)
-- [7. 异步·由](#7-异步·由)
+- [7. 异步路由](#7-异步路由)
 - [8. 背景任务与 WebSocket](#8-背景任务与-websocket)
 - [9. OpenAPI 自动文档](#9-openapi-自动文档)
 - [10. 项目结构最佳实践](#10-项目结构最佳实践)
 - [最佳实践](#最佳实践)
 - [常见陷阱](#常见陷阱)
 - [练习题](#练习题)
-- [参考资Դ](#参考资Դ)
+- [参考资源](#参考资源)
 
 ---
 
@@ -32,10 +32,10 @@
 > 🎭 **The Drama: 一场框架革命**
 >
 > 2019 年之前，Python Web 框架的世界是这样的：
-> - **Django** = 重型̹克：全副武装（ORM、Admin、Auth），但笨重
-> - **Flask** = 瑞ʿ军刀：轻量灵活，但什么都要自己装
+> - **Django** = 重型坦克：全副武装（ORM、Admin、Auth），但笨重
+> - **Flask** = 瑞士军刀：轻量灵活，但什么都要自己装
 >
-> Ȼ后 FastAPI 出现了。它˵："为什么不能既快又全又简单？"
+> 然后 FastAPI 出现了。它说："为什么不能既快又全又简单？"
 > 秘密武器？**Python 的类型标注不再只是文档——它们成了代码的驱动力。**
 
 ### 1.1 三大核心优势
@@ -47,7 +47,7 @@ FastAPI 基于 Starlette（ASGI 框架）和 Uvicorn（ASGI 服务器），是 P
 | 框架 | 请求/秒 (TechEmpower) | 异步支持 | 类型安全 |
 |------|----------------------|---------|---------|
 | FastAPI | ~15,000+ | ✅ 原生 | ✅ 原生 |
-| Flask | ~3,000 | ❌ 需扩չ | ❌ 手动 |
+| Flask | ~3,000 | ❌ 需扩展 | ❌ 手动 |
 | Django | ~2,500 | ⚠️ 3.1+ | ❌ 手动 |
 | Express (Node.js) | ~12,000 | ✅ 原生 | ❌ 需 TS |
 
@@ -93,11 +93,11 @@ async def create_item(item: Item) -> Item:
 > ⚛️ **The Science: ASGI vs WSGI**
 >
 > Flask/Django 传统上使用 **WSGI**（Web Server Gateway Interface）：
-> - 同步请求处理：一个请求ռ一个线程
+> - 同步请求处理：一个请求占一个线程
 > - 并发靠多线程/多进程
 >
 > FastAPI 使用 **ASGI**（Asynchronous Server Gateway Interface）：
-> - 异步请求处理：一个事件循环处理数ǧ连接
+> - 异步请求处理：一个事件循环处理数千连接
 > - 类似 Node.js 的非阻塞模型
 >
 > ```
@@ -110,7 +110,7 @@ async def create_item(item: Item) -> Item:
 > └─────────┘                   └─────────┘
 > ```
 >
-> ASGI 在 I/O 密集型场景（数据库查线、外部 API 调用）有巨大优势。
+> ASGI 在 I/O 密集型场景（数据库查询、外部 API 调用）有巨大优势。
 
 ---
 
@@ -120,16 +120,16 @@ async def create_item(item: Item) -> Item:
 >
 > 这是软件工程中的经典权衡：
 > - **Convention over Configuration**（约定优于配置）— Django 的哲学
-> - **Minimal and Extensible**（最小且可扩չ）— Flask 的哲学
+> - **Minimal and Extensible**（最小且可扩展）— Flask 的哲学
 > - **Type-Driven with Sensible Defaults**（类型驱动 + 合理默认）— FastAPI 的哲学
 >
-> û有"最好"的框架，只有最适合你项目的框架。
+> 没有"最好"的框架，只有最适合你项目的框架。
 
 ### 选型决策树
 
 ```
 你的项目需要什么？
-├── 全ջ Web 应用（含前端模板、Admin 后台）
+├── 全栈 Web 应用（含前端模板、Admin 后台）
 │   └── → Django（内置 ORM、Admin、Auth、模板引擎）
 │
 ├── 微服务 / 纯 API 后端
@@ -150,23 +150,23 @@ async def create_item(item: Item) -> Item:
 
 | 特性 | FastAPI | Flask | Django |
 |------|---------|-------|--------|
-| **定位** | 现代 API 框架 | 微框架 | 全ջ框架 |
-| **异步** | ✅ 原生 ASGI | ❌ WSGI（需 async 扩չ） | ⚠️ ASGI（3.1+） |
+| **定位** | 现代 API 框架 | 微框架 | 全栈框架 |
+| **异步** | ✅ 原生 ASGI | ❌ WSGI（需 async 扩展） | ⚠️ ASGI（3.1+） |
 | **数据验证** | ✅ Pydantic 内置 | ❌ 手动/第三方 | ⚠️ Forms/DRF |
 | **API 文档** | ✅ 自动 OpenAPI | ❌ 需 Flask-RESTX | ⚠️ 需 DRF |
 | **ORM** | ❌ 需 SQLAlchemy | ❌ 需 SQLAlchemy | ✅ 内置 Django ORM |
 | **Admin** | ❌ 需第三方 | ❌ 需第三方 | ✅ 内置 Admin |
 | **学习曲线** | 中（需懂类型标注） | 低 | 高（概念多） |
 | **社区生态** | ⭐ 快速增长 | ⭐⭐⭐ 成熟 | ⭐⭐⭐ 最成熟 |
-| **适合场景** | API 服务、微服务 | 小型应用、原型 | 全ջ Web 应用 |
+| **适合场景** | API 服务、微服务 | 小型应用、原型 | 全栈 Web 应用 |
 
 ---
 
-## 3. ·由与参数
+## 3. 路由与参数
 
-FastAPI 的·由系统基于 Python 装饰器和类型标注。
+FastAPI 的路由系统基于 Python 装饰器和类型标注。
 
-### 3.1 基本·由
+### 3.1 基本路由
 
 ```python
 import logging
@@ -177,14 +177,14 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI(title="My API", version="1.0.0")
 
-# ✅ GET ·由
+# ✅ GET 路由
 @app.get("/")
 async def root() -> dict[str, str]:
-    """根·由 — 健康检查"""
+    """根路由 — 健康检查"""
     logger.info("[Root] 收到健康检查请求")
     return {"status": "healthy", "message": "Welcome to FastAPI!"}
 
-# ✅ POST ·由
+# ✅ POST 路由
 @app.post("/items", status_code=201)
 async def create_item(name: str) -> dict[str, str]:
     """创建项目"""
@@ -192,23 +192,23 @@ async def create_item(name: str) -> dict[str, str]:
     return {"name": name, "status": "created"}
 ```
 
-### 3.2 ·径参数
+### 3.2 路径参数
 
 ```python
-# ✅ ·径参数 — 自动类型转换和验证
+# ✅ 路径参数 — 自动类型转换和验证
 @app.get("/users/{user_id}")
 async def get_user(user_id: int) -> dict:
-    """获ȡ用户 — user_id 自动转为 int，非数字返回 422"""
-    logger.info(f"[Users] 查线用户: id={user_id}")
+    """获取用户 — user_id 自动转为 int，非数字返回 422"""
+    logger.info(f"[Users] 查询用户: id={user_id}")
     return {"user_id": user_id}
 
-# ✅ 多个·径参数
+# ✅ 多个路径参数
 @app.get("/users/{user_id}/posts/{post_id}")
 async def get_user_post(user_id: int, post_id: int) -> dict:
-    logger.info(f"[Posts] 查线帖子: user={user_id}, post={post_id}")
+    logger.info(f"[Posts] 查询帖子: user={user_id}, post={post_id}")
     return {"user_id": user_id, "post_id": post_id}
 
-# ✅ ö举·径参数
+# ✅ 枚举路径参数
 from enum import Enum
 
 class ModelName(str, Enum):
@@ -218,28 +218,28 @@ class ModelName(str, Enum):
 
 @app.get("/models/{model_name}")
 async def get_model(model_name: ModelName) -> dict:
-    """ö举限制 — 只接受预定义的值"""
+    """枚举限制 — 只接受预定义的值"""
     logger.info(f"[Models] 选择模型: {model_name.value}")
     return {"model": model_name, "message": f"选择了 {model_name.value}"}
 ```
 
-### 3.3 查线参数
+### 3.3 查询参数
 
 ```python
 from typing import Optional
 
-# ✅ 查线参数 — 函数参数中非·径参数的部分
+# ✅ 查询参数 — 函数参数中非路径参数的部分
 @app.get("/items")
 async def list_items(
     skip: int = 0,          # 默认值 = 可选参数
     limit: int = 10,         # GET /items?skip=0&limit=10
-    q: str | None = None     # 可选查线参数
+    q: str | None = None     # 可选查询参数
 ) -> dict:
-    """列表查线 — 分页 + 搜索"""
-    logger.info(f"[Items] 查线: skip={skip}, limit={limit}, q={q}")
+    """列表查询 — 分页 + 搜索"""
+    logger.info(f"[Items] 查询: skip={skip}, limit={limit}, q={q}")
     return {"skip": skip, "limit": limit, "query": q}
 
-# ✅ 查线参数验证
+# ✅ 查询参数验证
 from fastapi import Query
 
 @app.get("/search")
@@ -260,16 +260,16 @@ async def search(
 
 > 🧰 **Toolbox: Path vs Query 何时用哪个？**
 >
-> | 场景 | 用·径参数 | 用查线参数 |
+> | 场景 | 用路径参数 | 用查询参数 |
 > |------|-----------|-----------|
-> | 资Դ标识 | `/users/42` | - |
+> | 资源标识 | `/users/42` | - |
 > | 过滤 | - | `?status=active` |
 > | 分页 | - | `?page=2&size=20` |
 > | 排序 | - | `?sort=name&order=asc` |
 > | 搜索 | - | `?q=python` |
-> | 子资Դ | `/users/42/posts` | - |
+> | 子资源 | `/users/42/posts` | - |
 >
-> **经验法则**: ·径参数标识**是什么**，查线参数描述**要怎样**。
+> **经验法则**: 路径参数标识**是什么**，查询参数描述**要怎样**。
 
 ---
 
@@ -308,7 +308,7 @@ class UserCreate(BaseModel):
     )
     email: EmailStr  # 自动验证邮箱格式
     age: int = Field(..., ge=0, le=150, description="年龄")
-    tags: list[str] = Field(default_factory=list, description="标ǩ列表")
+    tags: list[str] = Field(default_factory=list, description="标签列表")
 
 class UserResponse(BaseModel):
     """用户响应模型 — 控制哪些字段返回给客户端"""
@@ -320,7 +320,7 @@ class UserResponse(BaseModel):
     model_config = {"from_attributes": True}  # 支持从 ORM 对象转换
 ```
 
-### 4.2 Ƕ套模型与高级验证
+### 4.2 嵌套模型与高级验证
 
 ```python
 from pydantic import BaseModel, Field, field_validator, model_validator
@@ -342,10 +342,10 @@ class OrderItem(BaseModel):
         return self.quantity * self.unit_price
 
 class Order(BaseModel):
-    """订单模型 — չ示Ƕ套模型 + 自定义验证"""
+    """订单模型 — 展示嵌套模型 + 自定义验证"""
     customer_name: str
-    shipping_address: Address          # Ƕ套模型
-    items: list[OrderItem]             # Ƕ套列表
+    shipping_address: Address          # 嵌套模型
+    items: list[OrderItem]             # 嵌套列表
     discount_code: str | None = None
 
     # ✅ 字段级验证器
@@ -360,7 +360,7 @@ class Order(BaseModel):
     @model_validator(mode="after")
     def check_order_not_empty(self) -> "Order":
         if not self.items:
-            raise ValueError("订单至少需要一个商Ʒ")
+            raise ValueError("订单至少需要一个商品")
         return self
 
     @property
@@ -429,7 +429,7 @@ async def update_item(item_id: int, item: ItemUpdate) -> ItemResponse:
 > 🧠 **CS Master's Bridge: 依赖注入（DI）的本质**
 >
 > 依赖注入是 SOLID 原则中 **D（Dependency Inversion）** 的实现手段：
-> - **不是**你的函数ȥ创建依赖（紧耦合）
+> - **不是**你的函数去创建依赖（紧耦合）
 > - **而是**外部把依赖"注入"给你（松耦合）
 >
 > Spring 用 XML/注解做 DI，Angular 用 Module 做 DI。
@@ -449,19 +449,19 @@ async def common_parameters(
     skip: int = Query(default=0, ge=0),
     limit: int = Query(default=100, ge=1, le=1000)
 ) -> dict[str, int]:
-    """通用分页参数 — 多个·由共享"""
+    """通用分页参数 — 多个路由共享"""
     logger.info(f"[Deps] 分页参数: skip={skip}, limit={limit}")
     return {"skip": skip, "limit": limit}
 
 # ✅ 使用依赖 — Depends() 注入
 @app.get("/items")
 async def list_items(params: dict = Depends(common_parameters)) -> dict:
-    logger.info(f"[Items] 查线列表: {params}")
+    logger.info(f"[Items] 查询列表: {params}")
     return {"items": [], **params}
 
 @app.get("/users")
 async def list_users(params: dict = Depends(common_parameters)) -> dict:
-    logger.info(f"[Users] 查线列表: {params}")
+    logger.info(f"[Users] 查询列表: {params}")
     return {"users": [], **params}
 ```
 
@@ -472,13 +472,13 @@ from fastapi import FastAPI, Depends, HTTPException, Header
 
 # ✅ 依赖可以依赖其他依赖（依赖链）
 async def get_token(authorization: str = Header(...)) -> str:
-    """从 Header 提ȡ Token"""
+    """从 Header 提取 Token"""
     if not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Invalid token format")
     return authorization.split(" ")[1]
 
 async def get_current_user(token: str = Depends(get_token)) -> dict:
-    """根据 Token 获ȡ用户（依赖 get_token）"""
+    """根据 Token 获取用户（依赖 get_token）"""
     # 实际项目中这里会解码 JWT
     if token == "invalid":
         raise HTTPException(status_code=401, detail="Invalid token")
@@ -515,11 +515,11 @@ class DatabaseSession:
         logger.info("[DB] 关闭数据库连接")
         self.session = None
 
-# ✅ yield 依赖 — 自动清理资Դ
+# ✅ yield 依赖 — 自动清理资源
 async def get_db():
     """数据库会话依赖（推荐方式）"""
     db = "fake_db_session"  # 实际: AsyncSession(engine)
-    logger.info("[DB] 获ȡ数据库会话")
+    logger.info("[DB] 获取数据库会话")
     try:
         yield db
     finally:
@@ -541,7 +541,7 @@ async def get_data(db=Depends(get_db)) -> dict:
 > | **配置** | 零配置 | XML / 注解 / Java Config |
 > | **学习成本** | 5 分钟 | 5 天 |
 >
-> FastAPI 的 DI 简单但ǿ大：û有容器、û有注解、û有 XML——就是函数组合。
+> FastAPI 的 DI 简单但强大：没有容器、没有注解、没有 XML——就是函数组合。
 
 ---
 
@@ -602,7 +602,7 @@ app.add_middleware(
 )
 
 # ❌ 生产环境切勿使用
-# allow_origins=["*"]  # 允许所有来Դ = 安全风险！
+# allow_origins=["*"]  # 允许所有来源 = 安全风险！
 ```
 
 ### 6.3 异常处理中间件
@@ -631,11 +631,11 @@ async def general_exception_handler(request: Request, exc: Exception) -> JSONRes
 
 ---
 
-## 7. 异步·由
+## 7. 异步路由
 
 > ⚛️ **The Science: async def vs def — 何时用哪个？**
 >
-> FastAPI 同时支持同步和异步·由，但行为不同：
+> FastAPI 同时支持同步和异步路由，但行为不同：
 >
 > ```python
 > # async def — 在主事件循环中运行（不阻塞其他请求）
@@ -666,23 +666,23 @@ from fastapi import FastAPI
 logger = logging.getLogger(__name__)
 app = FastAPI()
 
-# ✅ 异步·由 — 并发处理 I/O
+# ✅ 异步路由 — 并发处理 I/O
 @app.get("/dashboard")
 async def get_dashboard() -> dict:
-    """并发获ȡ多个数据Դ — 比串行快 N 倍"""
-    logger.info("[Dashboard] 开始并发获ȡ数据")
+    """并发获取多个数据源 — 比串行快 N 倍"""
+    logger.info("[Dashboard] 开始并发获取数据")
 
     # 模拟异步操作
     async def fetch_users() -> list:
-        await asyncio.sleep(0.5)  # 模拟数据库查线
+        await asyncio.sleep(0.5)  # 模拟数据库查询
         return [{"id": 1, "name": "Alice"}]
 
     async def fetch_stats() -> dict:
-        await asyncio.sleep(0.3)  # 模拟统计查线
+        await asyncio.sleep(0.3)  # 模拟统计查询
         return {"total_users": 1000, "active": 850}
 
     async def fetch_notifications() -> list:
-        await asyncio.sleep(0.2)  # 模拟通知查线
+        await asyncio.sleep(0.2)  # 模拟通知查询
         return [{"msg": "New feature!"}]
 
     # ✅ 并发执行 — 总耗时 ≈ max(0.5, 0.3, 0.2) = 0.5s
@@ -692,7 +692,7 @@ async def get_dashboard() -> dict:
         fetch_notifications()
     )
 
-    logger.info("[Dashboard] 数据获ȡ完成")
+    logger.info("[Dashboard] 数据获取完成")
     return {
         "users": users,
         "stats": stats,
@@ -760,7 +760,7 @@ from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 logger = logging.getLogger(__name__)
 app = FastAPI()
 
-# ✅ WebSocket — 实时˫向通信
+# ✅ WebSocket — 实时双向通信
 class ConnectionManager:
     """WebSocket 连接管理器"""
     def __init__(self):
@@ -791,7 +791,7 @@ async def chat_endpoint(websocket: WebSocket) -> None:
         while True:
             data = await websocket.receive_text()
             logger.info(f"[WS] 收到消息: {data}")
-            await manager.broadcast(f"用户˵: {data}")
+            await manager.broadcast(f"用户说: {data}")
     except WebSocketDisconnect:
         manager.disconnect(websocket)
         await manager.broadcast("一位用户离开了聊天室")
@@ -804,11 +804,11 @@ async def chat_endpoint(websocket: WebSocket) -> None:
 > 🌌 **The Big Picture: API 文档的演化**
 >
 > API 文档的历史：
-> 1. **手写文档**（Word/Wiki）— 永Զ和代码不同步
+> 1. **手写文档**（Word/Wiki）— 永远和代码不同步
 > 2. **Swagger/OpenAPI 定义**（YAML/JSON）— 和代码分离，容易过时
-> 3. **代码即文档**（FastAPI）— 从代码自动生成，永Զ同步
+> 3. **代码即文档**（FastAPI）— 从代码自动生成，永远同步
 >
-> FastAPI 的ɱ手锏就是第三种：你的类型标注 + docstring = 自动生成的 OpenAPI 文档。
+> FastAPI 的明手锏就是第三种：你的类型标注 + docstring = 自动生成的 OpenAPI 文档。
 
 ### 9.1 自定义文档元信息
 
@@ -823,7 +823,7 @@ app = FastAPI(
 
     ### 功能
     * 📤 **数据上传** — 支持 CSV、JSON 格式
-    * 📊 **自动分析** — 统计ժ要、相关性分析
+    * 📊 **自动分析** — 统计摘要、相关性分析
     * 📈 **可视化** — 图表生成 API
     * 🔐 **认证** — JWT Token 认证
 
@@ -837,34 +837,34 @@ app = FastAPI(
 )
 ```
 
-### 9.2 ·由标ǩ与分组
+### 9.2 路由标签与分组
 
 ```python
 from fastapi import APIRouter
 
-# ✅ 用 Router 组织·由
+# ✅ 用 Router 组织路由
 users_router = APIRouter(
     prefix="/users",
     tags=["用户管理"],        # Swagger UI 中的分组
     responses={404: {"description": "用户不存在"}}
 )
 
-@users_router.get("/", summary="获ȡ用户列表")
+@users_router.get("/", summary="获取用户列表")
 async def list_users() -> list[dict]:
     """
-    获ȡ所有用户列表。
+    获取所有用户列表。
 
     - **skip**: 跳过的记录数
     - **limit**: 返回的最大记录数
     """
     return []
 
-@users_router.get("/{user_id}", summary="获ȡ单个用户")
+@users_router.get("/{user_id}", summary="获取单个用户")
 async def get_user(user_id: int) -> dict:
-    """根据 ID 获ȡ用户详细信息。"""
+    """根据 ID 获取用户详细信息。"""
     return {"id": user_id}
 
-# 注册·由
+# 注册路由
 app.include_router(users_router)
 ```
 
@@ -874,7 +874,7 @@ app.include_router(users_router)
 
 > 🧘 **Zen of Code: 好的项目结构如同好的城市规划**
 >
-> 你不会把医院建在工厂区，也不应该把数据库逻辑放在·由文件里。
+> 你不会把医院建在工厂区，也不应该把数据库逻辑放在路由文件里。
 > **关注点分离**不只是设计模式——它是你保持理智的方式。
 
 ### 推荐的项目结构
@@ -885,11 +885,11 @@ my_project/
 │   ├── __init__.py
 │   ├── main.py              # FastAPI 应用入口
 │   ├── config.py             # 配置管理
-│   ├── api/                  # API ·由层
+│   ├── api/                  # API 路由层
 │   │   ├── __init__.py
-│   │   ├── router.py         # ·由汇总
-│   │   ├── users.py          # 用户·由
-│   │   ├── items.py          # 商Ʒ·由
+│   │   ├── router.py         # 路由汇总
+│   │   ├── users.py          # 用户路由
+│   │   ├── items.py          # 商品路由
 │   │   └── deps.py           # 共享依赖
 │   ├── models/               # 数据模型层
 │   │   ├── __init__.py
@@ -906,7 +906,7 @@ my_project/
 │   ├── db/                   # 数据库层
 │   │   ├── __init__.py
 │   │   ├── session.py        # 数据库连接
-│   │   └── migrations/       # Alembic Ǩ移
+│   │   └── migrations/       # Alembic 迁移
 │   └── core/                 # 核心工具
 │       ├── __init__.py
 │       ├── security.py       # 认证/鉴权
@@ -940,9 +940,9 @@ logger = logging.getLogger(__name__)
 async def lifespan(app: FastAPI):
     """应用生命周期管理"""
     logger.info("[App] 启动：初始化数据库连接池...")
-    # 启动时：初始化资Դ
+    # 启动时：初始化资源
     yield
-    # 关闭时：清理资Դ
+    # 关闭时：清理资源
     logger.info("[App] 关闭：释放数据库连接池...")
 
 app = FastAPI(
@@ -960,7 +960,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 注册·由
+# 注册路由
 app.include_router(api_router, prefix="/api/v1")
 
 @app.get("/health")
@@ -993,7 +993,7 @@ class UserResponse(BaseModel):  # 所有响应
 
 # ❌ 避免：一个模型打天下
 class User(BaseModel):
-    id: int | None = None      # 创建时û有 id？
+    id: int | None = None      # 创建时没有 id？
     name: str
     password: str | None = None  # 响应要不要返回密码？
 ```
@@ -1069,7 +1069,7 @@ class Item(BaseModel):
 # ❌ 错误：忘记 await，返回协程对象而非结果
 @app.get("/oops")
 async def oops():
-    result = some_async_function()  # û有 await！
+    result = some_async_function()  # 没有 await！
     return result  # 返回的是 coroutine 对象
 
 # ✅ 正确
@@ -1089,7 +1089,7 @@ async def correct():
 **要求**：
 1. 定义 `Book` Pydantic 模型（title, author, isbn, price, published_year）
 2. 实现 CRUD 端点（GET, POST, PUT, DELETE）
-3. 添加查线参数支持（按作者筛选、按价格范围筛选）
+3. 添加查询参数支持（按作者筛选、按价格范围筛选）
 4. 添加请求计时中间件
 
 **参考答案框架**：
@@ -1135,12 +1135,12 @@ async def list_books(
 <summary><b>练习 2：实现一个依赖注入链</b></summary>
 
 **要求**：
-1. 创建一个 `verify_api_key` 依赖（从 Header 中读ȡ API Key）
+1. 创建一个 `verify_api_key` 依赖（从 Header 中读取 API Key）
 2. 创建一个 `get_current_user` 依赖（依赖 `verify_api_key`）
 3. 创建一个 `require_admin` 依赖（依赖 `get_current_user`）
 4. 创建受保护的管理端点
 
-**提示**：使用 `Header()` 读ȡ请求头，`HTTPException` 返回错误。
+**提示**：使用 `Header()` 读取请求头，`HTTPException` 返回错误。
 
 </details>
 
@@ -1156,9 +1156,9 @@ async def list_books(
 
 ---
 
-## 参考资Դ
+## 参考资源
 
-- [FastAPI 官方文档](https://fastapi.tiangolo.com/) — 最好的学习资Դ
+- [FastAPI 官方文档](https://fastapi.tiangolo.com/) — 最好的学习资源
 - [FastAPI 官方教程](https://fastapi.tiangolo.com/tutorial/) — 循序渐进
 - [Pydantic V2 文档](https://docs.pydantic.dev/) — 数据验证
 - [Starlette 文档](https://www.starlette.io/) — FastAPI 的底层框架

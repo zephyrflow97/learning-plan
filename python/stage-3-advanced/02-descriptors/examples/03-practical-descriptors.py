@@ -1,6 +1,6 @@
 """
-实ս描述器 — 类型检查、懒加载、缓存
-չ示描述器在实际开发中的三个核心用途
+实战描述器 — 类型检查、懒加载、缓存
+展示描述器在实际开发中的三个核心用途
 """
 
 import logging
@@ -16,7 +16,7 @@ logger = logging.getLogger("PracticalDescriptors")
 # ============================================================
 
 class Typed:
-    """✅ 类型检查描述器 — 使用 __set_name__ 自动获ȡ属性名"""
+    """✅ 类型检查描述器 — 使用 __set_name__ 自动获取属性名"""
 
     def __init__(self, expected_type: type) -> None:
         self.expected_type = expected_type
@@ -62,7 +62,7 @@ class Lazy:
             return self
         logger.debug("[Lazy] 首次计算: %s.%s", type(obj).__name__, self.name)
         value = self.func(obj)
-        # 关键：存入 __dict__，下次直接读ȡ（非数据描述器特性）
+        # 关键：存入 __dict__，下次直接读取（非数据描述器特性）
         obj.__dict__[self.name] = value
         return value
 
@@ -137,8 +137,8 @@ class Report:
 
     @Lazy
     def summary(self) -> dict:
-        """生成统计ժ要（模拟耗时操作）"""
-        logger.debug("[Report] 正在计算统计ժ要...")
+        """生成统计摘要（模拟耗时操作）"""
+        logger.debug("[Report] 正在计算统计摘要...")
         return {
             'count': len(self.data),
             'mean': sum(self.data) / len(self.data),
@@ -155,7 +155,7 @@ class WeatherAPI:
 
     @cached_property(ttl=3.0)
     def temperature(self) -> float:
-        """获ȡ温度（模拟 API 调用）"""
+        """获取温度（模拟 API 调用）"""
         import random
         temp = round(random.uniform(15.0, 35.0), 1)
         logger.debug("[WeatherAPI] API 返回温度: %.1f", temp)
@@ -164,7 +164,7 @@ class WeatherAPI:
 
 def main() -> None:
     print("=" * 60)
-    print("实ս描述器演示")
+    print("实战描述器演示")
     print("=" * 60)
 
     # --- Typed ---

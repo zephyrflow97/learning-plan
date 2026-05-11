@@ -22,7 +22,7 @@ def generate_ch02_examples():
 
     w('02-descriptors/examples/01-basic-descriptor.py', r'''"""
 描述器基础 — __get__, __set__, __delete__ 协议演示
-չ示数据描述器与非数据描述器的区别
+展示数据描述器与非数据描述器的区别
 """
 
 import logging
@@ -117,9 +117,9 @@ def main() -> None:
     # 类级别访问
     print(f"Config.host = {Config.host}")
 
-    # ɾ除属性
+    # 删除属性
     del config.host
-    print(f"ɾ除后 host = {config.host}")
+    print(f"删除后 host = {config.host}")
 
     # --- 优先级演示 ---
     print("\n--- 2. 数据 vs 非数据描述器优先级 ---")
@@ -131,7 +131,7 @@ def main() -> None:
     # 直接写入 __dict__
     obj.__dict__['data'] = "直接写入 __dict__"
     print(f"__dict__['data'] 后: obj.data = {obj.data}")
-    print("  → 数据描述器仍Ȼ优先！")
+    print("  → 数据描述器仍然优先！")
 
     # 非数据描述器
     print(f"\nobj.non_data = {obj.non_data}")
@@ -146,7 +146,7 @@ if __name__ == '__main__':
 
     w('02-descriptors/examples/02-property-internals.py', r'''"""
 property 内部原理 — 纯 Python 实现 property
-չ示 property 就是一个数据描述器
+展示 property 就是一个数据描述器
 """
 
 import logging
@@ -184,7 +184,7 @@ class MyProperty:
 
     def __delete__(self, obj):
         if self.fdel is None:
-            raise AttributeError("属性不可ɾ")
+            raise AttributeError("属性不可删")
         logger.debug("[MyProperty] __delete__: 调用 fdel")
         self.fdel(obj)
 
@@ -199,14 +199,14 @@ class MyProperty:
 
 
 class Circle:
-    """使用 MyProperty 实现的Բ"""
+    """使用 MyProperty 实现的圆"""
 
     def __init__(self, radius: float) -> None:
         self._radius = radius
 
     @MyProperty
     def radius(self) -> float:
-        """Բ的半径"""
+        """圆的半径"""
         return self._radius
 
     @radius.setter
@@ -217,7 +217,7 @@ class Circle:
 
     @MyProperty
     def area(self) -> float:
-        """Բ的面积（只读）"""
+        """圆的面积（只读）"""
         import math
         return math.pi * self._radius ** 2
 
@@ -259,8 +259,8 @@ if __name__ == '__main__':
 ''')
 
     w('02-descriptors/examples/03-practical-descriptors.py', r'''"""
-实ս描述器 — 类型检查、懒加载、缓存
-չ示描述器在实际开发中的三个核心用途
+实战描述器 — 类型检查、懒加载、缓存
+展示描述器在实际开发中的三个核心用途
 """
 
 import logging
@@ -276,7 +276,7 @@ logger = logging.getLogger("PracticalDescriptors")
 # ============================================================
 
 class Typed:
-    """✅ 类型检查描述器 — 使用 __set_name__ 自动获ȡ属性名"""
+    """✅ 类型检查描述器 — 使用 __set_name__ 自动获取属性名"""
 
     def __init__(self, expected_type: type) -> None:
         self.expected_type = expected_type
@@ -322,7 +322,7 @@ class Lazy:
             return self
         logger.debug("[Lazy] 首次计算: %s.%s", type(obj).__name__, self.name)
         value = self.func(obj)
-        # 关键：存入 __dict__，下次直接读ȡ（非数据描述器特性）
+        # 关键：存入 __dict__，下次直接读取（非数据描述器特性）
         obj.__dict__[self.name] = value
         return value
 
@@ -397,8 +397,8 @@ class Report:
 
     @Lazy
     def summary(self) -> dict:
-        """生成统计ժ要（模拟耗时操作）"""
-        logger.debug("[Report] 正在计算统计ժ要...")
+        """生成统计摘要（模拟耗时操作）"""
+        logger.debug("[Report] 正在计算统计摘要...")
         return {
             'count': len(self.data),
             'mean': sum(self.data) / len(self.data),
@@ -415,7 +415,7 @@ class WeatherAPI:
 
     @cached_property(ttl=3.0)
     def temperature(self) -> float:
-        """获ȡ温度（模拟 API 调用）"""
+        """获取温度（模拟 API 调用）"""
         import random
         temp = round(random.uniform(15.0, 35.0), 1)
         logger.debug("[WeatherAPI] API 返回温度: %.1f", temp)
@@ -424,7 +424,7 @@ class WeatherAPI:
 
 def main() -> None:
     print("=" * 60)
-    print("实ս描述器演示")
+    print("实战描述器演示")
     print("=" * 60)
 
     # --- Typed ---
@@ -474,7 +474,7 @@ def generate_ch03():
 > *"Metaclasses are deeper magic than 99% of users should ever worry about. If you wonder whether you need them, you don't."*
 > — Tim Peters
 >
-> 在 Python 中，类也是对象。既Ȼ类是对象，那˭创建了类？答案是：**元类**。
+> 在 Python 中，类也是对象。既然类是对象，那谁创建了类？答案是：**元类**。
 
 ---
 
@@ -484,11 +484,11 @@ def generate_ch03():
 - [2. type() 三参数形式](#2-type-三参数形式)
 - [3. 自定义元类](#3-自定义元类)
 - [4. \_\_init\_subclass\_\_（轻量替代）](#4-init_subclass轻量替代)
-- [5. 元类实ս：ORM、注册表](#5-元类实սorm注册表)
-- [6. 何时使用（几乎永Զ不需要）](#6-何时使用几乎永Զ不需要)
+- [5. 元类实战：ORM、注册表](#5-元类实战orm注册表)
+- [6. 何时使用（几乎永远不需要）](#6-何时使用几乎永远不需要)
 - [最佳实践 / 常见陷阱](#最佳实践--常见陷阱)
 - [练习题](#练习题)
-- [参考资Դ / 下一步](#参考资Դ--下一步)
+- [参考资源 / 下一步](#参考资源--下一步)
 
 ---
 
@@ -496,7 +496,7 @@ def generate_ch03():
 
 > 🎭 **The Drama: 一切皆对象的终极推论**
 >
-> Python ˵"一切皆对象"，那 `int` 是对象吗？`str` 是对象吗？
+> Python 说"一切皆对象"，那 `int` 是对象吗？`str` 是对象吗？
 > 是的！它们都是 `type` 的实例。
 >
 > ```python
@@ -507,7 +507,7 @@ def generate_ch03():
 >
 > 这就像一个哲学悖论：造物主也是被造之物。
 
-### 1.1 type 的˫重身份
+### 1.1 type 的双重身份
 
 ```python
 # type 既是函数（返回对象的类型），又是类（所有类的元类）
@@ -588,7 +588,7 @@ def make_dataclass(class_name: str, fields: list[str]) -> type:
     def __init__(self, **kwargs):
         for field in fields:
             if field not in kwargs:
-                raise TypeError(f"ȱ少必需字段: {field}")
+                raise TypeError(f"缺少必需字段: {field}")
             setattr(self, field, kwargs[field])
         logger.debug("[%s] 创建实例: %s", class_name, kwargs)
 
@@ -686,7 +686,7 @@ class ValidatedMeta(type):
                 if callable(value) and not key.startswith('_'):
                     if not getattr(value, '__doc__', None):
                         raise TypeError(
-                            f"类 {name} 的方法 {key}() ȱ少文档字符串"
+                            f"类 {name} 的方法 {key}() 缺少文档字符串"
                         )
 
         return super().__new__(mcs, name, bases, namespace)
@@ -708,7 +708,7 @@ class UserForm(Validatable):
         return "submitted"
 
 
-# ❌ ȱ少 validate 方法 — 类定义时就会报错
+# ❌ 缺少 validate 方法 — 类定义时就会报错
 # class BadForm(Validatable):
 #     pass  # TypeError: 类 BadForm 必须实现 validate() 方法
 ```
@@ -779,7 +779,7 @@ print(json_cls().serialize({"key": "value"}))
 
 ---
 
-## 5. 元类实ս：ORM、注册表
+## 5. 元类实战：ORM、注册表
 
 ### 5.1 迷你 ORM
 
@@ -870,7 +870,7 @@ print(user.to_sql_insert())
 
 ---
 
-## 6. 何时使用（几乎永Զ不需要）
+## 6. 何时使用（几乎永远不需要）
 
 > 🧘 **Zen of Code: 元类的决策树**
 >
@@ -942,7 +942,7 @@ class Circle(Drawable):
     def resize(self, factor): ...  # ✅
 
 # class BadShape(Drawable):
-#     def draw(self): ...  # ❌ ȱ少 resize
+#     def draw(self): ...  # ❌ 缺少 resize
 ```
 
 </details>
@@ -955,17 +955,17 @@ class Circle(Drawable):
 </details>
 
 <details>
-<summary>练习 3：迷你 ORM 扩չ</summary>
+<summary>练习 3：迷你 ORM 扩展</summary>
 
-扩չ上面的 ORM 示例，添加 `to_sql_create_table()` 方法。
+扩展上面的 ORM 示例，添加 `to_sql_create_table()` 方法。
 
 </details>
 
 ---
 
-## 参考资Դ / 下一步
+## 参考资源 / 下一步
 
-**参考资Դ：**
+**参考资源：**
 - [Python 官方文档 - Metaclasses](https://docs.python.org/3/reference/datamodel.html#metaclasses)
 - [Fluent Python, 2nd Edition - Chapter 24: Class Metaprogramming](https://www.oreilly.com/library/view/fluent-python-2nd/9781492056348/)
 - [PEP 487 - __init_subclass__](https://peps.python.org/pep-0487/)
@@ -1172,7 +1172,7 @@ class RequiredMethods:
         missing = [m for m in cls._required if m not in cls.__dict__]
         if missing and not getattr(cls, '_abstract', False):
             raise TypeError(
-                f"类 {cls.__name__} ȱ少必需方法: {missing}"
+                f"类 {cls.__name__} 缺少必需方法: {missing}"
             )
 
 
@@ -1215,10 +1215,10 @@ def main() -> None:
     print(f"编码: {encoded}")
     print(f"解码: {decoded}")
 
-    # ȡ消注释以下代码会在类定义时报错
+    # 取消注释以下代码会在类定义时报错
     # class BadCodec(Serializer):
     #     def serialize(self, data): pass
-    #     # ȱ少 deserialize → TypeError
+    #     # 缺少 deserialize → TypeError
 
 
 if __name__ == '__main__':
@@ -1226,7 +1226,7 @@ if __name__ == '__main__':
 ''')
 
     w('03-metaclasses/examples/04-orm-example.py', r'''"""
-迷你 ORM — 元类实ս：声明式模型定义
+迷你 ORM — 元类实战：声明式模型定义
 """
 
 import logging

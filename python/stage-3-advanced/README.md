@@ -3,11 +3,11 @@
 > *"In the face of ambiguity, refuse the temptation to guess."*
 > — The Zen of Python, Line 12
 
-欢迎来到 Python 学习的第三阶段！这是一个分ˮ岭——在这个阶段之后，你将从 Python 的**使用者**变成**理解者**。你不再只是调用 API，你开始理解 API 背后的机制，并创造自己的 API。
+欢迎来到 Python 学习的第三阶段！这是一个分水岭——在这个阶段之后，你将从 Python 的**使用者**变成**理解者**。你不再只是调用 API，你开始理解 API 背后的机制，并创造自己的 API。
 
 > ⚛️ **The Science：Python 数据模型 — 语言的宪法**
 >
-> 如果˵ Stage 1 教你识字，Stage 2 教你写作文，那 Stage 3 就是教你**修辞学和语法学**。
+> 如果说 Stage 1 教你识字，Stage 2 教你写作文，那 Stage 3 就是教你**修辞学和语法学**。
 >
 > Python 的一切"魔法"——`len(x)` 调用 `x.__len__()`、`for` 循环调用 `__iter__`、`+` 运算符调用 `__add__`——都不是硬编码在解释器里的。它们遵循一套统一的规则：**Python 数据模型 (Data Model)**。
 >
@@ -53,7 +53,7 @@
 > `__new__` 是构造器：它**创造**对象（分配内存、返回实例）。
 > `__init__` 是初始化器：它**设置**对象（填充属性）。
 >
-> 类比：`__new__` 是产房，负责接生婴儿。`__init__` 是育婴室，负责给婴儿穿衣服、ȡ名字。
+> 类比：`__new__` 是产房，负责接生婴儿。`__init__` 是育婴室，负责给婴儿穿衣服、取名字。
 > 99% 的情况你只需要 `__init__`。但当你需要控制单例、实现不可变类型、或做元编程时，`__new__` 就登场了。
 
 ---
@@ -68,7 +68,7 @@
 - `property` 的实现原理（它就是一个描述器！）
 - 属性查找优先级：数据描述器 → 实例 `__dict__` → 非数据描述器
 - 方法绑定的秘密：为什么 `obj.method()` 能自动传递 `self`
-- 实ս：实现类型检查描述器、懒加载描述器、缓存描述器
+- 实战：实现类型检查描述器、懒加载描述器、缓存描述器
 - `__set_name__`（3.6+）：让描述器知道自己的名字
 
 **学习成果：**
@@ -95,8 +95,8 @@
 - 自定义元类：`class Meta(type)`
 - `__init_subclass__`（3.6+）：元类的轻量替代
 - `__class_getitem__`：`list[int]` 是怎么工作的
-- 元类的实ս场景：ORM、注册表、接口ǿ制
-- 何时使用元类（几乎永Զ不需要）
+- 元类的实战场景：ORM、注册表、接口强制
+- 何时使用元类（几乎永远不需要）
 
 **学习成果：**
 - 理解"一切皆对象，类也是对象"的深层含义
@@ -105,10 +105,10 @@
 
 > 🧘 **Zen of Code：元类是 Python 的核武器**
 >
-> Tim Peters（`The Zen of Python` 的作者）˵过：
+> Tim Peters（`The Zen of Python` 的作者）说过：
 > *"Metaclasses are deeper magic than 99% of users should ever worry about. If you wonder whether you need them, you don't."*
 >
-> 元类很ǿ大，但 99% 的场景有更简单的替代方案：
+> 元类很强大，但 99% 的场景有更简单的替代方案：
 > - 需要修改子类行为？用 `__init_subclass__`
 > - 需要注册子类？用装饰器
 > - 需要验证类属性？用 `__set_name__` 描述器
@@ -141,9 +141,9 @@
 > 这听起来很糟糕，但事实是：
 > - **I/O 操作会释放 GIL**：网络请求、文件读写时，其他线程可以运行
 > - **大部分 Web 应用是 I/O 密集型的**：等数据库、等 API、等用户
-> - **NumPy/C 扩չ会释放 GIL**：计算密集型操作可以真正并行
+> - **NumPy/C 扩展会释放 GIL**：计算密集型操作可以真正并行
 >
-> GIL 不是 Python 的 Bug，它是一个**工程权衡**：用单线程性能换ȡ实现简单性和 C 扩չ兼容性。
+> GIL 不是 Python 的 Bug，它是一个**工程权衡**：用单线程性能换取实现简单性和 C 扩展兼容性。
 > 如果你需要 CPU 并行：用 `multiprocessing`。如果你需要 I/O 并发：用 `asyncio`。
 
 ---
@@ -209,7 +209,7 @@
 > ```
 >
 > 关键洞察：`await` 不是"等待"——它是"让出控制权"。
-> 当一个协程 `await` I/O 时，事件循环ȥ执行其他就绪的协程。
+> 当一个协程 `await` I/O 时，事件循环去执行其他就绪的协程。
 > 这就是单线程实现"并发"的秘密：**不是真的同时执行，而是在等待时切换任务**。
 
 ---
@@ -229,7 +229,7 @@
 - Monad 的 Python 实现（`Optional`/`Result` 模式）
 
 **学习成果：**
-- 能在 OOP 代码中自Ȼ融入 FP 技巧
+- 能在 OOP 代码中自然融入 FP 技巧
 - 精通 `functools` 和 `itertools`
 - 理解何时选择 FP 风格、何时选择 OOP 风格
 
@@ -266,7 +266,7 @@
 > | GoF 模式 | Java 实现 | Python 实现 |
 > |---------|----------|------------|
 > | 策略模式 | 定义接口 + 多个实现类 | 传一个函数 |
-> | 单例模式 | ˫重检查锁 + volatile | 用模块（模块天生单例）|
+> | 单例模式 | 双重检查锁 + volatile | 用模块（模块天生单例）|
 > | 迭代器模式 | 实现 Iterator 接口 | `yield` 一个关键字搞定 |
 > | 装饰器模式 | 定义接口 + 包装类 | `@decorator` 语法糖 |
 > | 命令模式 | Command 接口 + ConcreteCommand | 传一个 callable |
@@ -280,18 +280,18 @@
 **学习时长：** 3-4 天
 
 **核心内容：**
-- "过早优化是万恶之Դ"——但知道如何优化是必需的
-- `cProfile` 与 `profile`：找到性能ƿ颈
+- "过早优化是万恶之源"——但知道如何优化是必需的
+- `cProfile` 与 `profile`：找到性能瓶颈
 - `line_profiler`：逐行分析
 - `memory_profiler`：内存使用分析
 - `timeit`：微基准测试
-- 常见性能陷阱：字符串ƴ接、全局变量查找、列表 vs 生成器
+- 常见性能陷阱：字符串拼接、全局变量查找、列表 vs 生成器
 - 数据结构选择对性能的影响
 - `__slots__` 减少内存使用
-- C 扩չ预览：`ctypes`、`Cython`、`PyO3`（Rust 绑定）
+- C 扩展预览：`ctypes`、`Cython`、`PyO3`（Rust 绑定）
 
 **学习成果：**
-- 能用 Profiling 工具定位性能ƿ颈
+- 能用 Profiling 工具定位性能瓶颈
 - 掌握常见的 Python 性能优化技巧
 - 理解何时需要"逃逸"到 C/Rust
 
@@ -317,7 +317,7 @@
 
 ---
 
-### [实ս项目 A：异步 Web 爬虫框架](./projects/async-crawler/)
+### [实战项目 A：异步 Web 爬虫框架](./projects/async-crawler/)
 
 **项目时长：** 5-7 天
 
@@ -334,7 +334,7 @@
 
 ---
 
-### [实ս项目 B：py-toolkit 工具库](./projects/py-toolkit/)
+### [实战项目 B：py-toolkit 工具库](./projects/py-toolkit/)
 
 **项目时长：** 3-5 天
 
@@ -382,7 +382,7 @@
 - 第 3 周：第 5-6 章（multiprocessing + asyncio）
 - 第 4 周：第 7-8 章（FP + 设计模式）
 - 第 5 周：第 9-10 章（性能 + 网络）
-- 第 6-7 周：项目实ս
+- 第 6-7 周：项目实战
 - 第 8 周：练习题 + 回顾
 
 ### 关键提示
@@ -390,7 +390,7 @@
 > 💡 **本阶段最重要的三个概念**
 >
 > 1. **Python 数据模型** — 理解了它，你就理解了 Python 语言本身
-> 2. **asyncio** — 现代 Python 后端开发的基ʯ
+> 2. **asyncio** — 现代 Python 后端开发的基石
 > 3. **设计模式的 Python 简化** — 不要把 Java 的模式生搬硬套到 Python
 
 ## ✅ 完成标准
@@ -409,7 +409,7 @@
 
 ---
 
-## 📖 参考资Դ
+## 📖 参考资源
 
 - [Fluent Python, 2nd Ed.](https://www.oreilly.com/library/view/fluent-python-2nd/9781492056348/) — 本阶段的核心参考书
 - [Effective Python, 3rd Ed.](https://effectivepython.com/) — 90 条最佳实践

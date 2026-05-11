@@ -43,7 +43,7 @@ def check_virtual_environment() -> None:
     in_venv = sys.prefix != sys.base_prefix
     if in_venv:
         print(f"✅ 在虚拟环境中运行")
-        print(f"   虚拟环境·径: {sys.prefix}")
+        print(f"   虚拟环境路径: {sys.prefix}")
     else:
         print("⚠️  未在虚拟环境中运行")
         print("   建议: python -m venv .venv")
@@ -57,7 +57,7 @@ def check_packages() -> None:
 
     packages_to_check = [
         ("ruff", "代码检查和格式化"),
-        ("ipython", "增ǿ交互式环境"),
+        ("ipython", "增强交互式环境"),
         ("pytest", "测试框架"),
     ]
 

@@ -3,7 +3,7 @@
 > *"Metaclasses are deeper magic than 99% of users should ever worry about. If you wonder whether you need them, you don't."*
 > — Tim Peters
 >
-> 在 Python 中，类也是对象。既Ȼ类是对象，那˭创建了类？答案是：**元类**。
+> 在 Python 中，类也是对象。既然类是对象，那谁创建了类？答案是：**元类**。
 
 ---
 
@@ -13,11 +13,11 @@
 - [2. type() 三参数形式](#2-type-三参数形式)
 - [3. 自定义元类](#3-自定义元类)
 - [4. \_\_init\_subclass\_\_（轻量替代）](#4-init_subclass轻量替代)
-- [5. 元类实ս：ORM、注册表](#5-元类实սorm注册表)
-- [6. 何时使用（几乎永Զ不需要）](#6-何时使用几乎永Զ不需要)
-- [最佳实践 / 常见陷阱](#最佳实践--常见陷阱)
+- [5. 元类实战：ORM、注册表](#5-元类实战orm注册表)
+- [6. 何时使用（几乎永远不需要）](#6-何时使用几乎永远不需要)
+- [最佳实践 / 常见陷阱](#最佳实践践--常见陷阱)
 - [练习题](#练习题)
-- [参考资Դ / 下一步](#参考资Դ--下一步)
+- [参考资源 / 下一步](#参考资源--下一步)
 
 ---
 
@@ -25,7 +25,7 @@
 
 > 🎭 **The Drama: 一切皆对象的终极推论**
 >
-> Python ˵"一切皆对象"，那 `int` 是对象吗？`str` 是对象吗？
+> Python 说"一切皆对象"，那 `int` 是对象吗？`str` 是对象吗？
 > 是的！它们都是 `type` 的实例。
 >
 > ```python
@@ -36,7 +36,7 @@
 >
 > 这就像一个哲学悖论：造物主也是被造之物。
 
-### 1.1 type 的˫重身份
+### 1.1 type 的双重身份
 
 ```python
 # type 既是函数（返回对象的类型），又是类（所有类的元类）
@@ -117,7 +117,7 @@ def make_dataclass(class_name: str, fields: list[str]) -> type:
     def __init__(self, **kwargs):
         for field in fields:
             if field not in kwargs:
-                raise TypeError(f"ȱ少必需字段: {field}")
+                raise TypeError(f"缺少必需字段: {field}")
             setattr(self, field, kwargs[field])
         logger.debug("[%s] 创建实例: %s", class_name, kwargs)
 
@@ -215,7 +215,7 @@ class ValidatedMeta(type):
                 if callable(value) and not key.startswith('_'):
                     if not getattr(value, '__doc__', None):
                         raise TypeError(
-                            f"类 {name} 的方法 {key}() ȱ少文档字符串"
+                            f"类 {name} 的方法 {key}() 缺少文档字符串"
                         )
 
         return super().__new__(mcs, name, bases, namespace)
@@ -237,7 +237,7 @@ class UserForm(Validatable):
         return "submitted"
 
 
-# ❌ ȱ少 validate 方法 — 类定义时就会报错
+# ❌ 缺少 validate 方法 — 类定义时就会报错
 # class BadForm(Validatable):
 #     pass  # TypeError: 类 BadForm 必须实现 validate() 方法
 ```
@@ -308,7 +308,7 @@ print(json_cls().serialize({"key": "value"}))
 
 ---
 
-## 5. 元类实ս：ORM、注册表
+## 5. 元类实战：ORM、注册表
 
 ### 5.1 迷你 ORM
 
@@ -399,7 +399,7 @@ print(user.to_sql_insert())
 
 ---
 
-## 6. 何时使用（几乎永Զ不需要）
+## 6. 何时使用（几乎永远不需要）
 
 > 🧘 **Zen of Code: 元类的决策树**
 >
@@ -471,7 +471,7 @@ class Circle(Drawable):
     def resize(self, factor): ...  # ✅
 
 # class BadShape(Drawable):
-#     def draw(self): ...  # ❌ ȱ少 resize
+#     def draw(self): ...  # ❌ 缺少 resize
 ```
 
 </details>
@@ -484,17 +484,17 @@ class Circle(Drawable):
 </details>
 
 <details>
-<summary>练习 3：迷你 ORM 扩չ</summary>
+<summary>练习 3：迷你 ORM 扩展</summary>
 
-扩չ上面的 ORM 示例，添加 `to_sql_create_table()` 方法。
+扩展上面的 ORM 示例，添加 `to_sql_create_table()` 方法。
 
 </details>
 
 ---
 
-## 参考资Դ / 下一步
+## 参考资源 / 下一步
 
-**参考资Դ：**
+**参考资源：**
 - [Python 官方文档 - Metaclasses](https://docs.python.org/3/reference/datamodel.html#metaclasses)
 - [Fluent Python, 2nd Edition - Chapter 24: Class Metaprogramming](https://www.oreilly.com/library/view/fluent-python-2nd/9781492056348/)
 - [PEP 487 - __init_subclass__](https://peps.python.org/pep-0487/)

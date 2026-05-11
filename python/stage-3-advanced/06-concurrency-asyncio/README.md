@@ -20,7 +20,7 @@
 - [7. aiohttp/httpx 实战](#7-aiohttphttpx-实战)
 - [8. 结构化并发（Python 3.11+ TaskGroup）](#8-结构化并发python-311-taskgroup)
 - [9. asyncio vs threading vs multiprocessing 总结](#9-asyncio-vs-threading-vs-multiprocessing-总结)
-- [最佳实践 / 常见陷阱](#最佳实践--常见陷阱)
+- [最佳实践 / 常见陷阱](#最佳实践践--常见陷阱)
 - [练习题](#练习题)
 - [参考资源 / 下一步](#参考资源--下一步)
 

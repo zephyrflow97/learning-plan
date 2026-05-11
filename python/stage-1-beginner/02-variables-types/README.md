@@ -1,10 +1,10 @@
-# 第 2 章：变量与数据类型 — 名字只是一张标ǩ
+# 第 2 章：变量与数据类型 — 名字只是一张标签
 
 > *"Namespaces are one honking great idea -- let's do more of those!"*
 > — The Zen of Python, Line 19
 >
-> 在大多数语言中，变量是一个"盒子"，你把值放进ȥ。
-> 在 Python 中，变量是一张"标ǩ"，你把它贴在对象上。
+> 在大多数语言中，变量是一个"盒子"，你把值放进去。
+> 在 Python 中，变量是一张"标签"，你把它贴在对象上。
 > 这个看似微小的区别，决定了 Python 程序的行为方式。
 
 ## 📖 本章内容
@@ -20,19 +20,19 @@
 - [最佳实践](#最佳实践)
 - [常见陷阱](#常见陷阱)
 - [练习题](#练习题)
-- [参考资Դ](#参考资Դ)
+- [参考资源](#参考资源)
 - [下一步](#下一步)
 
 ---
 
 ## 1. 动态类型的哲学与代价
 
-> 🌌 **The Big Picture: 静态类型 vs 动态类型 — 编程语言的两条·**
+> 🌌 **The Big Picture: 静态类型 vs 动态类型 — 编程语言的两条路**
 >
 > 编程语言的类型系统是一个根本性的设计选择：
 >
 > - **静态类型（C、Java、Go、Rust）**：变量在声明时确定类型，编译器检查类型错误
-> - **动态类型（Python、JavaScript、Ruby）**：变量û有类型，值有类型，运行时检查
+> - **动态类型（Python、JavaScript、Ruby）**：变量没有类型，值有类型，运行时检查
 >
 > Python 选择了动态类型，代价是运行时才能发现类型错误；收益是极高的灵活性和开发速度。
 > 这就是为什么 Python 后来引入了**类型标注**（PEP 484, Python 3.5+）——在保持动态性的同时，用工具（`mypy`）提前发现类型问题。
@@ -40,7 +40,7 @@
 ### 1.1 Python 的动态类型
 
 ```python
-# 在 Python 中，变量û有类型——值有类型
+# 在 Python 中，变量没有类型——值有类型
 x = 42          # x 指向一个 int 对象
 print(type(x))  # <class 'int'>
 
@@ -90,7 +90,7 @@ print(isinstance(42, (int, str))) # True（检查多个类型）
 
 ### 2.1 int — 无限精度整数
 
-> ⚛️ **The Science: Python 的 int û有上限**
+> ⚛️ **The Science: Python 的 int 没有上限**
 >
 > 在 C 中，`int` 是 32 位（最大约 21 亿）。在 Java 中，`long` 是 64 位。
 > 在 Python 中，`int` 是**任意精度**的——只要内存够，它可以表示任意大的整数。
@@ -99,7 +99,7 @@ print(isinstance(42, (int, str))) # True（检查多个类型）
 > 这意味着 Python 的 `int` 在大数时比 C 慢很多，但对于日常使用绰绰有余。
 
 ```python
-# Python 的 int û有溢出问题
+# Python 的 int 没有溢出问题
 big_number = 10 ** 100  # googol：1 后面 100 个零
 print(big_number)
 # 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
@@ -116,7 +116,7 @@ binary = 0b_1010_0101
 # 不同进制
 print(0b1010)   # 二进制 → 10
 print(0o17)     # 八进制 → 15
-print(0xFF)     # ʮ六进制 → 255
+print(0xFF)     # 十六进制 → 255
 
 # 进制转换
 print(bin(42))  # '0b101010'
@@ -124,12 +124,12 @@ print(oct(42))  # '0o52'
 print(hex(42))  # '0x2a'
 ```
 
-### 2.2 float — IEEE 754 ˫精度浮点数
+### 2.2 float — IEEE 754 双精度浮点数
 
 > 🧠 **CS Master's Bridge: 浮点数的陷阱**
 >
-> 如果你学过计算机组成原理，你知道 IEEE 754 ˫精度浮点数用 64 位表示：
-> 1 位符号 + 11 位指数 + 52 位尾数，精度约为 15-17 位ʮ进制有效数字。
+> 如果你学过计算机组成原理，你知道 IEEE 754 双精度浮点数用 64 位表示：
+> 1 位符号 + 11 位指数 + 52 位尾数，精度约为 15-17 位十进制有效数字。
 >
 > 这意味着 `0.1 + 0.2 != 0.3` 不是 Python 的 bug——这是**所有**使用 IEEE 754 的语言的"特性"。
 > C、Java、JavaScript、Go 都有同样的问题。
@@ -185,17 +185,17 @@ print(z1 * z2)     # (-5+10j)
 | `-` | 减 | `3 - 2` → `1` | `3.0 - 2.0` → `1.0` | |
 | `*` | 乘 | `3 * 2` → `6` | `3.0 * 2.0` → `6.0` | |
 | `/` | 除 | `7 / 2` → `3.5` | `7.0 / 2.0` → `3.5` | **总是返回 float** |
-| `//` | 整除 | `7 // 2` → `3` | `7.0 // 2.0` → `3.0` | 向下ȡ整（负数注意） |
-| `%` | ȡ模 | `7 % 2` → `1` | `7.0 % 2.0` → `1.0` | |
+| `//` | 整除 | `7 // 2` → `3` | `7.0 // 2.0` → `3.0` | 向下取整（负数注意） |
+| `%` | 取模 | `7 % 2` → `1` | `7.0 % 2.0` → `1.0` | |
 | `**` | 幂 | `2 ** 10` → `1024` | `2.0 ** 0.5` → `1.414...` | |
 | `divmod()` | 商和余数 | `divmod(7, 2)` → `(3, 1)` | | 等价于 `(a//b, a%b)` |
 
 ```python
-# ⚠️ 整除的方向（向负无穷ȡ整，不是向零ȡ整）
+# ⚠️ 整除的方向（向负无穷取整，不是向零取整）
 print(7 // 2)    # 3（正常）
-print(-7 // 2)   # -4（不是 -3！Python 向负无穷ȡ整）
+print(-7 // 2)   # -4（不是 -3！Python 向负无穷取整）
 
-# 对比 C/Java 的截断除法（向零ȡ整）：
+# 对比 C/Java 的截断除法（向零取整）：
 # -7 / 2 == -3  （C/Java）
 # -7 // 2 == -4 （Python）
 import math
@@ -211,7 +211,7 @@ print(math.trunc(-7 / 2))  # -3（如果你需要 C 风格的截断）
 > 这是一个让人大跌眼镜的事实：在 Python 中，`True` 就是 `1`，`False` 就是 `0`。
 > `bool` 是 `int` 的子类。你可以用布尔值做算术运算：`True + True == 2`。
 >
-> 这不是 bug，这是 Python 的历史遗留——在 Python 2.3 之前，Python 甚至û有 `bool` 类型，人们直接用 `0` 和 `1`。
+> 这不是 bug，这是 Python 的历史遗留——在 Python 2.3 之前，Python 甚至没有 `bool` 类型，人们直接用 `0` 和 `1`。
 > `bool` 在 2.3 版本引入时，为了向后兼容，被设计为 `int` 的子类。
 
 ```python
@@ -290,7 +290,7 @@ if x is not None:  # 只排除 None，不排除 0
     process(x)
 ```
 
-### 3.2 短·求值
+### 3.2 短路求值
 
 ```python
 # and 和 or 不一定返回 True/False —— 它们返回决定结果的那个值
@@ -320,7 +320,7 @@ name = user_input if user_input is not None else "Anonymous"
 
 > 🧘 **Zen of Code: None — Python 的"空"**
 >
-> `None` 是 Python 的空值，它代表"û有值"或"ȱʧ"。
+> `None` 是 Python 的空值，它代表"没有值"或"缺失"。
 > 它不是 `0`（那是数字零），不是 `""`（那是空字符串），不是 `[]`（那是空列表）。
 > 它是一个独立的类型 `NoneType` 的唯一实例。
 >
@@ -330,7 +330,7 @@ name = user_input if user_input is not None else "Anonymous"
 ```python
 # None 的常见用法
 
-# 1. 函数û有显式 return 时，返回 None
+# 1. 函数没有显式 return 时，返回 None
 def greet(name: str) -> None:
     print(f"Hello, {name}!")
 
@@ -355,7 +355,7 @@ def get_cache() -> dict:
 
 # ✅ 检查 None 用 is / is not
 if result is None:
-    print("û有返回值")
+    print("没有返回值")
 
 if result is not None:
     print(f"返回值: {result}")
@@ -372,22 +372,22 @@ if result == None:    # 技术上可行，但不是 Pythonic
 > 🧠 **CS Master's Bridge: Python 变量 ≠ C 变量**
 >
 > 在 C 中，`int x = 42;` 意味着：
-> 1. 在ջ上分配 4 字节
-> 2. 把 42 写进ȥ
+> 1. 在栈上分配 4 字节
+> 2. 把 42 写进去
 > 3. `x` 是这块内存的名字
 >
 > 在 Python 中，`x = 42` 意味着：
 > 1. 在堆上创建一个 `int` 对象（值为 42）
 > 2. 让名字 `x` 指向（引用）这个对象
 >
-> `x` 不是盒子，`x` 是贴在对象上的**标ǩ**。
+> `x` 不是盒子，`x` 是贴在对象上的**标签**。
 
 ```python
 # 名称绑定的本质
 
 # a 和 b 指向同一个对象
 a = [1, 2, 3]
-b = a               # b 不是 a 的复制Ʒ，b 是同一个列表的另一个标ǩ
+b = a               # b 不是 a 的复制品，b 是同一个列表的另一个标签
 print(id(a))         # 例如 140234567890
 print(id(b))         # 同一个地址！140234567890
 print(a is b)        # True — 同一个对象
@@ -396,7 +396,7 @@ print(a is b)        # True — 同一个对象
 a.append(4)
 print(b)             # [1, 2, 3, 4] — b 也看到了变化，因为它们是同一个对象
 
-# 但重新赋值 a 不会影响 b（重新绑定是换标ǩ，不是改对象）
+# 但重新赋值 a 不会影响 b（重新绑定是换标签，不是改对象）
 a = [10, 20, 30]     # a 现在指向一个全新的列表
 print(b)             # [1, 2, 3, 4] — b 还是指向原来的列表
 print(a is b)        # False — 现在是两个不同的对象
@@ -412,17 +412,17 @@ print(a is b)        # False — 现在是两个不同的对象
   a ----→ [1, 2, 3] ←---- b    （同一个对象）
 
 步骤 3: a.append(4)
-  a ----→ [1, 2, 3, 4] ←---- b （原地修改，两个标ǩ都看到）
+  a ----→ [1, 2, 3, 4] ←---- b （原地修改，两个标签都看到）
 
 步骤 4: a = [10, 20, 30]
-  a ----→ [10, 20, 30]          （a 换了标ǩ）
+  a ----→ [10, 20, 30]          （a 换了标签）
   b ----→ [1, 2, 3, 4]          （b 还在原来的对象上）
 ```
 
 ### 5.1 赋值不是复制
 
 ```python
-# ⚠️ 赋值永Զ不复制数据，它只是创建一个新的引用
+# ⚠️ 赋值永远不复制数据，它只是创建一个新的引用
 
 # 不可变对象（int, str, tuple）——看起来像复制
 x = 42
@@ -444,7 +444,7 @@ import copy
 
 original = [1, [2, 3], 4]
 
-# ǳ复制（shallow copy）：只复制顶层
+# 浅复制（shallow copy）：只复制顶层
 shallow = original.copy()       # 或 list(original) 或 original[:]
 shallow[0] = 999                # 不影响 original
 shallow[1].append(999)          # ⚠️ 影响 original！因为内层列表是共享的
@@ -460,8 +460,8 @@ print(original2)                # [1, [2, 3], 4] — 安全！
 | 操作 | 语法 | 复制深度 | 何时使用 |
 |------|------|---------|---------|
 | 赋值 | `b = a` | 不复制（别名） | 只需要另一个引用 |
-| ǳ复制 | `a.copy()` / `list(a)` / `a[:]` | 只复制顶层 | 顶层元素是不可变的 |
-| 深复制 | `copy.deepcopy(a)` | 递归复制所有层 | Ƕ套了可变对象 |
+| 浅复制 | `a.copy()` / `list(a)` / `a[:]` | 只复制顶层 | 顶层元素是不可变的 |
+| 深复制 | `copy.deepcopy(a)` | 递归复制所有层 | 嵌套了可变对象 |
 
 ---
 
@@ -482,7 +482,7 @@ c = a
 
 # 值比较
 print(a == b)    # True — 内容相同
-print(a == c)    # True — 当Ȼ也相同
+print(a == c)    # True — 当然也相同
 
 # 身份比较
 print(a is b)    # False — 两个不同的列表对象
@@ -504,7 +504,7 @@ print(a is b)    # True — 缓存的同一个对象
 
 a = 257
 b = 257
-print(a is b)    # 可能是 False！（ȡ决于实现和上下文）
+print(a is b)    # 可能是 False！（取决于实现和上下文）
 
 # ⚠️ 字符串驻留（interning）
 s1 = "hello"
@@ -518,7 +518,7 @@ print(s1 is s2)  # 可能是 False（包含特殊字符时不一定驻留）
 # 🔑 关键规则：
 # 1. 只用 is 检查 None: if x is None
 # 2. 其他情况都用 ==
-# 3. 永Զ不要依赖 is 来比较整数或字符串
+# 3. 永远不要依赖 is 来比较整数或字符串
 ```
 
 ---
@@ -530,7 +530,7 @@ print(s1 is s2)  # 可能是 False（包含特殊字符时不一定驻留）
 > 不可变性（Immutability）有三个重要好处：
 >
 > 1. **可哈希**：只有不可变对象才能作为 `dict` 的键和 `set` 的元素
-> 2. **线程安全**：不可变对象天Ȼ线程安全，不需要锁
+> 2. **线程安全**：不可变对象天然线程安全，不需要锁
 > 3. **可预测性**：不可变对象不会被意外修改，减少 bug
 >
 > Python 的设计哲学是：**基础类型（str, int, float, tuple, frozenset）都是不可变的**。
@@ -613,7 +613,7 @@ if math.isclose(a, b, rel_tol=1e-9):
 from decimal import Decimal
 price = Decimal("19.99")
 
-# ✅ 6. 使用类型标注（即使 Python 不ǿ制）
+# ✅ 6. 使用类型标注（即使 Python 不强制）
 def calculate_area(radius: float) -> float:
     return 3.14159 * radius ** 2
 ```
@@ -626,7 +626,7 @@ def calculate_area(radius: float) -> float:
 
 ```python
 # ❌ 直接比较浮点数
-if 0.1 + 0.2 == 0.3:     # False！永Զ不要这么做
+if 0.1 + 0.2 == 0.3:     # False！永远不要这么做
     print("相等")
 
 # ✅ 使用 math.isclose()
@@ -641,7 +641,7 @@ if math.isclose(0.1 + 0.2, 0.3):  # True
 # ❌ 用 is 比较整数
 a = 1000
 b = 1000
-if a is b:                # 不可靠！结果ȡ决于实现
+if a is b:                # 不可靠！结果取决于实现
     print("相同")
 
 # ✅ 用 == 比较值
@@ -675,7 +675,7 @@ print(add_item_safe("b"))  # ['b'] — 正确！
 
 ```python
 # "in" 对字符串检查的是子串，不是字符
-print("hell" in "hello")   # True — 子串ƥ配
+print("hell" in "hello")   # True — 子串匹配
 print("lo" in "hello")     # True
 print("hx" in "hello")     # False
 ```
@@ -731,7 +731,7 @@ print(f"z = {z}")
 ```python
 x = [1, 2, 3, 4]   # x 被原地修改了
 y = [1, 2, 3, 4]   # y 是 x 的别名，看到了相同的修改
-z = [1, 2, 3]       # z 是ǳ复制，不受影响
+z = [1, 2, 3]       # z 是浅复制，不受影响
 ```
 
 </details>
@@ -763,7 +763,7 @@ print(safe_greeting("Alice"))    # Hello, Alice!
 
 ---
 
-## 参考资Դ
+## 参考资源
 
 - [Python 官方文档 - 内置类型](https://docs.python.org/3/library/stdtypes.html)
 - [Python 官方文档 - 数据模型](https://docs.python.org/3/reference/datamodel.html)

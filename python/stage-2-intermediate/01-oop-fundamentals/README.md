@@ -4,7 +4,7 @@
 > — Edsger W. Dijkstra
 >
 > 面向对象编程不是把函数塞进类里，而是给混乱的世界建模。
-> 你即将学会的不仅是 `class` 关键字——而是一种**组织˼维**的方式。
+> 你即将学会的不仅是 `class` 关键字——而是一种**组织思维**的方式。
 
 ## 📖 本章内容
 
@@ -31,7 +31,7 @@
 - [最佳实践](#最佳实践)
 - [常见陷阱](#常见陷阱)
 - [练习题](#练习题)
-- [参考资Դ](#参考资Դ)
+- [参考资源](#参考资源)
 - [下一步](#下一步)
 
 ---
@@ -40,7 +40,7 @@
 
 > 🎭 **The Drama: 类是蓝图，对象是建筑**
 >
-> 想象你是一名建筑师。你画了一张公寓的蓝图（类），Ȼ后ʩ工队根据蓝图建造了 100 套公寓（对象）。
+> 想象你是一名建筑师。你画了一张公寓的蓝图（类），然后施工队根据蓝图建造了 100 套公寓（对象）。
 > 每套公寓的**结构相同**（方法），但**住户不同**（属性）。
 > 蓝图本身不能住人——你必须先 `build()` 它。在 Python 中，这个 `build()` 就是实例化：`apartment = Apartment()`。
 
@@ -102,11 +102,11 @@ buddy.human_age()              # [Dog] Buddy 的人类等效年龄: 21
 >
 > 这就是为什么实例方法的第一个参数总是 `self`——Python 把实例"显式地"传给了你。
 
-`__init__` 不是"构造器"，更准确地˵它是**初始化器**：
+`__init__` 不是"构造器"，更准确地说它是**初始化器**：
 
 ```python
 class User:
-    """用户模型 — 演示 __init__ 的角ɫ。"""
+    """用户模型 — 演示 __init__ 的角色。"""
 
     def __new__(cls, *args, **kwargs) -> "User":
         """真正的构造器：创建实例（很少需要重写）。"""
@@ -121,13 +121,13 @@ class User:
         self.email: str = email
 
 
-# 执行˳序：
+# 执行顺序：
 user = User("alice", "alice@example.com")
 # [User] __new__: 正在创建 User 实例
 # [User] __init__: 初始化 username=alice
 ```
 
-| 方法 | 角ɫ | 何时调用 | 返回值 |
+| 方法 | 角色 | 何时调用 | 返回值 |
 |------|------|----------|--------|
 | `__new__` | 构造器 | 创建实例之前 | 必须返回实例 |
 | `__init__` | 初始化器 | 实例创建之后 | 必须返回 `None` |
@@ -194,7 +194,7 @@ print(f"Counter.total_count = {Counter.total_count}")  # 2（类共享）
 > 🧠 **CS Master's Bridge: 继承 = IS-A 关系**
 >
 > 面向对象设计中，继承表达的是"**是一种**"关系：`Dog IS-A Animal`。
-> 如果你无法自Ȼ地˵出"X 是一种 Y"，那就不该用继承——应该用**组合**（HAS-A）。
+> 如果你无法自然地说出"X 是一种 Y"，那就不该用继承——应该用**组合**（HAS-A）。
 >
 > ```
 > ✅ Dog IS-A Animal       → 继承
@@ -227,7 +227,7 @@ class Dog(Animal):
     def __init__(self, name: str, breed: str) -> None:
         super().__init__(name, sound="Woof")  # 调用父类初始化
         self.breed: str = breed
-        print(f"[Dog] 初始化Ʒ种: {breed}")
+        print(f"[Dog] 初始化品种: {breed}")
 
     def fetch(self, item: str) -> str:
         result: str = f"{self.name} fetches the {item}"
@@ -236,12 +236,12 @@ class Dog(Animal):
 
 
 class Cat(Animal):
-    """è — 继承自 Animal。"""
+    """猫 — 继承自 Animal。"""
 
     def __init__(self, name: str, indoor: bool = True) -> None:
         super().__init__(name, sound="Meow")
         self.indoor: bool = indoor
-        print(f"[Cat] 室内è: {indoor}")
+        print(f"[Cat] 室内猫: {indoor}")
 
     def purr(self) -> str:
         result: str = f"{self.name} purrs..."
@@ -263,7 +263,7 @@ class Shape:
 
     def __init__(self, color: str = "white") -> None:
         self.color: str = color
-        print(f"[Shape] 颜ɫ: {color}")
+        print(f"[Shape] 颜色: {color}")
 
 
 class Rectangle(Shape):
@@ -297,7 +297,7 @@ print(f"面积 = {sq.area()}")  # 25.0
 >
 > | 场景 | 做法 |
 > |------|------|
-> | 子类扩չ父类行为 | `super().__init__()` + 额外逻辑 |
+> | 子类扩展父类行为 | `super().__init__()` + 额外逻辑 |
 > | 子类完全替换父类行为 | 不调用 `super()`（慎用） |
 > | 多重继承 | **必须**用 `super()` 以遵循 MRO |
 
@@ -307,7 +307,7 @@ print(f"面积 = {sq.area()}")  # 25.0
 
 ### 3.1 菱形继承问题
 
-> 🎭 **The Drama: 菱形继承 — OOP 的"家ͥ纠纷"**
+> 🎭 **The Drama: 菱形继承 — OOP 的"家庭纠纷"**
 >
 > 假设 `D` 同时继承了 `B` 和 `C`，而 `B` 和 `C` 都继承了 `A`。
 > 当你调用 `D` 的方法时，到底该走 `B` 的版本还是 `C` 的版本？
@@ -323,7 +323,7 @@ print(f"面积 = {sq.area()}")  # 25.0
 >
 > C++ 的解法：虚继承（复杂且易错）。
 > Java 的解法：干脆禁止多重继承。
-> Python 的解法：**C3 线性化算法** — 用一个确定性的˳序解决歧义。
+> Python 的解法：**C3 线性化算法** — 用一个确定性的顺序解决歧义。
 
 ```python
 class A:
@@ -342,13 +342,13 @@ class C(A):
         return "C"
 
 class D(B, C):
-    pass  # û有重写 method
+    pass  # 没有重写 method
 
 
 d = D()
 print(d.method())  # [B] B.method() → "B"
 
-# 查看 MRO（方法解析˳序）
+# 查看 MRO（方法解析顺序）
 print(D.__mro__)
 # (<class 'D'>, <class 'B'>, <class 'C'>, <class 'A'>, <class 'object'>)
 ```
@@ -359,7 +359,7 @@ print(D.__mro__)
 >
 > C3 算法保证三个特性：
 > 1. **子类优先于父类**：`D` 在 `B`、`C` 之前
-> 2. **声明˳序保留**：`class D(B, C)` 中 `B` 在 `C` 之前
+> 2. **声明顺序保留**：`class D(B, C)` 中 `B` 在 `C` 之前
 > 3. **单调性**：如果 `B` 在 `C` 之前，在所有子类的 MRO 中 `B` 都在 `C` 之前
 >
 > 算法伪代码：
@@ -405,7 +405,7 @@ print([cls.__name__ for cls in Child.__mro__])
 | Python | ✅ 支持 | C3 线性化 MRO |
 | C++ | ✅ 支持 | 虚继承（手动控制） |
 | Java | ❌ 禁止 | 单继承 + 接口 |
-| Go | ❌ 无类 | 组合 + 接口Ƕ入 |
+| Go | ❌ 无类 | 组合 + 接口嵌入 |
 | Rust | ❌ 无类 | Trait（类似 Mixin）|
 
 ### 3.3 Mixin 模式
@@ -450,20 +450,20 @@ class ValidateMixin:
         """检查所有非下划线开头的属性是否非空。"""
         for key, value in self.__dict__.items():
             if not key.startswith("_") and not value:
-                print(f"[ValidateMixin] 验证ʧ败: {key} 为空")
+                print(f"[ValidateMixin] 验证失败: {key} 为空")
                 return False
         print(f"[ValidateMixin] 验证通过")
         return True
 
 
-# ✅ 组合多个 Mixin — 像搭积ľ一样
+# ✅ 组合多个 Mixin — 像搭积木一样
 class Product(JsonMixin, LogMixin, ValidateMixin):
-    """产Ʒ模型 — 组合了 JSON、日志、验证能力。"""
+    """产品模型 — 组合了 JSON、日志、验证能力。"""
 
     def __init__(self, name: str, price: float) -> None:
         self.name: str = name
         self.price: float = price
-        self.log(f"创建产Ʒ: {name}, 价格: {price}")
+        self.log(f"创建产品: {name}, 价格: {price}")
 
 
 p = Product("Python Book", 49.99)
@@ -494,7 +494,7 @@ class Temperature:
 
     @property
     def celsius(self) -> float:
-        """获ȡ摄氏温度（getter）。"""
+        """获取摄氏温度（getter）。"""
         return self._celsius
 
     @celsius.setter
@@ -570,7 +570,7 @@ class MathUtils:
 
     @staticmethod
     def is_even(n: int) -> bool:
-        """判断是否为ż数。"""
+        """判断是否为质数。"""
         return n % 2 == 0
 
     @staticmethod
@@ -605,7 +605,7 @@ print(MathUtils.factorial(5))   # 120
 >
 > 你是否厌倦了每次写类都要手敲 `__init__`、`__repr__`、`__eq__`？
 > 如果一个类的核心目的是**存储数据**，那 80% 的代码都是无聊的样板。
-> `dataclasses` ˵："把样板交给我，你只管定义字段。"
+> `dataclasses` 说："把样板交给我，你只管定义字段。"
 
 ```python
 from dataclasses import dataclass, field
@@ -633,7 +633,7 @@ class Point:
     y: float
 
     def distance_to(self, other: "Point") -> float:
-        """计算到另一个点的ŷ几里得距离。"""
+        """计算到另一个点的欧几里得距离。"""
         result = ((self.x - other.x) ** 2 + (self.y - other.y) ** 2) ** 0.5
         print(f"[Point] 距离: {self} → {other} = {result:.2f}")
         return result
@@ -705,7 +705,7 @@ s1.average_grade     # [Student] Alice 平均成绩: 91.8
 ```python
 @dataclass(frozen=True)
 class Color:
-    """不可变颜ɫ — frozen=True 使实例不可修改。"""
+    """不可变颜色 — frozen=True 使实例不可修改。"""
 
     red: int
     green: int
@@ -720,7 +720,7 @@ class Color:
 
     @property
     def hex(self) -> str:
-        """转换为ʮ六进制颜ɫ码。"""
+        """转换为十六进制颜色码。"""
         return f"#{self.red:02x}{self.green:02x}{self.blue:02x}"
 
 
@@ -730,7 +730,7 @@ print(red.hex)        # #ff0000
 
 # ✅ frozen dataclass 可以作为字典键和集合元素
 color_set: set[Color] = {Color(255, 0, 0), Color(0, 255, 0), Color(255, 0, 0)}
-print(len(color_set))  # 2（重复的被ȥ除了）
+print(len(color_set))  # 2（重复的被去除了）
 ```
 
 | 特性 | 普通 class | @dataclass | @dataclass(frozen=True) |
@@ -750,7 +750,7 @@ print(len(color_set))  # 2（重复的被ȥ除了）
 >
 > 默认情况下，Python 用一个 `__dict__` 字典来存储每个实例的属性。字典很灵活，但也很耗内存。
 > `__slots__` 告诉 Python："这个类只有这些属性，用固定结构存储即可。"
-> 这能节ʡ 30-50% 的内存，并稍微加快属性访问速度。
+> 这能节省 30-50% 的内存，并稍微加快属性访问速度。
 
 ```python
 import sys
@@ -850,7 +850,7 @@ class Base:
 class Bad(Base):
     def __init__(self) -> None:
         self.child_attr = "me too"
-        # û有 super().__init__()
+        # 没有 super().__init__()
 
 b = Bad()
 # print(b.base_attr)  # ❌ AttributeError!
@@ -877,7 +877,7 @@ c2 = Config()
 # 通过实例修改 — 创建了实例属性，不影响类属性
 c1.debug = True
 print(c1.debug)     # True（实例属性）
-print(c2.debug)     # False（仍Ȼ是类属性）
+print(c2.debug)     # False（仍然是类属性）
 print(Config.debug)  # False（类属性未变）
 
 # ✅ 如果要修改类属性，通过类本身修改
@@ -894,7 +894,7 @@ print(c2.debug)  # True
 创建一个 `BankAccount` 类，包含：
 - 账户持有人、余额
 - `deposit()` 和 `withdraw()` 方法（带验证）
-- `@property` 实现余额查线
+- `@property` 实现余额查询
 - `__repr__` 方法
 
 <details>
@@ -918,11 +918,11 @@ class BankAccount:
 
     def withdraw(self, amount: float) -> None:
         if amount <= 0:
-            raise ValueError(f"ȡ款金额必须为正: {amount}")
+            raise ValueError(f"取款金额必须为正: {amount}")
         if amount > self._balance:
             raise ValueError(f"余额不足: 需要 {amount}, 只有 {self._balance}")
         self._balance -= amount
-        print(f"[BankAccount] {self.owner} ȡ款 {amount}, 余额 {self._balance}")
+        print(f"[BankAccount] {self.owner} 取款 {amount}, 余额 {self._balance}")
 
     def __repr__(self) -> str:
         return f"BankAccount(owner={self.owner!r}, balance={self._balance})"
@@ -1024,7 +1024,7 @@ print(f"更新时间: {article.updated_at}")
 
 ---
 
-## 参考资Դ
+## 参考资源
 
 - [Python 官方文档 - 类](https://docs.python.org/3/tutorial/classes.html)
 - [Python 数据模型](https://docs.python.org/3/reference/datamodel.html)

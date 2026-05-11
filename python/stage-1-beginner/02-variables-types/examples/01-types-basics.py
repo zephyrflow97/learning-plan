@@ -1,5 +1,5 @@
 """
-类型基础 — Python 的数据类型̽索
+类型基础 — Python 的数据类型探索
 
 运行方式:
     python examples/01-types-basics.py
@@ -29,14 +29,14 @@ def demo_dynamic_typing() -> None:
     x = 3.14
     print(f"[类型基础] x = {x}, type = {type(x)}")  # <class 'float'>
 
-    print("[类型基础] 变量 x û有类型，它只是一个名字，可以指向任何类型的对象")
+    print("[类型基础] 变量 x 没有类型，它只是一个名字，可以指向任何类型的对象")
 
 
 def demo_integer() -> None:
     """演示 int 类型 - 无限精度整数"""
     print("\n[类型基础] === int 类型演示 ===")
 
-    # Python 的 int û有溢出问题
+    # Python 的 int 没有溢出问题
     big_number = 10**100  # googol
     print(f"[类型基础] 10^100 = {big_number}")
     print(f"[类型基础] 10^100 的位数: {len(str(big_number))}")
@@ -51,17 +51,17 @@ def demo_integer() -> None:
     hexadecimal = 0xFF
     print(f"[类型基础] 二进制 0b10100101 = {binary}")
     print(f"[类型基础] 八进制 0o17 = {octal}")
-    print(f"[类型基础] ʮ六进制 0xFF = {hexadecimal}")
+    print(f"[类型基础] 十六进制 0xFF = {hexadecimal}")
 
     # 进制转换
     value = 42
     print(f"[类型基础] 42 的二进制: {bin(value)}")
     print(f"[类型基础] 42 的八进制: {oct(value)}")
-    print(f"[类型基础] 42 的ʮ六进制: {hex(value)}")
+    print(f"[类型基础] 42 的十六进制: {hex(value)}")
 
 
 def demo_float() -> None:
-    """演示 float 类型 - IEEE 754 ˫精度浮点数"""
+    """演示 float 类型 - IEEE 754 双精度浮点数"""
     import math
 
     print("\n[类型基础] === float 类型演示 ===")

@@ -55,7 +55,7 @@ class Point:
     y: float
 
     def distance_to(self, other: Point) -> float:
-        """计算到另一个点的ŷ几里得距离。"""
+        """计算到另一个点的欧几里得距离。"""
         result: float = math.sqrt((self.x - other.x) ** 2 + (self.y - other.y) ** 2)
         logger.info(f"[Point] 距离 {self} → {other} = {result:.2f}")
         return result
@@ -109,14 +109,14 @@ class Student:
 
 @dataclass(frozen=True)
 class Color:
-    """不可变颜ɫ — 实例创建后不可修改。"""
+    """不可变颜色 — 实例创建后不可修改。"""
 
     red: int
     green: int
     blue: int
 
     def __post_init__(self) -> None:
-        """验证颜ɫ值范围。"""
+        """验证颜色值范围。"""
         for channel in ("red", "green", "blue"):
             value: int = getattr(self, channel)
             if not (0 <= value <= 255):
@@ -124,7 +124,7 @@ class Color:
 
     @property
     def hex(self) -> str:
-        """转换为ʮ六进制颜ɫ码。"""
+        """转换为十六进制颜色码。"""
         return f"#{self.red:02x}{self.green:02x}{self.blue:02x}"
 
     @property
@@ -147,7 +147,7 @@ class Priority:
     name: str
 
     def __post_init__(self) -> None:
-        # 优先级Խ高，sort_index Խ小（用于排序）
+        # 优先级越高，sort_index 越小（用于排序）
         self.sort_index = -self.priority
         logger.info(f"[Priority] 创建任务: {self.name} (优先级: {self.priority})")
 
@@ -227,13 +227,13 @@ def main() -> None:
 
     # frozen 可以做字典键和集合元素
     palette: set[Color] = {red, blue, Color(255, 0, 0)}
-    logger.info(f"[Demo] palette 大小: {len(palette)} (重复的被ȥ除)")
+    logger.info(f"[Demo] palette 大小: {len(palette)} (重复的被去除)")
 
     # 尝试修改会报错
     try:
         red.red = 128  # type: ignore
     except AttributeError as e:
-        logger.info(f"[Demo] ❌ 修改 frozen 对象ʧ败: {e}")
+        logger.info(f"[Demo] ❌ 修改 frozen 对象失败: {e}")
 
     logger.info("")
     logger.info("=" * 60)
